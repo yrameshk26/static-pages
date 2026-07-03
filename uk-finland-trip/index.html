@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Expedition Planner: UK & Finland</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            gold: '#facc15', aurora: '#10b981', ice: '#22d3ee', royal: '#8b5cf6',
+                            bg: '#090d16', surface: '#111827'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #090d16;
+            color: #f8fafc;
+            overscroll-behavior-y: none;
+        }
+
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-light {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Map styling */
+        .leaflet-container { background: #090d16; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .leaflet-popup-content-wrapper { background: rgba(17,24,39,0.9); backdrop-filter: blur(8px); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;}
+        .leaflet-popup-tip { background: rgba(17,24,39,0.9); }
+        .dark .leaflet-popup-content-wrapper { background: rgba(17,24,39,0.9); color: white; }
+        .light .leaflet-popup-content-wrapper { background: rgba(255,255,255,0.9); color: black; }
+
+        /* Custom Marker pulse */
+        .marker-pulse {
+            width: 100%; height: 100%; border-radius: 50%;
+            animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Animated gradient text */
+        .ai-gradient {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #facc15 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
+
+    <!-- Top Navigation Bar -->
+    <header class="absolute top-0 w-full z-50 glass dark:glass p-4 flex justify-between items-center transition-colors duration-300 shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 p-[2px]">
+                <div class="w-full h-full bg-brand-bg rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-sparkles text-pink-400 text-sm"></i>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-sm md:text-base font-bold ai-gradient">Expedition AI</h1>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">UK • FIN • Nov 22 - Dec 8</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="theme-toggle" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition">
+                <i class="fa-solid fa-moon text-slate-800 dark:text-yellow-300 text-lg" id="theme-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Split Layout -->
+    <div class="flex h-full w-full relative pt-[72px]">
+
+        <!-- LEFT: Dynamic Map (Background on Mobile, Left 60% on Desktop) -->
+        <div id="map-container" class="absolute inset-0 md:relative md:w-3/5 h-full z-0 transition-all duration-500 ease-in-out">
+            <div id="map" class="w-full h-full"></div>
+            <!-- Map Overlay Gradient for smooth blending -->
+            <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-brand-bg to-transparent hidden md:block z-[400] pointer-events-none"></div>
+            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent md:hidden z-[400] pointer-events-none"></div>
+        </div>
+
+        <!-- RIGHT: Scrollable "Layla-style" Itinerary Feed -->
+        <div id="feed" class="absolute inset-0 md:relative md:w-2/5 h-full z-10 overflow-y-auto no-scrollbar snap-y snap-mandatory md:bg-brand-bg/95 md:dark:bg-brand-bg pointer-events-none md:pointer-events-auto shadow-2xl border-l border-white/5">
+
+            <!-- Mobile padding to allow seeing the map at the top -->
+            <div class="h-[40vh] md:hidden snap-center pointer-events-none"></div>
+
+            <!-- Feed Content Container (Pointer events auto to allow scrolling/clicking) -->
+            <div class="pointer-events-auto px-4 pb-32 space-y-6 md:space-y-8 md:pt-8 md:px-8">
+
+                <!-- AI Intro Message -->
+                <div class="glass dark:glass rounded-3xl p-6 shadow-xl snap-start transform transition hover:scale-[1.01]">
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 animate-pulse-slow">
+                            <i class="fa-solid fa-robot text-white text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm md:text-base font-medium leading-relaxed dark:text-slate-200 text-slate-800">
+                                ✨ I've curated your <span class="font-bold ai-gradient">Winter Expedition</span>. I’ve optimized for 4 & 2-year-old toddlers: minimal city driving, strategic flights, and heavily prioritized sleep schedules.
+                            </p>
+                            <p class="text-xs text-slate-500 mt-2 font-semibold">Scroll down to explore your journey. The map will follow you.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logistics Hub (Manifest & Checklist) -->
+                <div class="space-y-4 snap-start" data-lat="51.5" data-lng="-0.1">
+                    <h2 class="text-xl font-bold dark:text-white text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-brand-ice"></i> Command Center
+                    </h2>
+
+                    <!-- Horizontal Scroll Flights -->
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 md:mx-0 md:px-0 snap-x">
+                        <!-- Flight 1 -->
+                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-gold">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-brand-gold"><i class="fa-solid fa-plane-departure"></i> Locked</span>
+                                <span class="text-[10px] text-slate-400">Nov 22</span>
+                            </div>
+                            <div class="flex justify-between items-center font-black text-lg">
+                                <span>YYZ</span>
+                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
+                                <span>LHR</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-1">Virgin Atlantic VS148 • 09:15 PM</p>
+                        </div>
+
+                        <!-- TRAIN: LNER -->
+                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-royal relative overflow-hidden">
+                            <div class="absolute -right-2 -top-2 w-12 h-12 bg-brand-royal/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-train text-brand-royal/50 text-xl"></i></div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-brand-royal"><i class="fa-solid fa-check-circle"></i> Confirmed</span>
+                                <span class="text-[10px] text-slate-400">Nov 27</span>
+                            </div>
+                            <div class="flex justify-between items-center font-black text-lg relative z-10">
+                                <span>London</span>
+                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
+                                <span>Edinburgh</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-1">LNER Train • Dep: 09:30 AM</p>
+                        </div>
+
+                        <!-- Flight 2 -->
+                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-ice">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-brand-ice"><i class="fa-solid fa-plane"></i> Locked</span>
+                                <span class="text-[10px] text-slate-400">Nov 30</span>
+                            </div>
+                            <div class="flex justify-between items-center font-black text-lg">
+                                <span>EDI</span>
+                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
+                                <span>HEL</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-1">Finnair AY1374 • 06:35 PM</p>
+                        </div>
+
+                        <!-- Flight 3 -->
+                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-aurora">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-brand-aurora"><i class="fa-solid fa-plane"></i> Locked</span>
+                                <span class="text-[10px] text-slate-400">Dec 2</span>
+                            </div>
+                            <div class="flex justify-between items-center font-black text-lg">
+                                <span>HEL</span>
+                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
+                                <span>RVN</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-1">Finnair AY555 • 09:50 AM</p>
+                        </div>
+                    </div>
+
+                    <!-- Booking Checklist -->
+                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+                        <h3 class="text-sm font-black uppercase tracking-wider mb-4 flex justify-between items-center text-slate-900 dark:text-white">
+                            <span><i class="fa-solid fa-ticket"></i> Advance Action Required</span>
+                            <span class="bg-rose-500/20 text-rose-600 dark:text-rose-400 text-[10px] px-2 py-1 rounded-md">Urgent</span>
+                        </h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🇬🇧 United Kingdom</h4>
+                                <label class="flex items-start gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>Winter Wonderland:</b> Needs specific entry time slot for naps.</span>
+                                </label>
+                                <label class="flex items-start gap-3 mt-2 cursor-pointer group">
+                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>Edinburgh Castle:</b> Sells out heavily in winter. Pre-book now.</span>
+                                </label>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🇫🇮 Finland & Lapland</h4>
+                                <label class="flex items-start gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>SantaPark (RVN):</b> Daily capacity limits. High priority.</span>
+                                </label>
+                                <label class="flex items-start gap-3 mt-2 cursor-pointer group">
+                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>Husky Safari (Levi):</b> Request toddler-specific sled setup.</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-300 dark:border-slate-700 text-[10px] text-slate-500 italic">
+                            <i class="fa-solid fa-lightbulb text-yellow-500"></i> AI Tip: Confirm operators provide age-appropriate helmets/blankets for the 2 and 4yo.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- dynamic itinerary cards will be injected here -->
+                <div id="itinerary-feed" class="space-y-6 md:space-y-12 pt-4"></div>
+
+                <!-- Family Tips Section -->
+                <div class="snap-start pt-8 pb-4">
+                    <div class="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-6 opacity-10">
+                            <i class="fa-solid fa-baby-carriage text-8xl text-white"></i>
+                        </div>
+                        <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2 mb-6">
+                            <i class="fa-solid fa-wand-magic-sparkles text-pink-400"></i> AI Family Survival Tips
+                        </h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                            <div class="glass dark:glass rounded-2xl p-4">
+                                <h3 class="text-sm font-bold text-brand-gold mb-2"><i class="fa-solid fa-suitcase-rolling"></i> The "Luggage Stash"</h3>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">You are flying low-cost within Europe and managing toddlers on trains. Leave your massive transatlantic bags with your London relatives on Day 5. Pack a lightweight duffel/backpack for the 10 days in Scotland and Finland.</p>
+                            </div>
+
+                            <div class="glass dark:glass rounded-2xl p-4">
+                                <h3 class="text-sm font-bold text-brand-ice mb-2"><i class="fa-solid fa-sun"></i> The 3 PM Sunset Rule</h3>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">In Edinburgh and Helsinki, the sun sets around 3:30 PM. In Lapland, it sets at 1:30 PM (or doesn't rise at all). Schedule all outdoor visual activities before 1:00 PM. Use the dark afternoons for museums, train rides, or saunas.</p>
+                            </div>
+
+                            <div class="glass dark:glass rounded-2xl p-4">
+                                <h3 class="text-sm font-bold text-brand-aurora mb-2"><i class="fa-solid fa-layer-group"></i> Lapland Toddler Layering</h3>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">The 2yo and 4yo need a strict 3-layer system: Merino wool base layer, fleece mid-layer, and a waterproof/windproof snowsuit. **Do not use cotton.** Most safari operators (Huskies/Sleighs) provide the final heavy outer thermal layer for kids.</p>
+                            </div>
+
+                            <div class="glass dark:glass rounded-2xl p-4">
+                                <h3 class="text-sm font-bold text-brand-royal mb-2"><i class="fa-solid fa-train-subway"></i> Stroller Strategy</h3>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Bring a sturdy, narrow travel stroller (like a Babyzen YOYO) that folds into the overhead bin. The Elizabeth Line in London is step-free. In Helsinki, parents pushing a child in a stroller ride the public transit trains completely free.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End marker -->
+                <div class="text-center py-12 opacity-50">
+                    <i class="fa-solid fa-flag-checkered text-2xl mb-2"></i>
+                    <p class="text-xs font-bold uppercase tracking-widest">End of Journey</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Floating Chat FAB (UI Only) -->
+        <button class="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] flex items-center justify-center z-50 animate-float hover:scale-110 transition-transform">
+            <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
+        </button>
+    </div>
+
+    <script>
+        // --- Data Structure ---
+        // Added rich images, precise map coordinates, and detailed daily schedules
+        const itineraryData = [
+            {
+                id: "day1", day: "Day 1", date: "Sun, Nov 22", location: "Toronto to London",
+                lat: 51.5074, lng: -0.1278, zoom: 4,
+                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Departure & Red-Eye",
+                desc: "The overnight jump. Optimize for toddler sleep immediately after takeoff.",
+                icon: "fa-plane-departure", color: "brand-gold",
+                schedule: [
+                    {
+                        dayName: "Sunday, Nov 22",
+                        items: [
+                            { time: "06:00 PM", text: "Arrive at Toronto Pearson (YYZ). Drop bags, head to lounge/quiet gate to pre-feed kids." },
+                            { time: "09:15 PM", text: "Depart YYZ on Virgin Atlantic VS148. Kids in pajamas immediately after takeoff." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day2", day: "Day 2-3", date: "Nov 23 - Nov 24", location: "London, UK",
+                lat: 51.5074, lng: -0.1278, zoom: 12,
+                image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "The Royal Footprint",
+                desc: "Arrive in London. Split stays between luxury in Marylebone and basecamp in Stratford. Heavy use of the step-free Elizabeth Line.",
+                icon: "fa-chess-rook", color: "brand-gold",
+                schedule: [
+                    {
+                        dayName: "Monday, Nov 23 (Day 2)",
+                        items: [
+                            { time: "09:35 AM", text: "Land at London Heathrow (LHR). Take Elizabeth Line directly to Bond Street." },
+                            { time: "11:30 AM", text: "Drop bags at The BoTree London. Freshen up." },
+                            { time: "12:30 PM", text: "Stroller walk down through Mayfair to St. James's Park to see the pelicans." },
+                            { time: "05:00 PM", text: "Early dinner in Marylebone. Early bedtime to combat jet lag." }
+                        ]
+                    },
+                    {
+                        dayName: "Tuesday, Nov 24 (Day 3)",
+                        items: [
+                            { time: "09:00 AM", text: "Check out. Elizabeth Line from Bond Street to Stratford." },
+                            { time: "10:30 AM", text: "Drop bags at The Stratford, Autograph Collection." },
+                            { time: "11:30 AM", text: "Tower of London exterior & Crown Jewels." },
+                            { time: "01:30 PM", text: "Uber Boat (Thames Clipper) to Westminster. Roll stroller right on." },
+                            { time: "05:30 PM", text: "London Eye sunset pod flight. Zero walking, great views." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day4", day: "Day 4-5", date: "Nov 25 - Nov 26", location: "London, UK",
+                lat: 51.5074, lng: -0.1278, zoom: 13,
+                image: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Winter Wonderland",
+                desc: "Museums, lights, and family time before packing down for the Arctic.",
+                icon: "fa-sleigh", color: "brand-gold",
+                schedule: [
+                    {
+                        dayName: "Wednesday, Nov 25 (Day 4)",
+                        items: [
+                            { time: "10:00 AM", text: "Hamleys Toy Store on Regent Street." },
+                            { time: "01:00 PM", text: "Natural History Museum (South Kensington) to see the T-Rex." },
+                            { time: "03:30 PM", text: "Hyde Park Winter Wonderland at dusk. Hit Santaland and carousels." }
+                        ]
+                    },
+                    {
+                        dayName: "Thursday, Nov 26 (Day 5)",
+                        items: [
+                            { time: "10:00 AM", text: "Dedicated time with relatives in the city." },
+                            { time: "04:00 PM", text: "Logistics Hack: Pack light backpacks. Leave massive suitcases at relatives' house." },
+                            { time: "06:00 PM", text: "Relaxed evening at Westfield or Olympic Park near the hotel." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day6", day: "Day 6-8", date: "Nov 27 - Nov 29", location: "Edinburgh, Scotland",
+                lat: 55.9533, lng: -3.1883, zoom: 13,
+                image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Volcanic Vistas via Rail",
+                desc: "High-speed rail up to Scotland. Castles, illusions, and hearty Sunday roasts.",
+                icon: "fa-train", color: "brand-royal",
+                schedule: [
+                    {
+                        dayName: "Friday, Nov 27 (Day 6)",
+                        items: [
+                            { time: "08:15 AM", text: "Southeastern High-Speed train from Stratford Int'l to St Pancras." },
+                            { time: "09:30 AM", text: "Board LNER train at King's Cross. Sit at a family table." },
+                            { time: "01:50 PM", text: "Arrive at Edinburgh Waverley station." },
+                            { time: "03:00 PM", text: "Check into The Caledonian. Let toddlers settle." },
+                            { time: "04:30 PM", text: "Princes Street Christmas Market under the castle." }
+                        ]
+                    },
+                    {
+                        dayName: "Saturday, Nov 28 (Day 7)",
+                        items: [
+                            { time: "09:30 AM", text: "Camera Obscura & World of Illusions (Highly interactive)." },
+                            { time: "01:00 PM", text: "Walk base of Arthur's Seat or Calton Hill." },
+                            { time: "05:30 PM", text: "Castle of Light trail inside Edinburgh Castle." }
+                        ]
+                    },
+                    {
+                        dayName: "Sunday, Nov 29 (Day 8)",
+                        items: [
+                            { time: "10:00 AM", text: "Palace of Holyroodhouse." },
+                            { time: "01:00 PM", text: "Hearty Scottish Sunday Roast in a historic pub." },
+                            { time: "04:00 PM", text: "Relax. Prep toddler bags for the flight to Finland tomorrow." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day9", day: "Day 9-10", date: "Nov 30 - Dec 1", location: "Helsinki, Finland",
+                lat: 60.1695, lng: 24.9354, zoom: 12,
+                image: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Nordic Acclimatization",
+                desc: "Strategic transit hub stay at the airport to minimize toddler movement late at night.",
+                icon: "fa-snowflake", color: "brand-ice",
+                schedule: [
+                    {
+                        dayName: "Monday, Nov 30 (Day 9)",
+                        items: [
+                            { time: "12:00 PM", text: "Check out of The Caledonian. Store bags." },
+                            { time: "04:00 PM", text: "Head to EDI Airport via Tram. Gate-check stroller." },
+                            { time: "06:35 PM", text: "Depart EDI on Finnair AY1374." },
+                            { time: "11:10 PM", text: "Land in Helsinki (HEL). Walk directly via indoor walkway to Hilton Helsinki Airport. Zero commute." }
+                        ]
+                    },
+                    {
+                        dayName: "Tuesday, Dec 1 (Day 10)",
+                        items: [
+                            { time: "10:00 AM", text: "Sleep in. Huge Finnish buffet breakfast at hotel." },
+                            { time: "11:30 AM", text: "Take 30m train into Helsinki Central (Free with stroller!)." },
+                            { time: "01:00 PM", text: "Visit Children's Town on Senate Square." },
+                            { time: "03:30 PM", text: "Senate Square Christmas Market. Kids ride vintage wooden carousel." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day11", day: "Day 11", date: "Wed, Dec 2", location: "Levi, Lapland",
+                lat: 67.8040, lng: 24.8082, zoom: 10,
+                image: "https://images.unsplash.com/photo-1517299321609-52687d1bc55a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Arctic Arrival & Igloos",
+                desc: "Enter the Arctic Circle. A majestic first night in a glass igloo.",
+                icon: "fa-car-side", color: "brand-aurora",
+                schedule: [
+                    {
+                        dayName: "Wednesday, Dec 2 (Day 11)",
+                        items: [
+                            { time: "08:00 AM", text: "Walk directly from Hilton to HEL terminal." },
+                            { time: "09:50 AM", text: "Depart HEL on Finnair AY555." },
+                            { time: "11:15 AM", text: "Land at RVN. Pick up AWD SUV with studded ice tires." },
+                            { time: "12:30 PM", text: "Groceries at Prisma/K-Market in Rovaniemi." },
+                            { time: "01:30 PM", text: "Scenic 2-hour drive north to Levi in the daylight." },
+                            { time: "04:00 PM", text: "Check into Aurora Pyramid Glass Igloos. Enjoy outdoor hot tub." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day12", day: "Day 12-14", date: "Dec 3 - Dec 5", location: "Levi, Lapland",
+                lat: 67.8040, lng: 24.8082, zoom: 12,
+                image: "https://images.unsplash.com/photo-1549474136-22a8fc2e1e0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Elves, Huskies & Ice",
+                desc: "The core Lapland experience. Basecamp at Levin Klubi.",
+                icon: "fa-dog", color: "brand-aurora",
+                schedule: [
+                    {
+                        dayName: "Thursday, Dec 3 (Day 12)",
+                        items: [
+                            { time: "10:30 AM", text: "Load heavy luggage into SUV (acts as locker for the day)." },
+                            { time: "11:00 AM", text: "Walk to adjacent Tonttula Elves Village. Bake gingerbread." },
+                            { time: "05:00 PM", text: "Strict 5PM check-in at Levi Suites Levin Klubi. Unpack into drying cabinets." }
+                        ]
+                    },
+                    {
+                        dayName: "Friday, Dec 4 (Day 13)",
+                        items: [
+                            { time: "10:00 AM", text: "Family Husky Safari (Levi). Kids in blankets in the sled." },
+                            { time: "02:00 PM", text: "Samiland Exhibition. Warm up indoors, feed reindeer outside." }
+                        ]
+                    },
+                    {
+                        dayName: "Saturday, Dec 5 (Day 14)",
+                        items: [
+                            { time: "10:30 AM", text: "Drive to SnowVillage (Ylläs). Explore ice hotel." },
+                            { time: "04:00 PM", text: "Evening Snowmobile-Pulled Sleigh Ride hunting Auroras." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day15", day: "Day 15", date: "Sun, Dec 6", location: "Rovaniemi, Lapland",
+                lat: 66.5039, lng: 25.7294, zoom: 11,
+                image: "https://images.unsplash.com/photo-1607312151044-245f3d455913?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "SantaPark Underground",
+                desc: "Heading back south to the official hometown of Santa Claus.",
+                icon: "fa-gift", color: "brand-aurora",
+                schedule: [
+                    {
+                        dayName: "Sunday, Dec 6 (Day 15)",
+                        items: [
+                            { time: "09:30 AM", text: "Check out. 2-hour drive south to Rovaniemi." },
+                            { time: "12:00 PM", text: "SantaPark (Heated underground cavern perfect for toddlers)." },
+                            { time: "04:00 PM", text: "Cross Arctic Circle at Santa Claus Village." },
+                            { time: "06:00 PM", text: "Check into Lomavekarit Apartments near airport." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "day16", day: "Day 16-17", date: "Dec 7 - Dec 8", location: "Helsinki to Home",
+                lat: 60.1695, lng: 24.9354, zoom: 13,
+                image: "https://images.unsplash.com/photo-1604928014526-1779baea2299?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                title: "Grand Finale & Launch Home",
+                desc: "A luxury farewell in Helsinki before the seamless flights back to Canada.",
+                icon: "fa-house", color: "brand-ice",
+                schedule: [
+                    {
+                        dayName: "Monday, Dec 7 (Day 16)",
+                        items: [
+                            { time: "07:15 AM", text: "Drive 10 mins to drop off SUV at RVN airport." },
+                            { time: "09:10 AM", text: "Depart RVN on Finnair." },
+                            { time: "10:25 AM", text: "Land HEL. Train into city. Check into Hotel St. George." },
+                            { time: "02:00 PM", text: "Walk the Esplanadi for Christmas lights." },
+                            { time: "05:00 PM", text: "Parents take turns at St. George Care spa/sauna." }
+                        ]
+                    },
+                    {
+                        dayName: "Tuesday, Dec 8 (Day 17)",
+                        items: [
+                            { time: "09:30 AM", text: "Zero-stress morning. Artisan pastries from hotel bakery." },
+                            { time: "11:00 AM", text: "Uber or train back to HEL Terminal." },
+                            { time: "01:55 PM", text: "Depart HEL on Icelandair FI343." },
+                            { time: "03:55 PM", text: "Arrive Keflavik (KEF). Easy 1-hour connection." },
+                            { time: "05:00 PM", text: "Depart KEF on FI603." },
+                            { time: "06:15 PM", text: "Land safely in Toronto (YYZ). Expedition Complete." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const routeCoords = [
+            [43.6777, -79.6248], // YYZ
+            [51.5074, -0.1278],  // LHR
+            [55.9533, -3.1883],  // EDI
+            [60.1695, 24.9354],  // HEL
+            [66.5039, 25.7294],  // RVN
+            [67.8040, 24.8082],  // Levi
+            [66.5039, 25.7294],  // RVN return
+            [60.1695, 24.9354],  // HEL return
+            [63.9850, -22.6056], // KEF
+            [43.6777, -79.6248]  // YYZ return
+        ];
+
+        // --- Render UI ---
+        function renderFeed() {
+            const container = document.getElementById('itinerary-feed');
+            container.innerHTML = '';
+
+            itineraryData.forEach((day, index) => {
+                let scheduleHtml = '';
+                if (day.schedule && day.schedule.length > 0) {
+                    scheduleHtml = `<div class="mt-5 space-y-6 border-t border-slate-200 dark:border-slate-700/50 pt-5">`;
+                    day.schedule.forEach(s => {
+                        scheduleHtml += `
+                            <div class="relative pl-4 border-l-2 border-${day.color}">
+                                <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-${day.color}"></div>
+                                <h4 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-3">${s.dayName}</h4>
+                                <div class="space-y-3">`;
+                        s.items.forEach(item => {
+                            scheduleHtml += `
+                                    <div class="flex items-start gap-3 text-xs">
+                                        <span class="font-bold text-${day.color} min-w-[65px] pt-0.5">${item.time}</span>
+                                        <span class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium">${item.text}</span>
+                                    </div>`;
+                        });
+                        scheduleHtml += `</div></div>`;
+                    });
+                    scheduleHtml += `</div>`;
+                }
+
+                const html = `
+                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card" data-lat="${day.lat}" data-lng="${day.lng}" data-zoom="${day.zoom}">
+                        <div class="bg-white dark:bg-slate-900/90 rounded-3xl overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.01] border border-slate-200 dark:border-slate-800">
+
+                            <!-- Header Image Section -->
+                            <div class="relative w-full h-48 md:h-56 overflow-hidden">
+                                <img src="${day.image}" alt="${day.location}" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90"></div>
+
+                                <div class="absolute bottom-0 left-0 w-full p-5">
+                                    <div class="flex justify-between items-end mb-2">
+                                        <div class="bg-white/20 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1 rounded-full border border-white/30 flex items-center gap-2">
+                                            <i class="fa-solid ${day.icon}"></i> ${day.day}
+                                        </div>
+                                        <span class="text-white/90 text-xs font-bold drop-shadow-md">${day.date}</span>
+                                    </div>
+                                    <h3 class="text-2xl font-black text-white drop-shadow-lg leading-tight">${day.title}</h3>
+                                </div>
+                            </div>
+
+                            <!-- Content Section -->
+                            <div class="p-5 md:p-6">
+                                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> ${day.location}</p>
+                                <p class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">${day.desc}</p>
+
+                                <!-- Detailed Timeline -->
+                                ${scheduleHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // --- Map Initialization ---
+        let map;
+        let polyline;
+        let currentMarkers = [];
+        let isDarkMode = true;
+
+        const tilesDark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        const tilesLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        let tileLayer;
+
+        function initMap() {
+            // Delay slightly to ensure DOM sizing is complete
+            setTimeout(() => {
+                map = L.map('map', {
+                    zoomControl: false,
+                    scrollWheelZoom: false // Prevent accidental zooming when scrolling feed
+                }).setView([55.0, -10.0], 4);
+
+                // Add Zoom control to top right so it doesn't overlap sidebar on mobile
+                L.control.zoom({ position: 'topright' }).addTo(map);
+
+                tileLayer = L.tileLayer(tilesDark, {
+                    attribution: '&copy; CartoDB',
+                    maxZoom: 19
+                }).addTo(map);
+
+                // Draw connecting route
+                polyline = L.polyline(routeCoords, {
+                    color: '#facc15',
+                    weight: 3,
+                    opacity: 0.5,
+                    dashArray: '10, 10',
+                    lineJoin: 'round'
+                }).addTo(map);
+
+                // Add initial markers
+                itineraryData.forEach(day => {
+                    addCustomMarker(day.lat, day.lng, day.icon, day.color, day.location);
+                });
+
+                // Force layout recalculation
+                map.invalidateSize();
+
+                setupIntersectionObserver();
+            }, 300);
+        }
+
+        function addCustomMarker(lat, lng, iconClass, colorClass, popupText) {
+            // Colors mapping for Tailwind classes to Hex
+            const colorMap = {
+                'brand-gold': '#facc15',
+                'brand-aurora': '#10b981',
+                'brand-ice': '#22d3ee',
+                'brand-royal': '#8b5cf6'
+            };
+            const hexColor = colorMap[colorClass] || '#ffffff';
+
+            const customIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `
+                    <div style="background-color: ${hexColor};" class="w-8 h-8 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,0.5)] border-2 border-white text-slate-900 relative">
+                        <i class="fa-solid ${iconClass} text-[12px]"></i>
+                        <div class="absolute inset-0 rounded-full animate-ping opacity-75" style="background-color: ${hexColor};"></div>
+                    </div>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+            marker.bindPopup(`<b>${popupText}</b>`);
+            currentMarkers.push(marker);
+        }
+
+        // --- Intersection Observer (The Magic Scroll) ---
+        function setupIntersectionObserver() {
+            const cards = document.querySelectorAll('.itinerary-card, [data-lat]');
+
+            const observerOptions = {
+                root: document.getElementById('feed'), // Scroll container
+                rootMargin: '0px',
+                threshold: 0.6 // Trigger when 60% of card is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const lat = parseFloat(entry.target.getAttribute('data-lat'));
+                        const lng = parseFloat(entry.target.getAttribute('data-lng'));
+                        const zoom = parseInt(entry.target.getAttribute('data-zoom') || 6);
+
+                        if (!isNaN(lat) && !isNaN(lng) && map) {
+                            // Calculate offset so marker isn't hidden under UI on desktop
+                            const isMobile = window.innerWidth < 768;
+
+                            if (isMobile) {
+                                // On mobile, pan slightly higher so marker is visible above the bottom sheet
+                                map.flyTo([lat - 0.5, lng], zoom, { duration: 1.5, easeLinearity: 0.25 });
+                            } else {
+                                // On desktop, pan so marker is centered in the left 60% of the screen
+                                // We approximate this by panning slightly to the 'right' of the coord
+                                const offsetLng = lng + (10 / zoom);
+                                map.flyTo([lat, offsetLng], zoom, { duration: 1.5, easeLinearity: 0.25 });
+                            }
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => observer.observe(card));
+        }
+
+        // --- Theme Toggle Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlElement = document.documentElement;
+
+        themeToggleBtn.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+
+            if(isDarkMode) {
+                htmlElement.classList.add('dark');
+                htmlElement.classList.remove('bg-slate-50', 'text-slate-900');
+                themeIcon.className = 'fa-solid fa-moon text-yellow-300 text-lg';
+                if(tileLayer) tileLayer.setUrl(tilesDark);
+            } else {
+                htmlElement.classList.remove('dark');
+                htmlElement.classList.add('bg-slate-50', 'text-slate-900');
+                themeIcon.className = 'fa-solid fa-sun text-orange-500 text-lg';
+                if(tileLayer) tileLayer.setUrl(tilesLight);
+            }
+        });
+
+        // --- Initialization ---
+        window.onload = () => {
+            renderFeed();
+            initMap();
+
+            // Re-calc map on window resize to fix visual bugs
+            window.addEventListener('resize', () => {
+                if(map) map.invalidateSize();
+            });
+        };
+    </script>
+</body>
+</html>
