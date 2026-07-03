@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div>
-                <h1 class="text-sm md:text-base font-bold ai-gradient">Expedition AI</h1>
+                <h1 class="text-sm md:text-base font-bold ai-gradient">Winter Expedition</h1>
                 <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">UK • FIN • Nov 22 - Dec 8</p>
             </div>
         </div>
@@ -153,21 +153,6 @@
 
             <!-- Feed Content Container (Pointer events auto to allow scrolling/clicking) -->
             <div class="pointer-events-auto px-4 pb-32 space-y-6 md:space-y-8 md:pt-8 md:px-8">
-
-                <!-- AI Intro Message -->
-                <div class="glass dark:glass rounded-3xl p-6 shadow-xl snap-start transform transition hover:scale-[1.01]">
-                    <div class="flex items-start gap-4">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 animate-pulse-slow">
-                            <i class="fa-solid fa-robot text-white text-xs"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm md:text-base font-medium leading-relaxed dark:text-slate-200 text-slate-800">
-                                ✨ I've curated your <span class="font-bold ai-gradient">Winter Expedition</span>. I’ve optimized for 4 & 2-year-old toddlers: minimal city driving, strategic flights, and heavily prioritized sleep schedules.
-                            </p>
-                            <p class="text-xs text-slate-500 mt-2 font-semibold">Scroll down to explore your journey. The map will follow you.</p>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Logistics Hub (Manifest & Checklist) -->
                 <div class="space-y-4 snap-start" data-lat="51.5" data-lng="-0.1">
@@ -235,40 +220,128 @@
                         </div>
                     </div>
 
-                    <!-- Booking Checklist -->
+                    <!-- Booking Manifest -->
                     <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
                         <h3 class="text-sm font-black uppercase tracking-wider mb-4 flex justify-between items-center text-slate-900 dark:text-white">
-                            <span><i class="fa-solid fa-ticket"></i> Advance Action Required</span>
+                            <span><i class="fa-solid fa-ticket"></i> Booking Manifest — To Book</span>
                             <span class="bg-rose-500/20 text-rose-600 dark:text-rose-400 text-[10px] px-2 py-1 rounded-md">Urgent</span>
                         </h3>
 
-                        <div class="space-y-4">
+                        <div class="space-y-5" id="booking-manifest">
                             <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🇬🇧 United Kingdom</h4>
-                                <label class="flex items-start gap-3 cursor-pointer group">
-                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
-                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>Winter Wonderland:</b> Needs specific entry time slot for naps.</span>
-                                </label>
-                                <label class="flex items-start gap-3 mt-2 cursor-pointer group">
-                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
-                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>Edinburgh Castle:</b> Sells out heavily in winter. Pre-book now.</span>
-                                </label>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">✈️ Transport</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="t-rvn-hel" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Finnair RVN → HEL</b> — Dec 7, 09:10 AM departure.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="t-suv" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Rental AWD SUV @ RVN Airport</b> — Dec 2–7. Studded ice tires + two toddler car seats.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="t-lner" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>LNER London → Edinburgh</b> — Nov 27, 09:30 AM. Reserve a family table (confirmed — verify seats).</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🇫🇮 Finland & Lapland</h4>
-                                <label class="flex items-start gap-3 cursor-pointer group">
-                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>SantaPark (RVN):</b> Daily capacity limits. High priority.</span>
-                                </label>
-                                <label class="flex items-start gap-3 mt-2 cursor-pointer group">
-                                    <input type="checkbox" class="mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                    <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight group-hover:text-white transition"><b>Husky Safari (Levi):</b> Request toddler-specific sled setup.</span>
-                                </label>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🏨 Hotels</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-botree" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>The BoTree London</b> — Marylebone · Nov 23 · 1 night.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-stratford" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>The Stratford, Autograph Collection</b> — Stratford, London · Nov 24–27 · 3 nights.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-caledonian" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>The Caledonian</b> — Princes Street, Edinburgh · Nov 27–30 · 3 nights.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-hilton-hel" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Hilton Helsinki Airport</b> — connected to HEL terminal · Nov 30–Dec 2 · 2 nights.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-igloo" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Aurora Pyramid Glass Igloos</b> — Levi · Dec 2–3 · 1 night. Books out months ahead.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-klubi" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Levi Suites Levin Klubi</b> — Levi village centre · Dec 3–6 · 3 nights.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-lomavekarit" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Lomavekarit Apartments</b> — near Rovaniemi Airport · Dec 6–7 · 1 night.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="h-stgeorge" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Hotel St. George</b> — Helsinki city centre · Dec 7–8 · 1 night.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ Activities — 🇬🇧 United Kingdom</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-londoneye" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>London Eye</b> — Nov 24, sunset pod (~5:30 PM slot).</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-nhm" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Natural History Museum</b> — Nov 25. Free, but reserve timed entry.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-winterwonderland" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Hyde Park Winter Wonderland</b> — Nov 25. Entry time slot around naps (~3:30 PM) + Santaland.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-camera" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Camera Obscura & World of Illusions</b> — Nov 28, 09:30 AM, Edinburgh.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-castleoflight" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Edinburgh Castle — Castle of Light</b> — Nov 28 evening. Sells out heavily in winter, book now.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-holyrood" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Palace of Holyroodhouse</b> — Nov 29, 10:00 AM.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ Activities — 🇫🇮 Finland & Lapland</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-tonttula" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Tonttula Elves Village</b> — Dec 3. Gingerbread baking session.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-husky" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Family Husky Safari (Levi)</b> — Dec 4, 10:00 AM. Request toddler-specific sled setup.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-snowvillage" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>SnowVillage (Ylläs)</b> — Dec 5. Ice hotel day visit.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-sleigh" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Aurora Snowmobile-Pulled Sleigh Ride</b> — Dec 5 evening.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-santapark" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>SantaPark (Rovaniemi)</b> — Dec 6. Daily capacity limits, high priority.</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-300 dark:border-slate-700 text-[10px] text-slate-500 italic">
-                            <i class="fa-solid fa-lightbulb text-yellow-500"></i> AI Tip: Confirm operators provide age-appropriate helmets/blankets for the 2 and 4yo.
+                            <i class="fa-solid fa-lightbulb text-yellow-500"></i> Tip: Confirm operators provide age-appropriate helmets/blankets for the 2 and 4yo. Checkboxes save automatically on this device.
                         </div>
                     </div>
                 </div>
@@ -283,7 +356,7 @@
                             <i class="fa-solid fa-baby-carriage text-8xl text-white"></i>
                         </div>
                         <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2 mb-6">
-                            <i class="fa-solid fa-wand-magic-sparkles text-pink-400"></i> AI Family Survival Tips
+                            <i class="fa-solid fa-wand-magic-sparkles text-pink-400"></i> Family Survival Tips
                         </h2>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
@@ -318,11 +391,6 @@
 
             </div>
         </div>
-
-        <!-- Floating Chat FAB (UI Only) -->
-        <button class="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] flex items-center justify-center z-50 animate-float hover:scale-110 transition-transform">
-            <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
-        </button>
     </div>
 
     <script>
@@ -336,6 +404,9 @@
                 title: "Departure & Red-Eye",
                 desc: "The overnight jump. Optimize for toddler sleep immediately after takeoff.",
                 icon: "fa-plane-departure", color: "brand-gold",
+                hotels: [
+                    { name: "Overnight on VS148", area: "Sleep on the plane — no hotel tonight", dates: "Nov 22" }
+                ],
                 schedule: [
                     {
                         dayName: "Sunday, Nov 22",
@@ -353,6 +424,10 @@
                 title: "The Royal Footprint",
                 desc: "Arrive in London. Split stays between luxury in Marylebone and basecamp in Stratford. Heavy use of the step-free Elizabeth Line.",
                 icon: "fa-chess-rook", color: "brand-gold",
+                hotels: [
+                    { name: "The BoTree London", area: "Marylebone, London", dates: "Nov 23 · 1 night" },
+                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 24–27 · 3 nights" }
+                ],
                 schedule: [
                     {
                         dayName: "Monday, Nov 23 (Day 2)",
@@ -382,6 +457,9 @@
                 title: "Winter Wonderland",
                 desc: "Museums, lights, and family time before packing down for the Arctic.",
                 icon: "fa-sleigh", color: "brand-gold",
+                hotels: [
+                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 24–27 · 3 nights" }
+                ],
                 schedule: [
                     {
                         dayName: "Wednesday, Nov 25 (Day 4)",
@@ -408,6 +486,9 @@
                 title: "Volcanic Vistas via Rail",
                 desc: "High-speed rail up to Scotland. Castles, illusions, and hearty Sunday roasts.",
                 icon: "fa-train", color: "brand-royal",
+                hotels: [
+                    { name: "The Caledonian", area: "Princes Street, Edinburgh", dates: "Nov 27–30 · 3 nights" }
+                ],
                 schedule: [
                     {
                         dayName: "Friday, Nov 27 (Day 6)",
@@ -444,6 +525,9 @@
                 title: "Nordic Acclimatization",
                 desc: "Strategic transit hub stay at the airport to minimize toddler movement late at night.",
                 icon: "fa-snowflake", color: "brand-ice",
+                hotels: [
+                    { name: "Hilton Helsinki Airport", area: "Connected to HEL terminal by indoor walkway", dates: "Nov 30 – Dec 2 · 2 nights" }
+                ],
                 schedule: [
                     {
                         dayName: "Monday, Nov 30 (Day 9)",
@@ -472,6 +556,9 @@
                 title: "Arctic Arrival & Igloos",
                 desc: "Enter the Arctic Circle. A majestic first night in a glass igloo.",
                 icon: "fa-car-side", color: "brand-aurora",
+                hotels: [
+                    { name: "Aurora Pyramid Glass Igloos", area: "Levi, Lapland — outdoor hot tub, aurora views", dates: "Dec 2–3 · 1 night" }
+                ],
                 schedule: [
                     {
                         dayName: "Wednesday, Dec 2 (Day 11)",
@@ -493,6 +580,9 @@
                 title: "Elves, Huskies & Ice",
                 desc: "The core Lapland experience. Basecamp at Levin Klubi.",
                 icon: "fa-dog", color: "brand-aurora",
+                hotels: [
+                    { name: "Levi Suites Levin Klubi", area: "Levi village centre — drying cabinets for snow gear", dates: "Dec 3–6 · 3 nights" }
+                ],
                 schedule: [
                     {
                         dayName: "Thursday, Dec 3 (Day 12)",
@@ -525,6 +615,9 @@
                 title: "SantaPark Underground",
                 desc: "Heading back south to the official hometown of Santa Claus.",
                 icon: "fa-gift", color: "brand-aurora",
+                hotels: [
+                    { name: "Lomavekarit Apartments", area: "Near Rovaniemi Airport — easy morning drop-off", dates: "Dec 6–7 · 1 night" }
+                ],
                 schedule: [
                     {
                         dayName: "Sunday, Dec 6 (Day 15)",
@@ -544,6 +637,9 @@
                 title: "Grand Finale & Launch Home",
                 desc: "A luxury farewell in Helsinki before the seamless flights back to Canada.",
                 icon: "fa-house", color: "brand-ice",
+                hotels: [
+                    { name: "Hotel St. George", area: "Helsinki city centre — spa/sauna, artisan bakery", dates: "Dec 7–8 · 1 night" }
+                ],
                 schedule: [
                     {
                         dayName: "Monday, Dec 7 (Day 16)",
@@ -610,6 +706,18 @@
                     scheduleHtml += `</div>`;
                 }
 
+                let hotelHtml = '';
+                if (day.hotels && day.hotels.length > 0) {
+                    hotelHtml = `<div class="mt-4 space-y-2">` + day.hotels.map(h => `
+                        <div class="flex items-start gap-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200 dark:border-slate-700/60">
+                            <i class="fa-solid fa-bed text-${day.color} mt-0.5"></i>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900 dark:text-white">${h.name}</p>
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400">${h.area} · ${h.dates}</p>
+                            </div>
+                        </div>`).join('') + `</div>`;
+                }
+
                 const html = `
                     <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card" data-lat="${day.lat}" data-lng="${day.lng}" data-zoom="${day.zoom}">
                         <div class="bg-white dark:bg-slate-900/90 rounded-3xl overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.01] border border-slate-200 dark:border-slate-800">
@@ -634,6 +742,9 @@
                             <div class="p-5 md:p-6">
                                 <p class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> ${day.location}</p>
                                 <p class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">${day.desc}</p>
+
+                                <!-- Where you're sleeping -->
+                                ${hotelHtml}
 
                                 <!-- Detailed Timeline -->
                                 ${scheduleHtml}
@@ -777,9 +888,21 @@
             }
         });
 
+        // --- Booking checklist persistence (per device) ---
+        function setupBookingChecklist() {
+            document.querySelectorAll('.book-check').forEach(cb => {
+                const key = 'ukfin-book-' + cb.dataset.key;
+                try {
+                    cb.checked = localStorage.getItem(key) === '1';
+                    cb.addEventListener('change', () => localStorage.setItem(key, cb.checked ? '1' : '0'));
+                } catch (e) { /* private browsing — checkboxes still work, just don't persist */ }
+            });
+        }
+
         // --- Initialization ---
         window.onload = () => {
             renderFeed();
+            setupBookingChecklist();
             initMap();
 
             // Re-calc map on window resize to fix visual bugs
