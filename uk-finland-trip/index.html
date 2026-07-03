@@ -46,10 +46,23 @@
     </script>
 
     <style>
+        html, body {
+            height: 100%;
+        }
         body {
             background-color: #090d16;
             color: #f8fafc;
             overscroll-behavior-y: none;
+            /* Use dynamic viewport height so the iOS URL bar doesn't cut off the layout */
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        /* Smooth momentum scrolling for the itinerary feed on iOS */
+        #feed {
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         /* Hide scrollbar for clean UI */
@@ -99,7 +112,7 @@
         @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
-<body class="h-screen w-screen overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
+<body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
 
     <!-- Top Navigation Bar -->
     <header class="absolute top-0 w-full z-50 glass dark:glass p-4 flex justify-between items-center transition-colors duration-300 shadow-md">
@@ -133,7 +146,7 @@
         </div>
 
         <!-- RIGHT: Scrollable "Layla-style" Itinerary Feed -->
-        <div id="feed" class="absolute inset-0 md:relative md:w-2/5 h-full z-10 overflow-y-auto no-scrollbar snap-y snap-mandatory md:bg-brand-bg/95 md:dark:bg-brand-bg pointer-events-none md:pointer-events-auto shadow-2xl border-l border-white/5">
+        <div id="feed" class="absolute inset-0 md:relative md:w-2/5 h-full z-10 overflow-y-auto no-scrollbar md:snap-y md:snap-proximity md:bg-brand-bg/95 md:dark:bg-brand-bg pointer-events-none md:pointer-events-auto shadow-2xl border-l border-white/5">
 
             <!-- Mobile padding to allow seeing the map at the top -->
             <div class="h-[40vh] md:hidden snap-center pointer-events-none"></div>
