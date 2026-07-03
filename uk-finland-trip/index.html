@@ -34,6 +34,10 @@
                             bg: '#090d16', surface: '#111827'
                         }
                     },
+                    boxShadow: {
+                        'card': '0 25px 60px -15px rgba(0,0,0,.55)',
+                        'card-hover': '0 35px 80px -15px rgba(0,0,0,.7)'
+                    },
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -159,6 +163,54 @@
 
         /* 3D tilt (pointer devices only; JS drives the transform) */
         .tilt-wrap { perspective: 1000px; }
+
+        /* 3D card entrance: cards rise and un-tilt as they scroll in */
+        .reveal-3d {
+            opacity: 0;
+            transform: perspective(900px) rotateX(9deg) translateY(46px) scale(.97);
+            transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
+        }
+        .reveal-3d.in { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-3d { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* Shine sweep across cards on hover */
+        .tilt-card { position: relative; }
+        .tilt-card::after {
+            content: ''; position: absolute; inset: 0; z-index: 20; pointer-events: none;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.07) 45%, rgba(255,255,255,.16) 50%, rgba(255,255,255,.07) 55%, transparent 60%);
+            transform: translateX(-130%);
+            transition: transform .9s ease;
+        }
+        .group:hover .tilt-card::after { transform: translateX(130%); }
+
+        /* Card imagery gets a parallax translate from JS; over-scale hides the edges */
+        .card-img { transform: scale(1.15); will-change: transform; }
+
+        /* Feed scroll progress bar */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 70;
+            background: linear-gradient(90deg, #facc15, #ec4899, #8b5cf6, #22d3ee, #10b981);
+            box-shadow: 0 0 12px rgba(236, 72, 153, .6);
+        }
+
+        /* Boarding-pass flight path animation */
+        .flight-path { position: relative; height: 16px; }
+        .flight-path::before {
+            content: ''; position: absolute; left: 0; right: 0; top: 50%;
+            border-top: 2px dashed rgba(148, 163, 184, .35);
+        }
+        .flight-path i {
+            position: absolute; top: 50%; transform: translate(-50%, -50%);
+            font-size: 11px; animation: fly 3.2s ease-in-out infinite;
+        }
+        @keyframes fly { 0%, 100% { left: 30%; } 50% { left: 70%; } }
+        @media (prefers-reduced-motion: reduce) { .flight-path i { animation: none; left: 50%; } }
+
+        /* Gradient section titles */
+        .grad-gold { background: linear-gradient(120deg, #facc15, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-aurora { background: linear-gradient(120deg, #10b981, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
@@ -179,6 +231,9 @@
 
     <!-- Snowfall -->
     <canvas id="snow-canvas"></canvas>
+
+    <!-- Feed scroll progress -->
+    <div id="scroll-progress"></div>
 
     <!-- Top Navigation Bar -->
     <header class="absolute top-0 w-full z-50 glass dark:glass p-4 flex justify-between items-center transition-colors duration-300 shadow-md">
@@ -227,101 +282,133 @@
                     </h2>
 
                     <!-- Countdown to departure -->
-                    <div class="glass dark:glass rounded-2xl p-4 flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-brand-gold/15 border border-brand-gold/30 flex items-center justify-center flex-shrink-0">
-                            <i class="fa-solid fa-plane-departure text-brand-gold"></i>
+                    <div class="glass dark:glass rounded-3xl p-5 flex items-center gap-4 relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-gold/10 rounded-full blur-2xl pointer-events-none"></div>
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-orange-500/20 border border-brand-gold/30 flex items-center justify-center flex-shrink-0 animate-float">
+                            <i class="fa-solid fa-plane-departure text-brand-gold text-lg"></i>
                         </div>
                         <div>
                             <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Departure — VS148, Nov 22 · 9:15 PM</p>
-                            <p id="countdown" class="text-lg font-black text-slate-900 dark:text-white tabular-nums">—</p>
+                            <p id="countdown" class="text-xl md:text-2xl font-black text-slate-900 dark:text-white tabular-nums">—</p>
                         </div>
                     </div>
 
-                    <!-- Horizontal Scroll Flights -->
+                    <!-- Trip stats -->
+                    <div class="grid grid-cols-4 gap-2 md:gap-3">
+                        <div class="glass dark:glass rounded-2xl p-3 text-center">
+                            <p class="text-xl md:text-2xl font-black grad-gold">17</p>
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Days</p>
+                        </div>
+                        <div class="glass dark:glass rounded-2xl p-3 text-center">
+                            <p class="text-xl md:text-2xl font-black text-brand-royal">6</p>
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Cities</p>
+                        </div>
+                        <div class="glass dark:glass rounded-2xl p-3 text-center">
+                            <p class="text-xl md:text-2xl font-black text-brand-ice">7</p>
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Flights</p>
+                        </div>
+                        <div class="glass dark:glass rounded-2xl p-3 text-center">
+                            <p class="text-xl md:text-2xl font-black grad-aurora">4</p>
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Travellers</p>
+                        </div>
+                    </div>
+
+                    <!-- Boarding passes -->
                     <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 md:mx-0 md:px-0 snap-x">
-                        <!-- Flight 1 -->
-                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-gold">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-brand-gold"><i class="fa-solid fa-plane-departure"></i> Locked</span>
-                                <span class="text-[10px] text-slate-400">Nov 22</span>
+                        <!-- YYZ → LHR -->
+                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-gold"><i class="fa-solid fa-plane"></i> Virgin Atlantic</span>
+                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
                             </div>
-                            <div class="flex justify-between items-center font-black text-lg">
-                                <span>YYZ</span>
-                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
-                                <span>LHR</span>
+                            <div class="flex items-center justify-between">
+                                <div><p class="text-2xl font-black leading-none">YYZ</p><p class="text-[9px] text-slate-400 mt-1">Toronto</p></div>
+                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-gold"></i></div>
+                                <div class="text-right"><p class="text-2xl font-black leading-none">LHR</p><p class="text-[9px] text-slate-400 mt-1">London</p></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">Virgin Atlantic VS148 • 09:15 PM</p>
+                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                <span>NOV 22</span><span>VS148</span><span>09:15 PM</span>
+                            </div>
                         </div>
 
-                        <!-- TRAIN: LNER -->
-                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-royal relative overflow-hidden">
-                            <div class="absolute -right-2 -top-2 w-12 h-12 bg-brand-royal/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-train text-brand-royal/50 text-xl"></i></div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-brand-royal"><i class="fa-solid fa-check-circle"></i> Confirmed</span>
-                                <span class="text-[10px] text-slate-400">Nov 27</span>
+                        <!-- LNER train -->
+                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-royal"><i class="fa-solid fa-train"></i> LNER</span>
+                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
                             </div>
-                            <div class="flex justify-between items-center font-black text-lg relative z-10">
-                                <span>London</span>
-                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
-                                <span>Edinburgh</span>
+                            <div class="flex items-center justify-between">
+                                <div><p class="text-2xl font-black leading-none">KGX</p><p class="text-[9px] text-slate-400 mt-1">London</p></div>
+                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-train text-brand-royal"></i></div>
+                                <div class="text-right"><p class="text-2xl font-black leading-none">EDI</p><p class="text-[9px] text-slate-400 mt-1">Edinburgh</p></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">LNER • 09:30 AM → 1:38 PM • Coach B, Seats 27–30</p>
+                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                <span>NOV 27</span><span>COACH B · 27–30</span><span>09:30 AM → 1:38 PM</span>
+                            </div>
                         </div>
 
-                        <!-- Flight 2 -->
-                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-ice">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-brand-ice"><i class="fa-solid fa-plane"></i> Locked</span>
-                                <span class="text-[10px] text-slate-400">Nov 30</span>
+                        <!-- EDI → HEL -->
+                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-ice"><i class="fa-solid fa-plane"></i> Finnair</span>
+                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
                             </div>
-                            <div class="flex justify-between items-center font-black text-lg">
-                                <span>EDI</span>
-                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
-                                <span>HEL</span>
+                            <div class="flex items-center justify-between">
+                                <div><p class="text-2xl font-black leading-none">EDI</p><p class="text-[9px] text-slate-400 mt-1">Edinburgh</p></div>
+                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-ice"></i></div>
+                                <div class="text-right"><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">Finnair AY1374 • 06:35 PM</p>
+                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                <span>NOV 30</span><span>AY1374</span><span>06:35 PM</span>
+                            </div>
                         </div>
 
-                        <!-- Flight 3 -->
-                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-aurora">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-brand-aurora"><i class="fa-solid fa-plane"></i> Locked</span>
-                                <span class="text-[10px] text-slate-400">Dec 2</span>
+                        <!-- HEL → RVN -->
+                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-aurora"><i class="fa-solid fa-plane"></i> Finnair</span>
+                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
                             </div>
-                            <div class="flex justify-between items-center font-black text-lg">
-                                <span>HEL</span>
-                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
-                                <span>RVN</span>
+                            <div class="flex items-center justify-between">
+                                <div><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
+                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-aurora"></i></div>
+                                <div class="text-right"><p class="text-2xl font-black leading-none">RVN</p><p class="text-[9px] text-slate-400 mt-1">Rovaniemi</p></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">Finnair AY555 • 09:50 AM</p>
+                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                <span>DEC 2</span><span>AY555</span><span>09:50 AM</span>
+                            </div>
                         </div>
 
-                        <!-- Flight 4 -->
-                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-aurora">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-brand-aurora"><i class="fa-solid fa-plane"></i> Locked</span>
-                                <span class="text-[10px] text-slate-400">Dec 7</span>
+                        <!-- RVN → HEL -->
+                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-aurora"><i class="fa-solid fa-plane"></i> Finnair</span>
+                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
                             </div>
-                            <div class="flex justify-between items-center font-black text-lg">
-                                <span>RVN</span>
-                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
-                                <span>HEL</span>
+                            <div class="flex items-center justify-between">
+                                <div><p class="text-2xl font-black leading-none">RVN</p><p class="text-[9px] text-slate-400 mt-1">Rovaniemi</p></div>
+                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-aurora"></i></div>
+                                <div class="text-right"><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">Finnair AY0532 • 09:10 AM → 10:25 AM</p>
+                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                <span>DEC 7</span><span>AY0532</span><span>09:10 → 10:25 AM</span>
+                            </div>
                         </div>
 
-                        <!-- Flight 5 -->
-                        <div class="min-w-[240px] glass dark:glass rounded-2xl p-4 snap-center border-l-4 border-l-brand-gold">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-brand-gold"><i class="fa-solid fa-plane-arrival"></i> Locked</span>
-                                <span class="text-[10px] text-slate-400">Dec 8</span>
+                        <!-- HEL → YYZ -->
+                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-gold"><i class="fa-solid fa-plane-arrival"></i> Icelandair</span>
+                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
                             </div>
-                            <div class="flex justify-between items-center font-black text-lg">
-                                <span>HEL</span>
-                                <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
-                                <span>YYZ</span>
+                            <div class="flex items-center justify-between">
+                                <div><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
+                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-gold"></i></div>
+                                <div class="text-right"><p class="text-2xl font-black leading-none">YYZ</p><p class="text-[9px] text-slate-400 mt-1">Toronto T3</p></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">Icelandair FI343 + FI603 via KEF • 02:00 PM</p>
+                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                <span>DEC 8</span><span>FI343 + FI603 · KEF</span><span>02:00 PM</span>
+                            </div>
                         </div>
                     </div>
 
@@ -425,7 +512,7 @@
                 <div id="itinerary-feed" class="space-y-6 md:space-y-12 pt-4"></div>
 
                 <!-- Family Tips Section -->
-                <div class="snap-start pt-8 pb-4">
+                <div class="snap-start pt-8 pb-4 reveal">
                     <div class="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-6 opacity-10">
                             <i class="fa-solid fa-baby-carriage text-8xl text-white"></i>
@@ -435,22 +522,22 @@
                         </h2>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                            <div class="glass dark:glass rounded-2xl p-4">
+                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
                                 <h3 class="text-sm font-bold text-brand-gold mb-2"><i class="fa-solid fa-suitcase-rolling"></i> The "Luggage Stash"</h3>
                                 <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">You are flying low-cost within Europe and managing toddlers on trains. Leave your massive transatlantic bags with your London relatives on Day 5. Pack a lightweight duffel/backpack for the 10 days in Scotland and Finland.</p>
                             </div>
 
-                            <div class="glass dark:glass rounded-2xl p-4">
+                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
                                 <h3 class="text-sm font-bold text-brand-ice mb-2"><i class="fa-solid fa-sun"></i> The 3 PM Sunset Rule</h3>
                                 <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">In Edinburgh and Helsinki, the sun sets around 3:30 PM. In Lapland, it sets at 1:30 PM (or doesn't rise at all). Schedule all outdoor visual activities before 1:00 PM. Use the dark afternoons for museums, train rides, or saunas.</p>
                             </div>
 
-                            <div class="glass dark:glass rounded-2xl p-4">
+                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
                                 <h3 class="text-sm font-bold text-brand-aurora mb-2"><i class="fa-solid fa-layer-group"></i> Lapland Toddler Layering</h3>
                                 <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">The 2yo and 4yo need a strict 3-layer system: Merino wool base layer, fleece mid-layer, and a waterproof/windproof snowsuit. **Do not use cotton.** Most safari operators (Huskies/Sleighs) provide the final heavy outer thermal layer for kids.</p>
                             </div>
 
-                            <div class="glass dark:glass rounded-2xl p-4">
+                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
                                 <h3 class="text-sm font-bold text-brand-royal mb-2"><i class="fa-solid fa-train-subway"></i> Stroller Strategy</h3>
                                 <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Bring a sturdy, narrow travel stroller (like a Babyzen YOYO) that folds into the overhead bin. The Elizabeth Line in London is step-free. In Helsinki, parents pushing a child in a stroller ride the public transit trains completely free.</p>
                             </div>
@@ -475,7 +562,7 @@
             {
                 id: "day1", day: "Day 1", date: "Sun, Nov 22", location: "Toronto to London",
                 lat: 51.5074, lng: -0.1278, zoom: 4, routeIdx: 1,
-                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                image: "https://images.unsplash.com/photo-1507992781348-310259076fe0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Departure & Red-Eye",
                 desc: "The overnight jump. Optimize for toddler sleep immediately after takeoff.",
                 icon: "fa-plane-departure", color: "brand-gold",
@@ -528,7 +615,7 @@
             {
                 id: "day4", day: "Day 4-5", date: "Nov 25 - Nov 26", location: "London, UK",
                 lat: 51.5074, lng: -0.1278, zoom: 13, routeIdx: 1,
-                image: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Winter Wonderland",
                 desc: "Museums, lights, and family time before packing down for the Arctic.",
                 icon: "fa-sleigh", color: "brand-gold",
@@ -627,7 +714,7 @@
             {
                 id: "day11", day: "Day 11", date: "Wed, Dec 2", location: "Levi, Lapland",
                 lat: 67.8040, lng: 24.8082, zoom: 10, routeIdx: 5,
-                image: "https://images.unsplash.com/photo-1517299321609-52687d1bc55a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Arctic Arrival & Igloos",
                 desc: "Enter the Arctic Circle. A majestic first night in a glass igloo.",
                 icon: "fa-car-side", color: "brand-aurora",
@@ -651,7 +738,7 @@
             {
                 id: "day12", day: "Day 12-14", date: "Dec 3 - Dec 5", location: "Levi, Lapland",
                 lat: 67.8040, lng: 24.8082, zoom: 12, routeIdx: 5,
-                image: "https://images.unsplash.com/photo-1549474136-22a8fc2e1e0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                image: "https://images.unsplash.com/photo-1547407139-3c921a66005c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Elves, Huskies & Ice",
                 desc: "The core Lapland experience. Basecamp at Levin Klubi.",
                 icon: "fa-dog", color: "brand-aurora",
@@ -686,7 +773,7 @@
             {
                 id: "day15", day: "Day 15", date: "Sun, Dec 6", location: "Rovaniemi, Lapland",
                 lat: 66.5039, lng: 25.7294, zoom: 11, routeIdx: 6,
-                image: "https://images.unsplash.com/photo-1607312151044-245f3d455913?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                image: "https://images.unsplash.com/photo-1576692155415-95f820a2c4c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "SantaPark Underground",
                 desc: "Heading back south to the official hometown of Santa Claus.",
                 icon: "fa-gift", color: "brand-aurora",
@@ -708,7 +795,7 @@
             {
                 id: "day16", day: "Day 16-17", date: "Dec 7 - Dec 8", location: "Helsinki to Home",
                 lat: 60.1695, lng: 24.9354, zoom: 13, routeIdx: 7,
-                image: "https://images.unsplash.com/photo-1604928014526-1779baea2299?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Grand Finale & Launch Home",
                 desc: "A luxury farewell in Helsinki before the seamless flights back to Canada.",
                 icon: "fa-house", color: "brand-ice",
@@ -759,21 +846,37 @@
             const container = document.getElementById('itinerary-feed');
             container.innerHTML = '';
 
+            const divider = (flag, title, sub, gradClass, lineColor) => `
+                <div class="reveal flex items-center gap-3 pt-2">
+                    <span class="text-3xl drop-shadow">${flag}</span>
+                    <div>
+                        <h2 class="text-lg md:text-xl font-black ${gradClass} leading-tight">${title}</h2>
+                        <p class="text-[9px] uppercase tracking-[0.2em] font-bold text-slate-500 dark:text-slate-400">${sub}</p>
+                    </div>
+                    <div class="flex-1 h-px bg-gradient-to-r ${lineColor} to-transparent"></div>
+                </div>`;
+
             itineraryData.forEach((day, index) => {
+                if (day.id === 'day1') container.innerHTML += divider('\u{1F1EC}\u{1F1E7}', 'United Kingdom', 'Nov 22 \u2013 Nov 30 \u00b7 London & Edinburgh', 'grad-gold', 'from-brand-gold/50');
+                if (day.id === 'day9') container.innerHTML += divider('\u{1F1EB}\u{1F1EE}', 'Finland & Lapland', 'Nov 30 \u2013 Dec 8 \u00b7 Helsinki, Levi & Rovaniemi', 'grad-aurora', 'from-brand-aurora/50');
+
                 let scheduleHtml = '';
                 if (day.schedule && day.schedule.length > 0) {
-                    scheduleHtml = `<div class="mt-5 space-y-6 border-t border-slate-200 dark:border-slate-700/50 pt-5">`;
+                    scheduleHtml = `<div class="mt-6 space-y-6 border-t border-slate-200 dark:border-white/5 pt-5">`;
                     day.schedule.forEach(s => {
                         scheduleHtml += `
-                            <div class="relative pl-4 border-l-2 border-${day.color}">
-                                <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-${day.color}"></div>
-                                <h4 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-3">${s.dayName}</h4>
-                                <div class="space-y-3">`;
+                            <div>
+                                <div class="flex items-center gap-2.5 mb-3.5">
+                                    <span class="w-7 h-7 rounded-xl bg-${day.color}/10 border border-${day.color}/30 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-calendar-day text-[10px] text-${day.color}"></i></span>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-slate-100">${s.dayName}</h4>
+                                </div>
+                                <div class="relative ml-3.5 pl-6 border-l border-dashed border-slate-300 dark:border-slate-700 space-y-4">`;
                         s.items.forEach(item => {
                             scheduleHtml += `
-                                    <div class="flex items-start gap-3 text-xs">
-                                        <span class="font-bold text-${day.color} min-w-[65px] pt-0.5">${item.time}</span>
-                                        <span class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium">${item.text}</span>
+                                    <div class="relative">
+                                        <span class="absolute -left-[30px] top-1 w-2.5 h-2.5 rounded-full bg-${day.color} ring-4 ring-${day.color}/15"></span>
+                                        <span class="inline-block text-[9px] font-black tabular-nums bg-${day.color}/10 text-${day.color} px-2 py-0.5 rounded-md mb-1">${item.time}</span>
+                                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">${item.text}</p>
                                     </div>`;
                         });
                         scheduleHtml += `</div></div>`;
@@ -783,50 +886,48 @@
 
                 let hotelHtml = '';
                 if (day.hotels && day.hotels.length > 0) {
-                    hotelHtml = `<div class="mt-4 space-y-2">` + day.hotels.map(h => `
-                        <div class="flex items-start gap-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200 dark:border-slate-700/60">
-                            <i class="fa-solid fa-bed text-${day.color} mt-0.5"></i>
-                            <div class="flex-1">
+                    hotelHtml = `<div class="mt-4 space-y-2.5">` + day.hotels.map(h => `
+                        <div class="flex items-center gap-3.5 bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800/80 dark:to-slate-800/30 rounded-2xl p-3.5 border border-slate-200 dark:border-white/5">
+                            <div class="w-10 h-10 rounded-xl bg-${day.color}/10 border border-${day.color}/30 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-bed text-${day.color} text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between gap-2">
-                                    <p class="text-xs font-bold text-slate-900 dark:text-white">${h.name}</p>
-                                    ${h.booked ? `<span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Booked</span>` : ``}
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white truncate">${h.name}</p>
+                                    ${h.booked ? `<span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap flex-shrink-0"><i class="fa-solid fa-check"></i> Booked</span>` : ``}
                                 </div>
-                                <p class="text-[10px] text-slate-500 dark:text-slate-400">${h.area} · ${h.dates}</p>
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${h.area} \u00b7 ${h.dates}</p>
                             </div>
                         </div>`).join('') + `</div>`;
                 }
 
                 const isAurora = day.color === 'brand-aurora';
                 const html = `
-                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal tilt-wrap ${isAurora ? 'aurora-card' : ''}" data-lat="${day.lat}" data-lng="${day.lng}" data-zoom="${day.zoom}" data-route-idx="${day.routeIdx}" data-snow="${isAurora ? 2.4 : 1}">
-                        <div class="tilt-card bg-white dark:bg-slate-900/90 rounded-3xl overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.01] border border-slate-200 dark:border-slate-800">
+                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${isAurora ? 'aurora-card' : ''}" data-lat="${day.lat}" data-lng="${day.lng}" data-zoom="${day.zoom}" data-route-idx="${day.routeIdx}" data-snow="${isAurora ? 2.4 : 1}">
+                        <div class="tilt-card bg-white dark:bg-slate-900/95 rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-slate-200 dark:border-white/10">
 
-                            <!-- Header Image Section -->
-                            <div class="relative w-full h-48 md:h-56 overflow-hidden">
-                                <img src="${day.image}" alt="${day.location}" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90"></div>
-                                <div data-weather="${day.id}" class="hidden absolute top-3 right-3 z-10 text-[11px] font-bold text-white bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20"></div>
-
-                                <div class="absolute bottom-0 left-0 w-full p-5">
-                                    <div class="flex justify-between items-end mb-2">
-                                        <div class="bg-white/20 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1 rounded-full border border-white/30 flex items-center gap-2">
-                                            <i class="fa-solid ${day.icon}"></i> ${day.day}
-                                        </div>
-                                        <span class="text-white/90 text-xs font-bold drop-shadow-md">${day.date}</span>
-                                    </div>
-                                    <h3 class="text-2xl font-black text-white drop-shadow-lg leading-tight">${day.title}</h3>
+                            <!-- Header image with parallax -->
+                            <div class="relative w-full h-52 md:h-64 overflow-hidden">
+                                <img src="${day.image}" alt="${day.location}" loading="lazy" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.8] group-hover:brightness-95 transition-[filter] duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/20 to-slate-950/30"></div>
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-white/15 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1.5 rounded-full border border-white/25 flex items-center gap-2"><i class="fa-solid ${day.icon}"></i> ${day.day}</span>
+                                </div>
+                                <div data-weather="${day.id}" class="hidden absolute top-4 right-4 z-10 text-[11px] font-bold text-white bg-black/40 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/20"></div>
+                                <div class="absolute bottom-0 left-0 w-full p-5 md:p-6">
+                                    <p class="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-1.5"><i class="fa-solid fa-location-dot mr-1"></i>${day.location} \u00b7 ${day.date}</p>
+                                    <h3 class="text-2xl md:text-3xl font-black text-white drop-shadow-lg leading-tight">${day.title}</h3>
                                 </div>
                             </div>
 
-                            <!-- Content Section -->
-                            <div class="p-5 md:p-6">
-                                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> ${day.location}</p>
+                            <!-- Body -->
+                            <div class="p-5 md:p-7">
                                 <p class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">${day.desc}</p>
 
                                 <!-- Where you're sleeping -->
                                 ${hotelHtml}
 
-                                <!-- Detailed Timeline -->
+                                <!-- Detailed timeline -->
                                 ${scheduleHtml}
                             </div>
                         </div>
@@ -1107,9 +1208,36 @@
             } catch (e) { /* offline — chips just stay hidden */ }
         }
 
+        // --- Parallax card imagery + scroll progress bar ---
+        function setupFeedScrollFx() {
+            const feed = document.getElementById('feed');
+            const bar = document.getElementById('scroll-progress');
+            let ticking = false;
+            const update = () => {
+                ticking = false;
+                if (bar) {
+                    const max = feed.scrollHeight - feed.clientHeight;
+                    bar.style.width = max > 0 ? `${(feed.scrollTop / max) * 100}%` : '0%';
+                }
+                if (!reduceMotion) {
+                    const vh = feed.clientHeight;
+                    document.querySelectorAll('.card-img').forEach(img => {
+                        const r = img.parentElement.getBoundingClientRect();
+                        if (r.bottom < -100 || r.top > vh + 100) return;
+                        const p = (r.top + r.height / 2 - vh / 2) / vh;
+                        img.style.transform = `translateY(${(-p * 26).toFixed(1)}px) scale(1.15)`;
+                    });
+                }
+            };
+            feed.addEventListener('scroll', () => {
+                if (!ticking) { ticking = true; requestAnimationFrame(update); }
+            }, { passive: true });
+            update();
+        }
+
         // --- Scroll-in reveal animations ---
         function setupReveal() {
-            const els = document.querySelectorAll('.reveal');
+            const els = document.querySelectorAll('.reveal, .reveal-3d');
             if (reduceMotion) { els.forEach(el => el.classList.add('in')); return; }
             const io = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1305,6 +1433,7 @@
             setupBookingChecklist();
             setupReveal();
             setupTilt();
+            setupFeedScrollFx();
             startCountdown();
             startSnow();
             initIntro();
