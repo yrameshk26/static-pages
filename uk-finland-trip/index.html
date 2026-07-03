@@ -271,39 +271,8 @@
 
                             <div>
                                 <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🏨 Hotels</h4>
-                                <div class="space-y-2">
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-botree" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>The BoTree London</b> — Marylebone · Nov 23 · 1 night.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-stratford" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>The Stratford, Autograph Collection</b> — Stratford, London · Nov 24–27 · 3 nights.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-caledonian" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>The Caledonian</b> — Princes Street, Edinburgh · Nov 27–30 · 3 nights.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-hilton-hel" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Hilton Helsinki Airport</b> — connected to HEL terminal · Nov 30–Dec 2 · 2 nights.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-igloo" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Aurora Pyramid Glass Igloos</b> — Levi · Dec 2–3 · 1 night. Books out months ahead.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-klubi" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Levi Suites Levin Klubi</b> — Levi village centre · Dec 3–6 · 3 nights.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-lomavekarit" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Lomavekarit Apartments</b> — near Rovaniemi Airport · Dec 6–7 · 1 night.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="h-stgeorge" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Hotel St. George</b> — Helsinki city centre · Dec 7–8 · 1 night.</span>
-                                    </label>
+                                <div class="text-[10px] text-slate-500 dark:text-slate-400">
+                                    <i class="fa-solid fa-check text-brand-aurora"></i> All 8 hotels are booked: The BoTree London, The Stratford, The Caledonian, Hilton Helsinki Airport, Aurora Pyramid Glass Igloos, Levin Klubi, Lomavekarit Apartments, and Hotel St. George. Details on each itinerary card below.
                                 </div>
                             </div>
 
@@ -448,8 +417,8 @@
                 desc: "Arrive in London. Split stays between luxury in Marylebone and basecamp in Stratford. Heavy use of the step-free Elizabeth Line.",
                 icon: "fa-chess-rook", color: "brand-gold",
                 hotels: [
-                    { name: "The BoTree London", area: "Marylebone, London", dates: "Nov 23 · 1 night" },
-                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 24–27 · 3 nights" }
+                    { name: "The BoTree London", area: "Marylebone, London", dates: "Nov 23 · 1 night", booked: true },
+                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 24–27 · 3 nights", booked: true }
                 ],
                 schedule: [
                     {
@@ -481,7 +450,7 @@
                 desc: "Museums, lights, and family time before packing down for the Arctic.",
                 icon: "fa-sleigh", color: "brand-gold",
                 hotels: [
-                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 24–27 · 3 nights" }
+                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 24–27 · 3 nights", booked: true }
                 ],
                 schedule: [
                     {
@@ -510,7 +479,7 @@
                 desc: "High-speed rail up to Scotland. Castles, illusions, and hearty Sunday roasts.",
                 icon: "fa-train", color: "brand-royal",
                 hotels: [
-                    { name: "The Caledonian", area: "Princes Street, Edinburgh", dates: "Nov 27–30 · 3 nights" }
+                    { name: "The Caledonian", area: "Princes Street, Edinburgh", dates: "Nov 27–30 · 3 nights", booked: true }
                 ],
                 schedule: [
                     {
@@ -549,7 +518,7 @@
                 desc: "Strategic transit hub stay at the airport to minimize toddler movement late at night.",
                 icon: "fa-snowflake", color: "brand-ice",
                 hotels: [
-                    { name: "Hilton Helsinki Airport", area: "Connected to HEL terminal by indoor walkway", dates: "Nov 30 – Dec 2 · 2 nights" }
+                    { name: "Hilton Helsinki Airport", area: "Connected to HEL terminal by indoor walkway", dates: "Nov 30 – Dec 2 · 2 nights", booked: true }
                 ],
                 schedule: [
                     {
@@ -580,7 +549,7 @@
                 desc: "Enter the Arctic Circle. A majestic first night in a glass igloo.",
                 icon: "fa-car-side", color: "brand-aurora",
                 hotels: [
-                    { name: "Aurora Pyramid Glass Igloos", area: "Levi, Lapland — outdoor hot tub, aurora views", dates: "Dec 2–3 · 1 night" }
+                    { name: "Aurora Pyramid Glass Igloos", area: "Levi, Lapland — outdoor hot tub, aurora views", dates: "Dec 2–3 · 1 night", booked: true }
                 ],
                 schedule: [
                     {
@@ -604,7 +573,7 @@
                 desc: "The core Lapland experience. Basecamp at Levin Klubi.",
                 icon: "fa-dog", color: "brand-aurora",
                 hotels: [
-                    { name: "Levi Suites Levin Klubi", area: "Levi village centre — drying cabinets for snow gear", dates: "Dec 3–6 · 3 nights" }
+                    { name: "Levi Suites Levin Klubi", area: "Levi village centre — drying cabinets for snow gear", dates: "Dec 3–6 · 3 nights", booked: true }
                 ],
                 schedule: [
                     {
@@ -639,7 +608,7 @@
                 desc: "Heading back south to the official hometown of Santa Claus.",
                 icon: "fa-gift", color: "brand-aurora",
                 hotels: [
-                    { name: "Lomavekarit Apartments", area: "Near Rovaniemi Airport — easy morning drop-off", dates: "Dec 6–7 · 1 night" }
+                    { name: "Lomavekarit Apartments", area: "Near Rovaniemi Airport — easy morning drop-off", dates: "Dec 6–7 · 1 night", booked: true }
                 ],
                 schedule: [
                     {
@@ -661,7 +630,7 @@
                 desc: "A luxury farewell in Helsinki before the seamless flights back to Canada.",
                 icon: "fa-house", color: "brand-ice",
                 hotels: [
-                    { name: "Hotel St. George", area: "Helsinki city centre — spa/sauna, artisan bakery", dates: "Dec 7–8 · 1 night" }
+                    { name: "Hotel St. George", area: "Helsinki city centre — spa/sauna, artisan bakery", dates: "Dec 7–8 · 1 night", booked: true }
                 ],
                 schedule: [
                     {
@@ -734,8 +703,11 @@
                     hotelHtml = `<div class="mt-4 space-y-2">` + day.hotels.map(h => `
                         <div class="flex items-start gap-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl p-3 border border-slate-200 dark:border-slate-700/60">
                             <i class="fa-solid fa-bed text-${day.color} mt-0.5"></i>
-                            <div>
-                                <p class="text-xs font-bold text-slate-900 dark:text-white">${h.name}</p>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between gap-2">
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white">${h.name}</p>
+                                    ${h.booked ? `<span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Booked</span>` : ``}
+                                </div>
                                 <p class="text-[10px] text-slate-500 dark:text-slate-400">${h.area} · ${h.dates}</p>
                             </div>
                         </div>`).join('') + `</div>`;
