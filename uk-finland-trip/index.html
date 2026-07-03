@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+    <!-- Three.js + globe (intro animation; page works fine if these fail to load) -->
+    <script defer src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script defer src="https://unpkg.com/three-globe@2.45.2/dist/three-globe.min.js"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -110,9 +114,71 @@
             animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
+
+        /* Intro overlay */
+        #intro {
+            background: radial-gradient(ellipse at 50% 35%, #0d1526 0%, #090d16 70%);
+        }
+        #intro.hidden-out { opacity: 0; pointer-events: none; }
+
+        /* Scroll-in reveal */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1); }
+        .reveal.in { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* Snowfall canvas sits above map + cards, below the header */
+        #snow-canvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+
+        /* Travelling plane marker on the route */
+        .plane-marker {
+            width: 30px; height: 30px; border-radius: 50%; background: #facc15;
+            display: flex; align-items: center; justify-content: center; color: #0f172a;
+            border: 2px solid #fff; font-size: 13px;
+            box-shadow: 0 0 18px rgba(250, 204, 21, .85);
+        }
+
+        /* Aurora glow behind Lapland cards */
+        .aurora-card { position: relative; }
+        .aurora-card::before {
+            content: ''; position: absolute; inset: -3px; border-radius: 1.7rem; z-index: 0;
+            background: linear-gradient(120deg, #10b981, #22d3ee, #8b5cf6, #10b981);
+            background-size: 300% 300%; animation: auroraShift 9s ease infinite;
+            filter: blur(16px); opacity: .3;
+        }
+        .aurora-card > div { position: relative; z-index: 1; }
+        @keyframes auroraShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .aurora-card::before { animation: none; }
+        }
+
+        /* 3D tilt (pointer devices only; JS drives the transform) */
+        .tilt-wrap { perspective: 1000px; }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
+
+    <!-- Intro: Three.js globe -->
+    <div id="intro" class="fixed inset-0 z-[100] flex flex-col items-center justify-end pb-12 md:pb-16 transition-opacity duration-700">
+        <canvas id="globe-canvas" class="absolute inset-0 w-full h-full"></canvas>
+        <div class="relative z-10 text-center px-6 pointer-events-none">
+            <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400 font-bold mb-4">Nov 22 — Dec 8 · 2026</p>
+            <h1 class="text-4xl md:text-6xl font-black ai-gradient mb-3">Winter Expedition</h1>
+            <p class="text-xs md:text-sm text-slate-400 font-medium mb-2">Toronto → London → Edinburgh → Helsinki → Lapland</p>
+            <p id="intro-countdown" class="text-[11px] font-bold text-brand-gold tracking-widest mb-8">&nbsp;</p>
+            <button id="enter-btn" class="pointer-events-auto bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-8 py-3.5 rounded-full shadow-[0_0_30px_rgba(236,72,153,0.45)] hover:scale-105 active:scale-95 transition-transform">
+                Begin the Journey <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Snowfall -->
+    <canvas id="snow-canvas"></canvas>
 
     <!-- Top Navigation Bar -->
     <header class="absolute top-0 w-full z-50 glass dark:glass p-4 flex justify-between items-center transition-colors duration-300 shadow-md">
@@ -159,6 +225,17 @@
                     <h2 class="text-xl font-bold dark:text-white text-slate-900 flex items-center gap-2">
                         <i class="fa-solid fa-layer-group text-brand-ice"></i> Command Center
                     </h2>
+
+                    <!-- Countdown to departure -->
+                    <div class="glass dark:glass rounded-2xl p-4 flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-brand-gold/15 border border-brand-gold/30 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-plane-departure text-brand-gold"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Departure — VS148, Nov 22 · 9:15 PM</p>
+                            <p id="countdown" class="text-lg font-black text-slate-900 dark:text-white tabular-nums">—</p>
+                        </div>
+                    </div>
 
                     <!-- Horizontal Scroll Flights -->
                     <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 md:mx-0 md:px-0 snap-x">
@@ -252,7 +329,13 @@
                     <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
                         <h3 class="text-sm font-black uppercase tracking-wider mb-4 flex justify-between items-center text-slate-900 dark:text-white">
                             <span><i class="fa-solid fa-ticket"></i> Booking Manifest — To Book</span>
-                            <span class="bg-rose-500/20 text-rose-600 dark:text-rose-400 text-[10px] px-2 py-1 rounded-md">Urgent</span>
+                            <span class="relative w-11 h-11 flex-shrink-0" title="Booking progress">
+                                <svg viewBox="0 0 36 36" class="w-11 h-11 -rotate-90">
+                                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="3.5"></circle>
+                                    <circle id="ring-fg" cx="18" cy="18" r="15.5" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" pathLength="100" stroke-dasharray="0, 100" style="transition: stroke-dasharray .6s ease"></circle>
+                                </svg>
+                                <span id="ring-label" class="absolute inset-0 flex items-center justify-center text-[9px] font-black tabular-nums">0/0</span>
+                            </span>
                         </h3>
 
                         <div class="space-y-5" id="booking-manifest">
@@ -375,8 +458,8 @@
                     </div>
                 </div>
 
-                <!-- End marker -->
-                <div class="text-center py-12 opacity-50">
+                <!-- End marker (flies the map home and completes the route line) -->
+                <div class="text-center py-12 opacity-50 reveal" data-lat="43.6777" data-lng="-79.6248" data-zoom="4" data-route-idx="9">
                     <i class="fa-solid fa-flag-checkered text-2xl mb-2"></i>
                     <p class="text-xs font-bold uppercase tracking-widest">End of Journey</p>
                 </div>
@@ -391,7 +474,7 @@
         const itineraryData = [
             {
                 id: "day1", day: "Day 1", date: "Sun, Nov 22", location: "Toronto to London",
-                lat: 51.5074, lng: -0.1278, zoom: 4,
+                lat: 51.5074, lng: -0.1278, zoom: 4, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Departure & Red-Eye",
                 desc: "The overnight jump. Optimize for toddler sleep immediately after takeoff.",
@@ -411,7 +494,7 @@
             },
             {
                 id: "day2", day: "Day 2-3", date: "Nov 23 - Nov 24", location: "London, UK",
-                lat: 51.5074, lng: -0.1278, zoom: 12,
+                lat: 51.5074, lng: -0.1278, zoom: 12, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "The Royal Footprint",
                 desc: "Arrive in London. Split stays between luxury in Marylebone and basecamp in Stratford. Heavy use of the step-free Elizabeth Line.",
@@ -444,7 +527,7 @@
             },
             {
                 id: "day4", day: "Day 4-5", date: "Nov 25 - Nov 26", location: "London, UK",
-                lat: 51.5074, lng: -0.1278, zoom: 13,
+                lat: 51.5074, lng: -0.1278, zoom: 13, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Winter Wonderland",
                 desc: "Museums, lights, and family time before packing down for the Arctic.",
@@ -473,7 +556,7 @@
             },
             {
                 id: "day6", day: "Day 6-8", date: "Nov 27 - Nov 29", location: "Edinburgh, Scotland",
-                lat: 55.9533, lng: -3.1883, zoom: 13,
+                lat: 55.9533, lng: -3.1883, zoom: 13, routeIdx: 2,
                 image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Volcanic Vistas via Rail",
                 desc: "High-speed rail up to Scotland. Castles, illusions, and hearty Sunday roasts.",
@@ -512,7 +595,7 @@
             },
             {
                 id: "day9", day: "Day 9-10", date: "Nov 30 - Dec 1", location: "Helsinki, Finland",
-                lat: 60.1695, lng: 24.9354, zoom: 12,
+                lat: 60.1695, lng: 24.9354, zoom: 12, routeIdx: 3,
                 image: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Nordic Acclimatization",
                 desc: "Strategic transit hub stay at the airport to minimize toddler movement late at night.",
@@ -543,7 +626,7 @@
             },
             {
                 id: "day11", day: "Day 11", date: "Wed, Dec 2", location: "Levi, Lapland",
-                lat: 67.8040, lng: 24.8082, zoom: 10,
+                lat: 67.8040, lng: 24.8082, zoom: 10, routeIdx: 5,
                 image: "https://images.unsplash.com/photo-1517299321609-52687d1bc55a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Arctic Arrival & Igloos",
                 desc: "Enter the Arctic Circle. A majestic first night in a glass igloo.",
@@ -567,7 +650,7 @@
             },
             {
                 id: "day12", day: "Day 12-14", date: "Dec 3 - Dec 5", location: "Levi, Lapland",
-                lat: 67.8040, lng: 24.8082, zoom: 12,
+                lat: 67.8040, lng: 24.8082, zoom: 12, routeIdx: 5,
                 image: "https://images.unsplash.com/photo-1549474136-22a8fc2e1e0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Elves, Huskies & Ice",
                 desc: "The core Lapland experience. Basecamp at Levin Klubi.",
@@ -602,7 +685,7 @@
             },
             {
                 id: "day15", day: "Day 15", date: "Sun, Dec 6", location: "Rovaniemi, Lapland",
-                lat: 66.5039, lng: 25.7294, zoom: 11,
+                lat: 66.5039, lng: 25.7294, zoom: 11, routeIdx: 6,
                 image: "https://images.unsplash.com/photo-1607312151044-245f3d455913?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "SantaPark Underground",
                 desc: "Heading back south to the official hometown of Santa Claus.",
@@ -624,7 +707,7 @@
             },
             {
                 id: "day16", day: "Day 16-17", date: "Dec 7 - Dec 8", location: "Helsinki to Home",
-                lat: 60.1695, lng: 24.9354, zoom: 13,
+                lat: 60.1695, lng: 24.9354, zoom: 13, routeIdx: 7,
                 image: "https://images.unsplash.com/photo-1604928014526-1779baea2299?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Grand Finale & Launch Home",
                 desc: "A luxury farewell in Helsinki before the seamless flights back to Canada.",
@@ -713,14 +796,16 @@
                         </div>`).join('') + `</div>`;
                 }
 
+                const isAurora = day.color === 'brand-aurora';
                 const html = `
-                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card" data-lat="${day.lat}" data-lng="${day.lng}" data-zoom="${day.zoom}">
-                        <div class="bg-white dark:bg-slate-900/90 rounded-3xl overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.01] border border-slate-200 dark:border-slate-800">
+                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal tilt-wrap ${isAurora ? 'aurora-card' : ''}" data-lat="${day.lat}" data-lng="${day.lng}" data-zoom="${day.zoom}" data-route-idx="${day.routeIdx}" data-snow="${isAurora ? 2.4 : 1}">
+                        <div class="tilt-card bg-white dark:bg-slate-900/90 rounded-3xl overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.01] border border-slate-200 dark:border-slate-800">
 
                             <!-- Header Image Section -->
                             <div class="relative w-full h-48 md:h-56 overflow-hidden">
                                 <img src="${day.image}" alt="${day.location}" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90"></div>
+                                <div data-weather="${day.id}" class="hidden absolute top-3 right-3 z-10 text-[11px] font-bold text-white bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20"></div>
 
                                 <div class="absolute bottom-0 left-0 w-full p-5">
                                     <div class="flex justify-between items-end mb-2">
@@ -754,8 +839,53 @@
         // --- Map Initialization ---
         let map;
         let polyline;
+        let progressLine;
+        let planeMarker;
         let currentMarkers = [];
         let isDarkMode = true;
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // --- Animated route progress (bright line draws itself; plane travels along it) ---
+        let routeProgress = 0;
+        let routeAnimId = null;
+
+        function routePointAt(t) {
+            const last = routeCoords.length - 1;
+            if (t >= last) return routeCoords[last];
+            if (t <= 0) return routeCoords[0];
+            const i = Math.floor(t), f = t - i;
+            const a = routeCoords[i], b = routeCoords[i + 1];
+            return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+        }
+
+        function advanceRoute(target) {
+            if (!progressLine || isNaN(target)) return;
+            if (routeAnimId) cancelAnimationFrame(routeAnimId);
+            const start = routeProgress, delta = target - start;
+            if (Math.abs(delta) < 0.001) return;
+            if (reduceMotion) {
+                routeProgress = target;
+                const pts = routeCoords.slice(0, Math.floor(target) + 1);
+                pts.push(routePointAt(target));
+                progressLine.setLatLngs(pts);
+                planeMarker.setLatLng(routePointAt(target));
+                return;
+            }
+            const t0 = performance.now(), dur = 1500;
+            const step = (now) => {
+                const k = Math.min(1, (now - t0) / dur);
+                const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+                routeProgress = start + delta * e;
+                const pts = routeCoords.slice(0, Math.floor(routeProgress) + 1);
+                const p = routePointAt(routeProgress);
+                pts.push(p);
+                progressLine.setLatLngs(pts);
+                planeMarker.setLatLng(p);
+                if (k < 1) routeAnimId = requestAnimationFrame(step);
+            };
+            routeAnimId = requestAnimationFrame(step);
+        }
 
         const tilesDark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
         const tilesLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
@@ -777,13 +907,30 @@
                     maxZoom: 19
                 }).addTo(map);
 
-                // Draw connecting route
+                // Draw connecting route (faint base line; a bright line draws over it as you scroll)
                 polyline = L.polyline(routeCoords, {
                     color: '#facc15',
                     weight: 3,
-                    opacity: 0.5,
+                    opacity: 0.2,
                     dashArray: '10, 10',
                     lineJoin: 'round'
+                }).addTo(map);
+
+                progressLine = L.polyline([routeCoords[0]], {
+                    color: '#facc15',
+                    weight: 3.5,
+                    opacity: 0.95,
+                    lineJoin: 'round'
+                }).addTo(map);
+
+                planeMarker = L.marker(routeCoords[0], {
+                    icon: L.divIcon({
+                        className: '',
+                        html: '<div class="plane-marker"><i class="fa-solid fa-plane"></i></div>',
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    }),
+                    zIndexOffset: 1000
                 }).addTo(map);
 
                 // Add initial markers
@@ -841,6 +988,12 @@
                         const lng = parseFloat(entry.target.getAttribute('data-lng'));
                         const zoom = parseInt(entry.target.getAttribute('data-zoom') || 6);
 
+                        const ri = entry.target.getAttribute('data-route-idx');
+                        if (ri !== null) advanceRoute(parseFloat(ri));
+
+                        const sn = entry.target.getAttribute('data-snow');
+                        if (sn && window.snowSetDensity) window.snowSetDensity(parseFloat(sn));
+
                         if (!isNaN(lat) && !isNaN(lng) && map) {
                             // Calculate offset so marker isn't hidden under UI on desktop
                             const isMobile = window.innerWidth < 768;
@@ -883,21 +1036,279 @@
             }
         });
 
-        // --- Booking checklist persistence (per device) ---
+        // --- Booking checklist persistence (per device) + progress ring ---
+        function updateRing() {
+            const boxes = [...document.querySelectorAll('.book-check')];
+            const fg = document.getElementById('ring-fg');
+            const label = document.getElementById('ring-label');
+            if (!fg || !label || boxes.length === 0) return;
+            const done = boxes.filter(b => b.checked).length;
+            fg.setAttribute('stroke-dasharray', `${(done / boxes.length) * 100}, 100`);
+            label.textContent = `${done}/${boxes.length}`;
+        }
+
         function setupBookingChecklist() {
             document.querySelectorAll('.book-check').forEach(cb => {
                 const key = 'ukfin-book-' + cb.dataset.key;
                 try {
                     cb.checked = localStorage.getItem(key) === '1';
-                    cb.addEventListener('change', () => localStorage.setItem(key, cb.checked ? '1' : '0'));
-                } catch (e) { /* private browsing — checkboxes still work, just don't persist */ }
+                    cb.addEventListener('change', () => {
+                        try { localStorage.setItem(key, cb.checked ? '1' : '0'); } catch (e) {}
+                        updateRing();
+                    });
+                } catch (e) {
+                    cb.addEventListener('change', updateRing);
+                }
             });
+            updateRing();
+        }
+
+        // --- Countdown to departure ---
+        function startCountdown() {
+            const target = new Date('2026-11-22T21:15:00-05:00').getTime();
+            const els = [document.getElementById('countdown'), document.getElementById('intro-countdown')];
+            const pad = n => String(n).padStart(2, '0');
+            const tick = () => {
+                const diff = target - Date.now();
+                let text;
+                if (diff <= 0) {
+                    text = 'Bon voyage! ✈️';
+                } else {
+                    const d = Math.floor(diff / 86400000);
+                    const h = Math.floor(diff / 3600000) % 24;
+                    const m = Math.floor(diff / 60000) % 60;
+                    const s = Math.floor(diff / 1000) % 60;
+                    text = `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
+                }
+                els.forEach(el => { if (el) el.textContent = text; });
+            };
+            tick();
+            setInterval(tick, 1000);
+        }
+
+        // --- Live weather per stop (Open-Meteo, free, no key; fails silently offline) ---
+        async function loadWeather() {
+            try {
+                const lats = itineraryData.map(d => d.lat).join(',');
+                const lngs = itineraryData.map(d => d.lng).join(',');
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lngs}&current=temperature_2m,weather_code`);
+                if (!res.ok) return;
+                const json = await res.json();
+                const results = Array.isArray(json) ? json : [json];
+                const icon = c => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️' : c <= 67 ? '🌧️' : c <= 77 ? '❄️' : c <= 82 ? '🌧️' : c <= 86 ? '🌨️' : '⛈️';
+                itineraryData.forEach((day, i) => {
+                    const cur = results[i] && results[i].current;
+                    const el = document.querySelector(`[data-weather="${day.id}"]`);
+                    if (cur && el) {
+                        el.textContent = `${icon(cur.weather_code)} ${Math.round(cur.temperature_2m)}°C now`;
+                        el.classList.remove('hidden');
+                    }
+                });
+            } catch (e) { /* offline — chips just stay hidden */ }
+        }
+
+        // --- Scroll-in reveal animations ---
+        function setupReveal() {
+            const els = document.querySelectorAll('.reveal');
+            if (reduceMotion) { els.forEach(el => el.classList.add('in')); return; }
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { root: document.getElementById('feed'), threshold: 0.12 });
+            els.forEach(el => io.observe(el));
+        }
+
+        // --- 3D tilt on cards (fine-pointer devices only) ---
+        function setupTilt() {
+            if (reduceMotion || !window.matchMedia('(pointer: fine)').matches) return;
+            document.querySelectorAll('.itinerary-card').forEach(wrap => {
+                const card = wrap.querySelector('.tilt-card');
+                if (!card) return;
+                wrap.addEventListener('pointermove', e => {
+                    const r = wrap.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - 0.5;
+                    const y = (e.clientY - r.top) / r.height - 0.5;
+                    card.style.transform = `rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg) scale(1.01)`;
+                });
+                wrap.addEventListener('pointerleave', () => { card.style.transform = ''; });
+            });
+        }
+
+        // --- Snowfall ---
+        function startSnow() {
+            const canvas = document.getElementById('snow-canvas');
+            if (!canvas || reduceMotion) { if (canvas) canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            let W, H, flakes = [], density = 1;
+            const BASE = 70;
+            const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
+            resize();
+            addEventListener('resize', resize);
+            const spawn = () => ({
+                x: Math.random() * W, y: -8,
+                r: 0.8 + Math.random() * 2.2,
+                vy: 0.4 + Math.random() * 1.1,
+                drift: 0.3 + Math.random() * 0.7,
+                phase: Math.random() * Math.PI * 2
+            });
+            for (let i = 0; i < BASE; i++) flakes.push({ ...spawn(), y: Math.random() * H });
+            window.snowSetDensity = (d) => { density = d; };
+            let t = 0;
+            const frame = () => {
+                requestAnimationFrame(frame);
+                if (document.hidden) return;
+                t += 0.01;
+                const targetCount = Math.round(BASE * density);
+                while (flakes.length < targetCount) flakes.push(spawn());
+                if (flakes.length > targetCount) flakes.length = targetCount;
+                ctx.clearRect(0, 0, W, H);
+                ctx.fillStyle = 'rgba(255,255,255,0.75)';
+                flakes.forEach(f => {
+                    f.y += f.vy;
+                    f.x += Math.sin(t + f.phase) * f.drift;
+                    if (f.y > H + 8) { Object.assign(f, spawn()); }
+                    ctx.globalAlpha = 0.35 + (f.r / 3) * 0.5;
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+            };
+            frame();
+        }
+
+        // --- Three.js intro globe ---
+        function initIntro() {
+            const intro = document.getElementById('intro');
+            if (!intro) return;
+            let stopped = false, rafId = null, renderer = null;
+            const dismiss = () => {
+                intro.classList.add('hidden-out');
+                try { sessionStorage.setItem('ukfin-intro-seen', '1'); } catch (e) {}
+                setTimeout(() => {
+                    stopped = true;
+                    if (rafId) cancelAnimationFrame(rafId);
+                    if (renderer) renderer.dispose();
+                    intro.remove();
+                    if (map) map.invalidateSize();
+                }, 750);
+            };
+            document.getElementById('enter-btn').addEventListener('click', dismiss);
+
+            let seen = false;
+            try { seen = sessionStorage.getItem('ukfin-intro-seen') === '1'; } catch (e) {}
+            if (seen || reduceMotion) { intro.remove(); return; }
+
+            // The globe is progressive enhancement — title + button work even if WebGL/CDN fails
+            try {
+                if (!window.THREE || !window.ThreeGlobe) return;
+                const canvas = document.getElementById('globe-canvas');
+                renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+                renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 1, 2000);
+                camera.position.z = innerWidth < 768 ? 440 : 330;
+                const resize = () => {
+                    renderer.setSize(innerWidth, innerHeight);
+                    camera.aspect = innerWidth / innerHeight;
+                    camera.updateProjectionMatrix();
+                };
+                resize();
+                addEventListener('resize', resize);
+
+                const STOPS = [
+                    { lat: 43.68, lng: -79.62 },  // Toronto
+                    { lat: 51.51, lng: -0.13 },   // London
+                    { lat: 55.95, lng: -3.19 },   // Edinburgh
+                    { lat: 60.17, lng: 24.94 },   // Helsinki
+                    { lat: 66.50, lng: 25.73 },   // Rovaniemi
+                    { lat: 67.80, lng: 24.81 },   // Levi
+                    { lat: 63.99, lng: -22.61 }   // Keflavík
+                ];
+                const LEG_COLORS = ['#facc15', '#8b5cf6', '#22d3ee', '#10b981', '#10b981', '#10b981', '#22d3ee', '#facc15'];
+                const ARCS = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,3],[3,6],[6,0]].map(([a, b], i) => ({
+                    startLat: STOPS[a].lat, startLng: STOPS[a].lng,
+                    endLat: STOPS[b].lat, endLng: STOPS[b].lng,
+                    color: LEG_COLORS[i]
+                }));
+
+                const globe = new ThreeGlobe()
+                    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+                    .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+                    .showAtmosphere(true)
+                    .atmosphereColor('#38bdf8')
+                    .atmosphereAltitude(0.18)
+                    .arcsData(ARCS)
+                    .arcColor('color')
+                    .arcAltitude(0.22)
+                    .arcStroke(0.55)
+                    .arcDashLength(0.45)
+                    .arcDashGap(0.25)
+                    .arcDashAnimateTime(2200)
+                    .pointsData(STOPS)
+                    .pointColor(() => '#fef08a')
+                    .pointAltitude(0.015)
+                    .pointRadius(0.55);
+                scene.add(globe);
+
+                scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+                const dir = new THREE.DirectionalLight(0x88bbff, 1.2);
+                dir.position.set(-200, 180, 220);
+                scene.add(dir);
+
+                // Starfield
+                const starGeo = new THREE.BufferGeometry();
+                const N = 1200, pos = new Float32Array(N * 3);
+                for (let i = 0; i < N; i++) {
+                    const v = new THREE.Vector3().randomDirection().multiplyScalar(700 + Math.random() * 250);
+                    pos[i * 3] = v.x; pos[i * 3 + 1] = v.y; pos[i * 3 + 2] = v.z;
+                }
+                starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+                scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+                    color: 0xb6c2d9, size: 1.6, sizeAttenuation: true, transparent: true, opacity: 0.8
+                })));
+
+                // Park the camera over the North Atlantic so the whole route faces the
+                // viewer, drop the globe so the arcs sit above the title, then orbit gently.
+                globe.position.y = -55;
+                const camBase = globe.getCoords(50, -28, innerWidth < 768 ? 2.6 : 1.9);
+                const baseVec = new THREE.Vector3(camBase.x, camBase.y - 55, camBase.z);
+                const yAxis = new THREE.Vector3(0, 1, 0);
+                let px = 0, py = 0;
+                addEventListener('pointermove', e => {
+                    px = e.clientX / innerWidth - 0.5;
+                    py = e.clientY / innerHeight - 0.5;
+                });
+                const animate = () => {
+                    if (stopped) return;
+                    rafId = requestAnimationFrame(animate);
+                    const t = performance.now() * 0.0001;
+                    const v = baseVec.clone().applyAxisAngle(yAxis, Math.sin(t) * 0.22 + px * 0.25);
+                    v.y -= py * 50;
+                    camera.position.lerp(v, 0.06);
+                    camera.lookAt(0, -25, 0);
+                    renderer.render(scene, camera);
+                };
+                camera.position.copy(baseVec);
+                animate();
+                window.__globeOk = true;
+            } catch (e) { /* static intro is fine */ }
         }
 
         // --- Initialization ---
         window.onload = () => {
             renderFeed();
             setupBookingChecklist();
+            setupReveal();
+            setupTilt();
+            startCountdown();
+            startSnow();
+            initIntro();
+            loadWeather();
             initMap();
 
             // Re-calc map on window resize to fix visual bugs
