@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fall Foliage Road Trip: Ajax → New Hampshire</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        fall: {
+                            maple: '#f97316', crimson: '#ef4444', gold: '#f59e0b',
+                            leaf: '#84cc16', pine: '#22c55e',
+                            bg: '#14100b', surface: '#1d1710'
+                        }
+                    },
+                    boxShadow: {
+                        'card': '0 25px 60px -15px rgba(0,0,0,.55)',
+                        'card-hover': '0 35px 80px -15px rgba(0,0,0,.7)'
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body { height: 100%; }
+        body {
+            background-color: #14100b;
+            color: #faf7f2;
+            overscroll-behavior-y: none;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        #feed { -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass {
+            background: rgba(29, 23, 16, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(250, 200, 120, 0.09);
+        }
+
+        .leaflet-container { background: #14100b; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .leaflet-popup-content-wrapper { background: rgba(29,23,16,0.92); backdrop-filter: blur(8px); color: #faf7f2; border: 1px solid rgba(250,200,120,0.15); border-radius: 12px; }
+        .leaflet-popup-tip { background: rgba(29,23,16,0.92); }
+
+        /* Gradient text */
+        .grad-maple { background: linear-gradient(120deg, #f59e0b, #f97316, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
+        .grad-warm { background: linear-gradient(120deg, #fbbf24, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* Scroll-in reveals */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1); }
+        .reveal.in { opacity: 1; transform: none; }
+        .reveal-3d {
+            opacity: 0;
+            transform: perspective(900px) rotateX(9deg) translateY(46px) scale(.97);
+            transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
+        }
+        .reveal-3d.in { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal-3d { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* Falling leaves */
+        #leaf-canvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+
+        /* Car marker on the route */
+        .car-marker {
+            width: 32px; height: 32px; border-radius: 50%; background: #f97316;
+            display: flex; align-items: center; justify-content: center; color: #1c1006;
+            border: 2px solid #fff7ed; font-size: 14px;
+            box-shadow: 0 0 18px rgba(249, 115, 22, .85);
+        }
+
+        /* 3D tilt + hover shine */
+        .tilt-wrap { perspective: 1000px; }
+        .tilt-card { position: relative; }
+        .tilt-card::after {
+            content: ''; position: absolute; inset: 0; z-index: 20; pointer-events: none;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,235,200,.06) 45%, rgba(255,235,200,.14) 50%, rgba(255,235,200,.06) 55%, transparent 60%);
+            transform: translateX(-130%);
+            transition: transform .9s ease;
+        }
+        .group:hover .tilt-card::after { transform: translateX(130%); }
+
+        .card-img { transform: scale(1.15); will-change: transform; }
+
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 70;
+            background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444, #b45309);
+            box-shadow: 0 0 12px rgba(249, 115, 22, .6);
+        }
+
+        /* Ember glow behind foliage-highlight cards */
+        .ember-card { position: relative; }
+        .ember-card::before {
+            content: ''; position: absolute; inset: -3px; border-radius: 1.7rem; z-index: 0;
+            background: linear-gradient(120deg, #f59e0b, #ef4444, #f97316, #f59e0b);
+            background-size: 300% 300%; animation: emberShift 9s ease infinite;
+            filter: blur(16px); opacity: .28;
+        }
+        .ember-card > div { position: relative; z-index: 1; }
+        @keyframes emberShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @media (prefers-reduced-motion: reduce) { .ember-card::before { animation: none; } }
+    </style>
+</head>
+<body class="overflow-hidden flex flex-col">
+
+    <!-- Falling leaves -->
+    <canvas id="leaf-canvas"></canvas>
+
+    <!-- Scroll progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Top bar -->
+    <header class="absolute top-0 w-full z-50 glass p-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-red-600 p-[2px]">
+                <div class="w-full h-full bg-fall-bg rounded-full flex items-center justify-center text-lg">🍁</div>
+            </div>
+            <div>
+                <h1 class="text-sm md:text-base font-bold grad-maple">Fall Foliage Road Trip</h1>
+                <p class="text-[10px] text-amber-100/50 font-semibold uppercase tracking-wider">Ajax → New Hampshire · Oct 9–12, 2026</p>
+            </div>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest bg-emerald-500/15 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Hotels Booked</span>
+    </header>
+
+    <!-- Split layout: map + feed -->
+    <div class="flex h-full w-full relative pt-[72px]">
+
+        <!-- Map -->
+        <div id="map-container" class="absolute inset-0 md:relative md:w-[55%] h-full z-0">
+            <div id="map" class="w-full h-full"></div>
+            <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-fall-bg to-transparent hidden md:block z-[400] pointer-events-none"></div>
+            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent md:hidden z-[400] pointer-events-none"></div>
+        </div>
+
+        <!-- Feed -->
+        <div id="feed" class="absolute inset-0 md:relative md:w-[45%] h-full z-10 overflow-y-auto no-scrollbar md:bg-fall-bg pointer-events-none md:pointer-events-auto shadow-2xl border-l border-amber-100/5">
+
+            <!-- Mobile spacer so the map shows through at the top -->
+            <div class="h-[38vh] h-[38dvh] md:hidden pointer-events-none"></div>
+
+            <div class="pointer-events-auto px-4 pb-32 space-y-6 md:space-y-8 md:pt-8 md:px-8">
+
+                <!-- Hero -->
+                <div class="reveal-3d tilt-wrap group" data-lat="43.8509" data-lng="-79.0204" data-zoom="6" data-route-idx="0">
+                    <div class="tilt-card rounded-[2rem] overflow-hidden shadow-card border border-amber-100/10 relative">
+                        <div class="relative h-56 md:h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Autumn road" loading="eager" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.75]">
+                            <div class="absolute inset-0 bg-gradient-to-t from-fall-bg via-fall-bg/30 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8">
+                                <p class="text-amber-200/90 text-[10px] font-black uppercase tracking-[0.25em] mb-2">October Long Weekend · Fri–Mon</p>
+                                <h2 class="text-3xl md:text-4xl font-black text-white drop-shadow-lg leading-tight">🍁 Fall Foliage<br>Road Trip</h2>
+                                <p class="text-amber-100/80 text-sm font-semibold italic mt-2">Ajax → New Hampshire, Oct 9–12, 2026</p>
+                            </div>
+                        </div>
+                        <div class="glass p-5 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/30 to-red-600/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0 animate-float">
+                                <i class="fa-solid fa-car-side text-fall-maple text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider font-bold text-amber-100/50">Wheels roll — Fri Oct 9, after 6:00 PM</p>
+                                <p id="countdown" class="text-xl md:text-2xl font-black text-white tabular-nums">—</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trip stats -->
+                <div class="reveal grid grid-cols-4 gap-2 md:gap-3">
+                    <div class="glass rounded-2xl p-3 text-center">
+                        <p class="text-xl md:text-2xl font-black grad-warm">4</p>
+                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Days</p>
+                    </div>
+                    <div class="glass rounded-2xl p-3 text-center">
+                        <p class="text-xl md:text-2xl font-black text-emerald-400">3</p>
+                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Hotels ✓</p>
+                    </div>
+                    <div class="glass rounded-2xl p-3 text-center">
+                        <p class="text-xl md:text-2xl font-black text-fall-maple">~19h</p>
+                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Driving</p>
+                    </div>
+                    <div class="glass rounded-2xl p-3 text-center">
+                        <p class="text-xl md:text-2xl font-black text-fall-crimson">5</p>
+                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Key Stops</p>
+                    </div>
+                </div>
+
+                <!-- Journey map note (map itself is the live panel) -->
+                <div class="reveal glass rounded-2xl p-4 flex items-start gap-3">
+                    <i class="fa-solid fa-map-location-dot text-fall-gold mt-0.5"></i>
+                    <p class="text-xs text-amber-100/70 leading-relaxed"><b class="text-white">Journey Map:</b> the live map traces your loop between the confirmed hotels as you scroll — Ajax → Watertown → the Adirondacks → the Lakes Region → North Conway → home. Tap any marker for the stop's details.</p>
+                </div>
+
+                <!-- Day cards -->
+                <div id="itinerary-feed" class="space-y-6 md:space-y-10"></div>
+
+                <!-- Family & Stroller Guide -->
+                <div class="reveal snap-start">
+                    <div class="bg-gradient-to-br from-sky-900/40 to-indigo-900/30 border border-sky-500/25 rounded-[2rem] p-6 md:p-8 shadow-card relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-6 opacity-10"><i class="fa-solid fa-baby-carriage text-8xl text-white"></i></div>
+                        <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2 mb-6">
+                            <span>👶</span> Family &amp; Stroller Guide
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                            <div class="glass rounded-2xl p-5">
+                                <h3 class="text-sm font-black text-rose-300 mb-3">🚫 Where to leave the stroller</h3>
+                                <ul class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
+                                    <li><b>Flume Gorge:</b> Absolutely requires a baby carrier/backpack. 2 miles of stairs, steep inclines, and boardwalks.</li>
+                                    <li><b>Scenic Trains:</b> Aisles are too narrow. Strollers must be folded tight or left safely at the station platform (very common).</li>
+                                    <li><b>Waterfalls (Kancamagus):</b> Short dirt/rocky paths to the falls require walking or carrying.</li>
+                                </ul>
+                            </div>
+                            <div class="glass rounded-2xl p-5">
+                                <h3 class="text-sm font-black text-emerald-300 mb-3">✅ Where strollers work great</h3>
+                                <ul class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
+                                    <li><b>North Conway Village:</b> Great sidewalks for strolling, shopping, and grabbing coffee.</li>
+                                    <li><b>Scenic Pull-offs:</b> The parking areas on the Kancamagus Highway are paved and offer great views right from the car.</li>
+                                    <li><b>Lake Placid (Mirror Lake):</b> Paved path around the lake if you stop to stretch your legs on Day 2.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Critical Advance Booking Checklist -->
+                <div class="reveal snap-start">
+                    <div class="bg-gradient-to-br from-red-950/60 to-fall-surface border border-red-500/25 rounded-[2rem] p-6 md:p-8 shadow-card">
+                        <h2 class="text-xl font-black text-white flex items-center justify-between gap-2 mb-1">
+                            <span class="flex items-center gap-2">⏰ Critical Advance Bookings</span>
+                            <span class="relative w-11 h-11 flex-shrink-0" title="Booking progress">
+                                <svg viewBox="0 0 36 36" class="w-11 h-11 -rotate-90">
+                                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="3.5"></circle>
+                                    <circle id="ring-fg" cx="18" cy="18" r="15.5" fill="none" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" pathLength="100" stroke-dasharray="0, 100" style="transition: stroke-dasharray .6s ease"></circle>
+                                </svg>
+                                <span id="ring-label" class="absolute inset-0 flex items-center justify-center text-[9px] font-black tabular-nums">0/0</span>
+                            </span>
+                        </h2>
+                        <p class="text-xs text-emerald-300 font-bold mb-5">🎉 Accommodations: all hotels are booked and confirmed!</p>
+                        <div class="space-y-3">
+                            <label class="flex items-start gap-3 cursor-pointer group/c">
+                                <input type="checkbox" data-key="flume" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
+                                <span class="text-xs text-red-100/90 leading-relaxed"><b>Flume Gorge (NH):</b> Tickets are sold online for <em>specific 1-hour entry windows</em>. In-person walk-ups are routinely turned away during October weekends.</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group/c">
+                                <input type="checkbox" data-key="train" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
+                                <span class="text-xs text-red-100/90 leading-relaxed"><b>Scenic Trains:</b> Foliage-themed train rides sell out their weekend slots by late summer.</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group/c">
+                                <input type="checkbox" data-key="dinner" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
+                                <span class="text-xs text-red-100/90 leading-relaxed"><b>Dinner Reservations:</b> Highly recommend booking a table for dinner in North Conway or Lincoln, NH, as wait times can exceed 2 hours for walk-ins.</span>
+                            </label>
+                        </div>
+                        <p class="mt-4 pt-3 border-t border-red-500/20 text-[10px] text-red-200/50 italic">Checkboxes save automatically on this device.</p>
+                    </div>
+                </div>
+
+                <!-- Scenic Train Options -->
+                <div class="reveal snap-start space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl drop-shadow">🚂</span>
+                        <div>
+                            <h2 class="text-lg md:text-xl font-black grad-warm leading-tight">Scenic Train Options</h2>
+                            <p class="text-[9px] uppercase tracking-[0.2em] font-bold text-amber-100/50">New Hampshire · Book Early</p>
+                        </div>
+                        <div class="flex-1 h-px bg-gradient-to-r from-amber-500/50 to-transparent"></div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+                            <h3 class="font-black text-white mb-1">Conway Scenic Railroad</h3>
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> North Conway, NH</p>
+                            <p class="text-xs text-amber-100/70 leading-relaxed">Departs from a beautiful 1874 Victorian station. The <em>Mountaineer</em> route is a 4-5 hour journey traversing the stunning Crawford Notch. It's widely considered the most classic "fall foliage" train.</p>
+                        </div>
+                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+                            <h3 class="font-black text-white mb-1">Mount Washington Cog Railway</h3>
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> Bretton Woods, NH</p>
+                            <p class="text-xs text-amber-100/70 leading-relaxed">A thrilling, historic bio-diesel or steam train that climbs straight up the side of Mount Washington (the highest peak in the Northeast). Spectacular, sweeping views above the tree line.</p>
+                        </div>
+                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+                            <h3 class="font-black text-white mb-1">Granite State Railway <span class="font-bold text-amber-100/60">(Fall Foliage Train)</span></h3>
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> Lincoln, NH / Meredith, NH</p>
+                            <p class="text-xs text-amber-100/70 leading-relaxed">A very relaxing, family-friendly ride that hugs the banks of the Pemigewasset River or Lake Winnipesaukee, getting you right up close to the vibrant changing leaves.</p>
+                        </div>
+                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
+                            <h3 class="font-black text-white mb-1">Cafe Lafayette Dinner Train</h3>
+                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> North Woodstock, NH</p>
+                            <p class="text-xs text-amber-100/70 leading-relaxed">If you want to combine an activity with dinner, this 1950s restored vintage rail car (with a dome!) serves an elegant 5-course meal while rolling 20 miles through the river valley at sunset.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End marker: completes the loop home -->
+                <div class="text-center py-12 opacity-60 reveal" data-lat="43.8509" data-lng="-79.0204" data-zoom="6" data-route-idx="8">
+                    <span class="text-2xl">🏡</span>
+                    <p class="text-xs font-bold uppercase tracking-widest mt-2 text-amber-100/70">Home Sweet Home</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // --- Trip data (every detail from the original itinerary) ---
+        const days = [
+            {
+                id: 'day1', day: 'Day 1', date: 'Friday, Oct 9',
+                route: 'Ajax → Watertown, NY', drive: '~3 hr drive',
+                lat: 43.9748, lng: -75.9108, zoom: 9, routeIdx: 1,
+                image: 'https://images.unsplash.com/photo-1465447142348-e9952c393450?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                color: '#f59e0b', colorName: 'amber',
+                activities: [
+                    { text: 'Depart Ajax after 6:00 PM.' },
+                    { text: 'Late evening border crossing at Thousand Islands Bridge.' },
+                    { text: 'Grab a quick bite on the road.' }
+                ],
+                hotel: {
+                    name: 'Nest Inn', confirmed: true,
+                    address: '23442 NY-37, Watertown, NY',
+                    room: 'Deluxe Single Room, 1 King Bed',
+                    note: 'Call ahead to let them know you will be arriving late (approx. 9:30–10:00 PM).'
+                }
+            },
+            {
+                id: 'day2', day: 'Day 2', date: 'Saturday, Oct 10',
+                route: 'Watertown → Gilford, NH', drive: '~5.5 hr drive total',
+                lat: 43.5476, lng: -71.4067, zoom: 8, routeIdx: 4,
+                image: 'https://images.unsplash.com/photo-1508923567004-3a6b8004f3d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                color: '#f97316', colorName: 'maple', ember: true,
+                activities: [
+                    { text: 'Morning: Drive through the Adirondacks (Lake Placid area).' },
+                    { text: 'Afternoon: Head into New Hampshire via I-93 South.' },
+                    { text: 'Optional: Stop at Flume Gorge (Franconia Notch) on the way down.', badge: 'Carrier Needed', badgeType: 'carrier' },
+                    { text: 'Evening: Settle into the beautiful Lakes Region.' }
+                ],
+                hotel: {
+                    name: 'TownePlace Suites Laconia Gilford', confirmed: true,
+                    address: '14 Sawmill Rd, Gilford, NH',
+                    room: 'Free Breakfast included'
+                }
+            },
+            {
+                id: 'day3', day: 'Day 3', date: 'Sunday, Oct 11',
+                route: 'Gilford → North Conway', drive: '~2.5 hr total scenic drive',
+                lat: 44.0537, lng: -71.1284, zoom: 9, routeIdx: 6,
+                image: 'https://images.unsplash.com/photo-1445964047600-cdbdb873673d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                color: '#ef4444', colorName: 'crimson', ember: true,
+                activities: [
+                    { text: 'Morning: Drive north to Lincoln, then take Kancamagus Hwy Eastbound.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
+                    { text: 'Afternoon: Scenic Train Ride in North Conway.', badge: 'Fold Stroller', badgeType: 'carrier' },
+                    { text: 'Explore North Conway village and grab dinner.' }
+                ],
+                hotel: {
+                    name: 'Eastern Inn & Suites', confirmed: true,
+                    address: '2955 White Mountain Hwy, North Conway, NH',
+                    room: 'Standard Room, 1 King Bed'
+                }
+            },
+            {
+                id: 'day4', day: 'Day 4', date: 'Monday, Oct 12',
+                route: 'North Conway → Ajax', drive: '~8–9 hr drive',
+                lat: 43.4262, lng: -73.7123, zoom: 7, routeIdx: 8,
+                image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                color: '#b45309', colorName: 'bronze',
+                activities: [
+                    { text: 'Check out and grab a quick breakfast.' },
+                    { text: 'Begin the long drive west.' },
+                    { text: 'Lunch or stretch legs near Lake George or Saratoga Springs, NY.' },
+                    { text: 'Return via I-87 and Thousand Islands Bridge to Ajax.' }
+                ],
+                hotel: null // Heading Home
+            }
+        ];
+
+        // Route: Ajax → Watertown → Lake Placid → Franconia (Flume) → Gilford → Lincoln → Kancamagus → North Conway → Lake George → Ajax
+        const routeCoords = [
+            [43.8509, -79.0204], // 0 Ajax (start)
+            [43.9748, -75.9108], // 1 Watertown, NY
+            [44.2795, -73.9799], // 2 Lake Placid
+            [44.0973, -71.6810], // 3 Flume Gorge / Franconia Notch
+            [43.5476, -71.4067], // 4 Gilford, NH
+            [44.0456, -71.6706], // 5 Lincoln (Kancamagus start)
+            [44.0537, -71.1284], // 6 North Conway, NH
+            [43.4262, -73.7123], // 7 Lake George, NY
+            [43.8509, -79.0204]  // 8 Ajax (home)
+        ];
+
+        const mapStops = [
+            { name: 'Ajax, ON (Start)', coords: [43.8509, -79.0204], desc: 'Departure point' },
+            { name: 'Watertown, NY', coords: [43.9748, -75.9108], desc: 'Night 1: Nest Inn' },
+            { name: 'Lake Placid, NY', coords: [44.2795, -73.9799], desc: 'Adirondacks scenic stop · Mirror Lake stroller path' },
+            { name: 'Flume Gorge, NH', coords: [44.0973, -71.6810], desc: 'Franconia Notch · timed-entry tickets, carrier needed' },
+            { name: 'Gilford, NH', coords: [43.5476, -71.4067], desc: 'Night 2: TownePlace Suites' },
+            { name: 'Lincoln, NH', coords: [44.0456, -71.6706], desc: 'Start of Kancamagus Hwy' },
+            { name: 'North Conway, NH', coords: [44.0537, -71.1284], desc: 'Night 3: Eastern Inn' },
+            { name: 'Lake George, NY', coords: [43.4262, -73.7123], desc: 'Day 4 lunch / leg-stretch stop' }
+        ];
+
+        // --- Render day cards ---
+        function renderFeed() {
+            const container = document.getElementById('itinerary-feed');
+            container.innerHTML = '';
+            const badgeCls = {
+                carrier: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+                stroller: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+            };
+            days.forEach(d => {
+                let acts = d.activities.map(a => `
+                    <div class="relative">
+                        <span class="absolute -left-[30px] top-1.5 w-2.5 h-2.5 rounded-full" style="background:${d.color};box-shadow:0 0 0 4px ${d.color}26"></span>
+                        <p class="text-xs text-amber-50/85 leading-relaxed font-medium">${a.text}
+                            ${a.badge ? `<span class="inline-block align-middle ml-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${badgeCls[a.badgeType]}">${a.badge}</span>` : ''}
+                        </p>
+                    </div>`).join('');
+
+                let hotelHtml;
+                if (d.hotel) {
+                    hotelHtml = `
+                    <div class="mt-5 flex items-start gap-3.5 bg-gradient-to-r from-stone-800/80 to-stone-800/30 rounded-2xl p-4 border border-amber-100/10">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border" style="background:${d.color}1a;border-color:${d.color}4d">
+                            <i class="fa-solid fa-bed text-sm" style="color:${d.color}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="text-xs font-bold text-white">${d.hotel.name}</p>
+                                ${d.hotel.confirmed ? `<span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap flex-shrink-0"><i class="fa-solid fa-check"></i> Confirmed</span>` : ''}
+                            </div>
+                            <p class="text-[10px] text-amber-100/60">${d.hotel.address}</p>
+                            <p class="text-[10px] text-amber-100/60">${d.hotel.room}</p>
+                            ${d.hotel.note ? `<p class="text-[10px] text-amber-200/60 italic mt-1.5"><i class="fa-solid fa-phone text-[8px]"></i> ${d.hotel.note}</p>` : ''}
+                        </div>
+                    </div>`;
+                } else {
+                    hotelHtml = `
+                    <div class="mt-5 flex items-center gap-3 bg-stone-800/40 rounded-2xl p-4 border border-amber-100/10 justify-center">
+                        <span class="text-lg">🏡</span>
+                        <p class="text-xs font-bold text-amber-100/70 italic">Heading Home — no hotel tonight</p>
+                    </div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${d.ember ? 'ember-card' : ''}" data-lat="${d.lat}" data-lng="${d.lng}" data-zoom="${d.zoom}" data-route-idx="${d.routeIdx}">
+                        <div class="tilt-card bg-fall-surface rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-amber-100/10">
+                            <div class="relative w-full h-48 md:h-56 overflow-hidden">
+                                <img src="${d.image}" alt="${d.route}" loading="lazy" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.8] group-hover:brightness-95 transition-[filter] duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-fall-surface via-transparent to-black/30"></div>
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-white/15 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1.5 rounded-full border border-white/25">${d.day}</span>
+                                </div>
+                                <div data-weather="${d.id}" class="hidden absolute top-4 right-4 z-10 text-[11px] font-bold text-white bg-black/40 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/20"></div>
+                                <div class="absolute bottom-0 left-0 w-full p-5">
+                                    <p class="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-1">${d.date} · <span style="color:${d.color}">${d.drive}</span></p>
+                                    <h3 class="text-2xl font-black text-white drop-shadow-lg leading-tight">${d.route}</h3>
+                                </div>
+                            </div>
+                            <div class="p-5 md:p-6">
+                                <div class="relative ml-1 pl-6 border-l border-dashed border-stone-600 space-y-3.5">${acts}</div>
+                                ${hotelHtml}
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // --- Map with animated route + driving car ---
+        let map, progressLine, carMarker;
+        let routeProgress = 0, routeAnimId = null;
+
+        function routePointAt(t) {
+            const last = routeCoords.length - 1;
+            if (t >= last) return routeCoords[last];
+            if (t <= 0) return routeCoords[0];
+            const i = Math.floor(t), f = t - i;
+            const a = routeCoords[i], b = routeCoords[i + 1];
+            return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+        }
+
+        function advanceRoute(target) {
+            if (!progressLine || isNaN(target)) return;
+            if (routeAnimId) cancelAnimationFrame(routeAnimId);
+            const start = routeProgress, delta = target - start;
+            if (Math.abs(delta) < 0.001) return;
+            const apply = t => {
+                routeProgress = t;
+                const pts = routeCoords.slice(0, Math.floor(t) + 1);
+                const p = routePointAt(t);
+                pts.push(p);
+                progressLine.setLatLngs(pts);
+                carMarker.setLatLng(p);
+            };
+            if (reduceMotion) { apply(target); return; }
+            const t0 = performance.now(), dur = 1500;
+            const step = now => {
+                const k = Math.min(1, (now - t0) / dur);
+                const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+                apply(start + delta * e);
+                if (k < 1) routeAnimId = requestAnimationFrame(step);
+            };
+            routeAnimId = requestAnimationFrame(step);
+        }
+
+        function initMap() {
+            setTimeout(() => {
+                map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([44.0, -74.5], 6);
+                L.control.zoom({ position: 'topright' }).addTo(map);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; OpenStreetMap &copy; CartoDB', maxZoom: 19
+                }).addTo(map);
+
+                L.polyline(routeCoords, { color: '#f97316', weight: 3, opacity: 0.2, dashArray: '10, 10', lineJoin: 'round' }).addTo(map);
+                progressLine = L.polyline([routeCoords[0]], { color: '#f97316', weight: 3.5, opacity: 0.95, lineJoin: 'round' }).addTo(map);
+                carMarker = L.marker(routeCoords[0], {
+                    icon: L.divIcon({ className: '', html: '<div class="car-marker"><i class="fa-solid fa-car-side"></i></div>', iconSize: [32, 32], iconAnchor: [16, 16] }),
+                    zIndexOffset: 1000
+                }).addTo(map);
+
+                mapStops.forEach((s, i) => {
+                    const icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: `<div style="background:#f59e0b" class="w-7 h-7 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,.5)] border-2 border-white text-stone-900 text-[10px] font-black">${i + 1}</div>`,
+                        iconSize: [28, 28], iconAnchor: [14, 14]
+                    });
+                    L.marker(s.coords, { icon }).addTo(map).bindPopup(`<b>${i + 1}. ${s.name}</b><br><span style="color:#d6c9b8;font-size:11px">${s.desc}</span>`);
+                });
+
+                map.invalidateSize();
+                setupMapSync();
+            }, 300);
+        }
+
+        function setupMapSync() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const lat = parseFloat(entry.target.getAttribute('data-lat'));
+                    const lng = parseFloat(entry.target.getAttribute('data-lng'));
+                    const zoom = parseInt(entry.target.getAttribute('data-zoom') || 7);
+                    const ri = entry.target.getAttribute('data-route-idx');
+                    if (ri !== null) advanceRoute(parseFloat(ri));
+                    if (!isNaN(lat) && !isNaN(lng) && map) {
+                        const isMobile = window.innerWidth < 768;
+                        if (isMobile) map.flyTo([lat - 0.35, lng], zoom, { duration: 1.5, easeLinearity: 0.25 });
+                        else map.flyTo([lat, lng + (14 / zoom)], zoom, { duration: 1.5, easeLinearity: 0.25 });
+                    }
+                });
+            }, { root: document.getElementById('feed'), threshold: 0.45 });
+            document.querySelectorAll('[data-lat]').forEach(el => observer.observe(el));
+        }
+
+        // --- Falling maple leaves ---
+        function startLeaves() {
+            const canvas = document.getElementById('leaf-canvas');
+            if (!canvas || reduceMotion) { if (canvas) canvas.remove(); return; }
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            const GLYPHS = ['🍁', '🍂', '🍁'];
+            const N = 26;
+            const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
+            resize();
+            addEventListener('resize', resize);
+            const spawn = () => ({
+                x: Math.random() * W, y: -30,
+                size: 12 + Math.random() * 14,
+                vy: 0.5 + Math.random() * 0.9,
+                drift: 0.4 + Math.random() * 0.8,
+                rot: Math.random() * Math.PI * 2,
+                vr: (Math.random() - 0.5) * 0.02,
+                glyph: GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
+                phase: Math.random() * Math.PI * 2
+            });
+            const leaves = Array.from({ length: N }, () => ({ ...spawn(), y: Math.random() * H }));
+            let t = 0;
+            const frame = () => {
+                requestAnimationFrame(frame);
+                if (document.hidden) return;
+                t += 0.008;
+                ctx.clearRect(0, 0, W, H);
+                leaves.forEach(l => {
+                    l.y += l.vy;
+                    l.x += Math.sin(t + l.phase) * l.drift;
+                    l.rot += l.vr;
+                    if (l.y > H + 30) Object.assign(l, spawn());
+                    ctx.save();
+                    ctx.translate(l.x, l.y);
+                    ctx.rotate(l.rot);
+                    ctx.globalAlpha = 0.75;
+                    ctx.font = `${l.size}px serif`;
+                    ctx.fillText(l.glyph, -l.size / 2, l.size / 2);
+                    ctx.restore();
+                });
+            };
+            frame();
+        }
+
+        // --- Countdown to departure ---
+        function startCountdown() {
+            const target = new Date('2026-10-09T18:00:00-04:00').getTime();
+            const el = document.getElementById('countdown');
+            const pad = n => String(n).padStart(2, '0');
+            const tick = () => {
+                const diff = target - Date.now();
+                if (diff <= 0) { el.textContent = 'On the road! 🍁'; return; }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor(diff / 3600000) % 24;
+                const m = Math.floor(diff / 60000) % 60;
+                const s = Math.floor(diff / 1000) % 60;
+                el.textContent = `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
+            };
+            tick();
+            setInterval(tick, 1000);
+        }
+
+        // --- Booking checklist persistence + ring ---
+        function updateRing() {
+            const boxes = [...document.querySelectorAll('.book-check')];
+            const fg = document.getElementById('ring-fg'), label = document.getElementById('ring-label');
+            if (!fg || !label || !boxes.length) return;
+            const done = boxes.filter(b => b.checked).length;
+            fg.setAttribute('stroke-dasharray', `${(done / boxes.length) * 100}, 100`);
+            label.textContent = `${done}/${boxes.length}`;
+        }
+        function setupBookingChecklist() {
+            document.querySelectorAll('.book-check').forEach(cb => {
+                const key = 'nefall-book-' + cb.dataset.key;
+                try {
+                    cb.checked = localStorage.getItem(key) === '1';
+                    cb.addEventListener('change', () => {
+                        try { localStorage.setItem(key, cb.checked ? '1' : '0'); } catch (e) {}
+                        updateRing();
+                    });
+                } catch (e) { cb.addEventListener('change', updateRing); }
+            });
+            updateRing();
+        }
+
+        // --- Live weather chips (Open-Meteo; silent offline) ---
+        async function loadWeather() {
+            try {
+                const coords = { day1: [43.9748, -75.9108], day2: [43.5476, -71.4067], day3: [44.0537, -71.1284], day4: [43.8509, -79.0204] };
+                const ids = Object.keys(coords);
+                const lats = ids.map(i => coords[i][0]).join(',');
+                const lngs = ids.map(i => coords[i][1]).join(',');
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lngs}&current=temperature_2m,weather_code`);
+                if (!res.ok) return;
+                const json = await res.json();
+                const results = Array.isArray(json) ? json : [json];
+                const icon = c => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️' : c <= 67 ? '🌧️' : c <= 77 ? '❄️' : c <= 82 ? '🌧️' : '⛈️';
+                ids.forEach((id, i) => {
+                    const cur = results[i] && results[i].current;
+                    const el = document.querySelector(`[data-weather="${id}"]`);
+                    if (cur && el) {
+                        el.textContent = `${icon(cur.weather_code)} ${Math.round(cur.temperature_2m)}°C now`;
+                        el.classList.remove('hidden');
+                    }
+                });
+            } catch (e) {}
+        }
+
+        // --- Reveals, tilt, parallax, progress bar ---
+        function setupReveal() {
+            const els = document.querySelectorAll('.reveal, .reveal-3d');
+            if (reduceMotion) { els.forEach(el => el.classList.add('in')); return; }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+            }, { root: document.getElementById('feed'), threshold: 0.12 });
+            els.forEach(el => io.observe(el));
+        }
+
+        function setupTilt() {
+            if (reduceMotion || !window.matchMedia('(pointer: fine)').matches) return;
+            document.querySelectorAll('.tilt-wrap').forEach(wrap => {
+                const card = wrap.querySelector('.tilt-card');
+                if (!card) return;
+                wrap.addEventListener('pointermove', e => {
+                    const r = wrap.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - 0.5;
+                    const y = (e.clientY - r.top) / r.height - 0.5;
+                    card.style.transform = `rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg) scale(1.01)`;
+                });
+                wrap.addEventListener('pointerleave', () => { card.style.transform = ''; });
+            });
+        }
+
+        function setupFeedScrollFx() {
+            const feed = document.getElementById('feed');
+            const bar = document.getElementById('scroll-progress');
+            let ticking = false;
+            const update = () => {
+                ticking = false;
+                if (bar) {
+                    const max = feed.scrollHeight - feed.clientHeight;
+                    bar.style.width = max > 0 ? `${(feed.scrollTop / max) * 100}%` : '0%';
+                }
+                if (!reduceMotion) {
+                    const vh = feed.clientHeight;
+                    document.querySelectorAll('.card-img').forEach(img => {
+                        const r = img.parentElement.getBoundingClientRect();
+                        if (r.bottom < -100 || r.top > vh + 100) return;
+                        const p = (r.top + r.height / 2 - vh / 2) / vh;
+                        img.style.transform = `translateY(${(-p * 26).toFixed(1)}px) scale(1.15)`;
+                    });
+                }
+            };
+            feed.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+            update();
+        }
+
+        // --- Init ---
+        window.onload = () => {
+            renderFeed();
+            setupBookingChecklist();
+            setupReveal();
+            setupTilt();
+            setupFeedScrollFx();
+            startCountdown();
+            startLeaves();
+            loadWeather();
+            initMap();
+            window.addEventListener('resize', () => { if (map) map.invalidateSize(); });
+        };
+    </script>
+</body>
+</html>
