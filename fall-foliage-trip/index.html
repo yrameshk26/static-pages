@@ -277,12 +277,9 @@
                             </span>
                         </h2>
                         <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Accommodations: all hotels are booked and confirmed!</p>
-                        <p class="text-xs text-emerald-300 font-bold mb-5">🎉 Flume Gorge: booked &amp; confirmed — Sat Oct 10, 2:00 PM entry window, 2 adults (print-at-home tickets).</p>
+                        <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Flume Gorge: booked &amp; confirmed — Sat Oct 10, 2:00 PM entry window, 2 adults (print-at-home tickets).</p>
+                        <p class="text-xs text-emerald-300 font-bold mb-5">🎉 Scenic Train: booked &amp; confirmed — Valley Train Observation Dome, Sun Oct 11, 2:30–3:25 PM (2 adults, 1 child, 1 toddler). Arrive at the North Conway Depot by 2:00 PM — village traffic backs up during foliage season.</p>
                         <div class="space-y-3">
-                            <label class="flex items-start gap-3 cursor-pointer group/c">
-                                <input type="checkbox" data-key="train" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
-                                <span class="text-xs text-red-100/90 leading-relaxed"><b>Scenic Trains:</b> Foliage-themed train rides sell out their weekend slots by late summer.</span>
-                            </label>
                             <label class="flex items-start gap-3 cursor-pointer group/c">
                                 <input type="checkbox" data-key="dinner" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
                                 <span class="text-xs text-red-100/90 leading-relaxed"><b>Dinner Reservations:</b> Highly recommend booking a table for dinner in North Conway or Lincoln, NH, as wait times can exceed 2 hours for walk-ins.</span>
@@ -304,7 +301,7 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                            <h3 class="font-black text-white mb-1">Conway Scenic Railroad</h3>
+                            <h3 class="font-black text-white mb-1 flex items-center justify-between gap-2">Conway Scenic Railroad <span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Booked</span></h3>
                             <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> North Conway, NH</p>
                             <p class="text-xs text-amber-100/70 leading-relaxed">Departs from a beautiful 1874 Victorian station. The <em>Mountaineer</em> route is a 4-5 hour journey traversing the stunning Crawford Notch. It's widely considered the most classic "fall foliage" train.</p>
                         </div>
@@ -385,7 +382,7 @@
                 color: '#ef4444', colorName: 'crimson', ember: true,
                 activities: [
                     { text: 'Morning: Drive north to Lincoln, then take Kancamagus Hwy Eastbound.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
-                    { text: 'Afternoon: Scenic Train Ride in North Conway.', badge: 'Fold Stroller', badgeType: 'carrier' },
+                    { text: '2:30 PM: Valley Train Observation Dome Class from North Conway Depot, 38 Norcross Circle (booked — arrive by 2:00 PM, foliage-season traffic backs up into the village).', badge: 'Fold Stroller', badgeType: 'carrier' },
                     { text: 'Explore North Conway village and grab dinner.' }
                 ],
                 hotel: {
@@ -430,7 +427,7 @@
             { name: 'Flume Gorge, NH', coords: [44.0973, -71.6810], desc: 'Booked: Sat Oct 10, 2:00 PM entry · carrier needed' },
             { name: 'Gilford, NH', coords: [43.5476, -71.4067], desc: 'Night 2: TownePlace Suites' },
             { name: 'Lincoln, NH', coords: [44.0456, -71.6706], desc: 'Start of Kancamagus Hwy' },
-            { name: 'North Conway, NH', coords: [44.0537, -71.1284], desc: 'Night 3: Eastern Inn' },
+            { name: 'North Conway, NH', coords: [44.0537, -71.1284], desc: 'Night 3: Eastern Inn · Valley Train 2:30 PM (booked)' },
             { name: 'Lake George, NY', coords: [43.4262, -73.7123], desc: 'Day 4 lunch / leg-stretch stop' }
         ];
 
