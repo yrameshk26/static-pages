@@ -235,6 +235,11 @@
     <!-- Feed scroll progress -->
     <div id="scroll-progress"></div>
 
+    <!-- Mobile: toggle between itinerary and full-screen map -->
+    <button id="map-toggle" class="md:hidden fixed bottom-5 right-5 z-[80] w-12 h-12 rounded-full glass dark:glass flex items-center justify-center text-brand-ice shadow-xl active:scale-95 transition" aria-label="Toggle map view">
+        <i id="map-toggle-icon" class="fa-solid fa-map text-lg"></i>
+    </button>
+
     <!-- Top Navigation Bar -->
     <header class="absolute top-0 w-full z-50 glass dark:glass p-4 flex justify-between items-center transition-colors duration-300 shadow-md">
         <div class="flex items-center gap-3">
@@ -267,7 +272,7 @@
         </div>
 
         <!-- RIGHT: Scrollable "Layla-style" Itinerary Feed -->
-        <div id="feed" class="absolute inset-0 md:relative md:w-2/5 h-full z-10 overflow-y-auto no-scrollbar md:snap-y md:snap-proximity md:bg-brand-bg/95 md:dark:bg-brand-bg pointer-events-none md:pointer-events-auto shadow-2xl border-l border-white/5">
+        <div id="feed" class="absolute inset-0 md:relative md:w-2/5 h-full z-10 overflow-y-auto no-scrollbar md:snap-y md:snap-proximity md:bg-brand-bg/95 md:dark:bg-brand-bg shadow-2xl border-l border-white/5">
 
             <!-- Mobile padding to allow seeing the map at the top -->
             <div class="h-[40vh] h-[40dvh] md:hidden pointer-events-none"></div>
@@ -429,9 +434,12 @@
                             <div>
                                 <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">✈️ Transport</h4>
                                 <div class="space-y-2">
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400">
+                                        <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">Rental car booked:</b> Enterprise Rent-A-Car @ Rovaniemi Airport (RVN) — pick up Wed Dec 2, 10:00 AM · drop off Mon Dec 7, 9:00 AM.
+                                    </div>
                                     <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="t-suv" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Rental AWD SUV @ RVN Airport</b> — Dec 2–7. Studded ice tires + two toddler car seats.</span>
+                                        <input type="checkbox" data-key="t-suv-extras" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-ice focus:ring-brand-ice cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Confirm with Enterprise:</b> studded winter tires + two toddler car seats on the booking.</span>
                                     </label>
                                     <div class="text-[10px] text-slate-500 dark:text-slate-400 pl-7">
                                         <i class="fa-solid fa-check text-brand-aurora"></i> All flights and trains are booked: YYZ→LHR (VS148), LNER to Edinburgh (Coach B 27–30), EDI→HEL (AY1374), HEL→RVN (AY555), RVN→HEL (AY0532), HEL→KEF→YYZ (FI343/FI603).
@@ -727,7 +735,7 @@
                         items: [
                             { time: "08:00 AM", text: "Walk directly from Hilton to HEL terminal." },
                             { time: "09:50 AM", text: "Depart HEL on Finnair AY555." },
-                            { time: "11:15 AM", text: "Land at RVN. Pick up AWD SUV with studded ice tires." },
+                            { time: "11:15 AM", text: "Land at RVN. Pick up the booked Enterprise rental SUV — confirm studded ice tires at the counter." },
                             { time: "12:30 PM", text: "Groceries at Prisma/K-Market in Rovaniemi." },
                             { time: "01:30 PM", text: "Scenic 2-hour drive north to Levi in the daylight." },
                             { time: "04:00 PM", text: "Check into Aurora Pyramid Glass Igloos. Enjoy outdoor hot tub." }
@@ -806,7 +814,7 @@
                     {
                         dayName: "Monday, Dec 7 (Day 16)",
                         items: [
-                            { time: "07:15 AM", text: "Drive 10 mins to drop off SUV at RVN airport." },
+                            { time: "07:15 AM", text: "Drive 10 mins to drop off the Enterprise SUV at RVN airport (drop-off booked for 9:00 AM — arriving early is fine)." },
                             { time: "09:10 AM", text: "Depart RVN on Finnair AY0532 (booked)." },
                             { time: "10:25 AM", text: "Land HEL. Train into city. Check into Hotel St. George." },
                             { time: "02:00 PM", text: "Walk the Esplanadi for Christmas lights." },
@@ -1137,6 +1145,21 @@
             }
         });
 
+        // --- Mobile map/itinerary toggle ---
+        function setupMapToggle() {
+            const btn = document.getElementById('map-toggle');
+            if (!btn) return;
+            const icon = document.getElementById('map-toggle-icon');
+            const feed = document.getElementById('feed');
+            let mapMode = false;
+            btn.addEventListener('click', () => {
+                mapMode = !mapMode;
+                feed.style.display = mapMode ? 'none' : '';
+                icon.className = mapMode ? 'fa-solid fa-list text-lg' : 'fa-solid fa-map text-lg';
+                if (map) map.invalidateSize();
+            });
+        }
+
         // --- Booking checklist persistence (per device) + progress ring ---
         function updateRing() {
             const boxes = [...document.querySelectorAll('.book-check')];
@@ -1431,6 +1454,7 @@
         window.onload = () => {
             renderFeed();
             setupBookingChecklist();
+            setupMapToggle();
             setupReveal();
             setupTilt();
             setupFeedScrollFx();
