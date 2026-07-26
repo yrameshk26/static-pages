@@ -150,6 +150,11 @@
     <!-- Scroll progress -->
     <div id="scroll-progress"></div>
 
+    <!-- Mobile: toggle between itinerary and full-screen map -->
+    <button id="map-toggle" class="md:hidden fixed bottom-5 right-5 z-[80] w-12 h-12 rounded-full glass flex items-center justify-center text-fall-maple shadow-xl active:scale-95 transition" aria-label="Toggle map view">
+        <i id="map-toggle-icon" class="fa-solid fa-map text-lg"></i>
+    </button>
+
     <!-- Top bar -->
     <header class="absolute top-0 w-full z-50 glass p-4 flex justify-between items-center shadow-md">
         <div class="flex items-center gap-3">
@@ -175,7 +180,7 @@
         </div>
 
         <!-- Feed -->
-        <div id="feed" class="absolute inset-0 md:relative md:w-[45%] h-full z-10 overflow-y-auto no-scrollbar md:bg-fall-bg pointer-events-none md:pointer-events-auto shadow-2xl border-l border-amber-100/5">
+        <div id="feed" class="absolute inset-0 md:relative md:w-[45%] h-full z-10 overflow-y-auto no-scrollbar md:bg-fall-bg shadow-2xl border-l border-amber-100/5">
 
             <!-- Mobile spacer so the map shows through at the top -->
             <div class="h-[38vh] h-[38dvh] md:hidden pointer-events-none"></div>
@@ -645,6 +650,21 @@
             setInterval(tick, 1000);
         }
 
+        // --- Mobile map/itinerary toggle ---
+        function setupMapToggle() {
+            const btn = document.getElementById('map-toggle');
+            if (!btn) return;
+            const icon = document.getElementById('map-toggle-icon');
+            const feed = document.getElementById('feed');
+            let mapMode = false;
+            btn.addEventListener('click', () => {
+                mapMode = !mapMode;
+                feed.style.display = mapMode ? 'none' : '';
+                icon.className = mapMode ? 'fa-solid fa-list text-lg' : 'fa-solid fa-map text-lg';
+                if (map) map.invalidateSize();
+            });
+        }
+
         // --- Booking checklist persistence + ring ---
         function updateRing() {
             const boxes = [...document.querySelectorAll('.book-check')];
@@ -744,6 +764,7 @@
         window.onload = () => {
             renderFeed();
             setupBookingChecklist();
+            setupMapToggle();
             setupReveal();
             setupTilt();
             setupFeedScrollFx();
