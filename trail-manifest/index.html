@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trail Manifest — Camp Packing List</title>
+<meta name="description" content="Interactive camping packing list for group trips. Track kitchen gear, food, and supplies by family with real-time progress.">
+<meta name="theme-color" content="#10231c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg: #10231c;
+    --bg-card: #16302596;
+    --bg-card-solid: #1a3327;
+    --line: #2c4a3a;
+    --tan: #e8dcc4;
+    --tan-dim: #b9ab8c;
+    --ember: #e8823c;
+    --ember-dim: #a35b28;
+    --gold: #d8b45f;
+    --done: #6fae7c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(ellipse at 20% -10%, #1c3d2e 0%, var(--bg) 55%), var(--bg);
+    color: var(--tan);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    min-height:100dvh;
+    padding-bottom: 60px;
+  }
+  .wrap{ max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+  /* HERO */
+  header.hero{
+    padding: 28px 16px 20px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 90% 10%, rgba(232,130,60,0.15), transparent 45%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:"⛺"; font-size:12px; }
+  h1.title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.05;
+    margin: 8px 0 6px;
+    color: var(--tan);
+    letter-spacing: -0.01em;
+  }
+  .sub{
+    font-size: 14px;
+    color: var(--tan-dim);
+    line-height:1.5;
+    max-width: 46ch;
+  }
+  .trip-meta{
+    display:flex; gap: 18px; margin-top: 16px; flex-wrap:wrap;
+  }
+  .trip-meta div{ font-family:'IBM Plex Mono', monospace; font-size:12px; color: var(--tan-dim);}
+  .trip-meta b{ color: var(--tan); display:block; font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600;}
+
+  /* OVERALL PROGRESS STAMP */
+  .stamp-row{
+    display:flex; align-items:center; gap:14px; margin-top:22px;
+  }
+  .stamp{
+    width: 62px; height:62px; border-radius:50%;
+    border: 2px dashed var(--ember-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px;
+    color: var(--ember);
+    flex-shrink:0;
+    transform: rotate(-6deg);
+  }
+  .stamp-text{ font-size:13px; color: var(--tan-dim); }
+  .stamp-text b{ color:var(--tan); }
+
+  /* FAMILY NAV */
+  nav.families{
+    display:flex; gap:8px; overflow-x:auto; padding: 16px 16px 4px;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  nav.families::-webkit-scrollbar{ display:none; }
+  .fam-chip{
+    flex-shrink:0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 8px 13px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--bg-card-solid);
+    color: var(--tan-dim);
+    cursor:pointer;
+    white-space:nowrap;
+    transition: all .15s ease;
+  }
+  .fam-chip.active{
+    background: var(--ember);
+    border-color: var(--ember);
+    color: #1a1006;
+    font-weight:600;
+  }
+  .fam-chip .chip-count{
+    opacity:0.7; margin-left:4px;
+  }
+
+  main{ padding: 8px 16px 0; }
+
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color: var(--gold);
+    margin: 26px 0 10px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-label::after{
+    content:"";
+    flex:1; height:1px; background: var(--line);
+  }
+
+  .item{
+    display:flex; align-items:flex-start; gap:12px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--line);
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .item:last-child{ border-bottom:none; }
+  .item:focus-visible{ outline:2px solid var(--ember); outline-offset:2px; border-radius:6px; }
+  .fam-chip:focus-visible{ outline:2px solid var(--ember); outline-offset:2px; }
+  .check{
+    width:22px; height:22px; border-radius:6px;
+    border: 1.5px solid var(--tan-dim);
+    flex-shrink:0; margin-top:1px;
+    display:flex; align-items:center; justify-content:center;
+    transition: all .15s ease;
+  }
+  .check svg{ opacity:0; transition: opacity .12s ease; width:13px; height:13px;}
+  .item.checked .check{ background: var(--done); border-color: var(--done); }
+  .item.checked .check svg{ opacity:1; }
+  .item-body{ flex:1; min-width:0; }
+  .item-name{
+    font-size: 14.5px; font-weight:500; color: var(--tan);
+    line-height:1.35;
+  }
+  .item.checked .item-name{ color: var(--tan-dim); text-decoration: line-through; text-decoration-color: var(--tan-dim); }
+  .item-meta{
+    display:flex; gap:10px; margin-top:3px; flex-wrap:wrap;
+  }
+  .item-qty{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color: var(--gold);
+    background: rgba(216,180,95,0.1);
+    padding: 1px 7px; border-radius:8px;
+  }
+  .item-note{ font-size:12px; color: var(--tan-dim); font-style: italic; }
+  .item-family-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--tan-dim); flex-shrink:0; margin-top:1px;
+  }
+
+  .empty-note{
+    color: var(--tan-dim); font-size:13px; padding: 20px 4px; text-align:center;
+  }
+
+  .reset-bar{
+    max-width:640px; margin: 30px auto 0; padding: 0 16px;
+    display:flex; justify-content:center;
+  }
+  .reset-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:12px;
+    color: var(--tan-dim); background:none; border:1px solid var(--line);
+    padding: 8px 16px; border-radius:20px; cursor:pointer;
+  }
+  .reset-btn:hover{ color: var(--ember); border-color: var(--ember-dim); }
+
+  footer.note{
+    max-width:640px; margin: 22px auto 0; padding: 0 16px 10px;
+    font-size: 11.5px; color: var(--tan-dim); line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Group Camping · Aug 1–4</div>
+    <h1 class="title">Trail Manifest</h1>
+    <p class="sub">Every family's share of the common kitchen gear and food contribution — tap an item off as it goes in the car.</p>
+    <div class="trip-meta">
+      <div><b id="metaFamilies">8</b>families</div>
+      <div><b id="metaItems">0</b>total items</div>
+      <div><b>Fri–Mon</b>Aug 1st–4th</div>
+    </div>
+    <div class="stamp-row">
+      <div class="stamp" id="overallStamp">0%</div>
+      <div class="stamp-text"><b id="overallCount">0 / 0</b> packed across all families</div>
+    </div>
+  </header>
+
+  <nav class="families" id="familyNav"></nav>
+
+  <main id="mainList"></main>
+
+  <div class="reset-bar">
+    <button class="reset-btn" id="resetBtn">Clear all checkmarks</button>
+  </div>
+
+  <footer class="note">
+    Kitchen setup: one person per family, either Friday tent/tarp setup (2–6pm) or Monday teardown. Water bottles and mosquito repellent are bring-your-own for every family, not shared.
+  </footer>
+</div>
+
+<script>
+const DATA = [
+  // ---- KITCHEN EQUIPMENT (bring your own, take back) ----
+  {cat:"Kitchen Equipment", name:"Propane gas", qty:"1 tank", note:"refill at Costco, not gas station", family:"Varalakson"},
+  {cat:"Kitchen Equipment", name:"Propane gas", qty:"1 tank", note:"refill at Costco, not gas station", family:"Thivjhan"},
+  {cat:"Kitchen Equipment", name:"Big cooler with ice", qty:"1", family:"Thiru"},
+  {cat:"Kitchen Equipment", name:"Big cooler with ice", qty:"1", family:"Sayooran"},
+  {cat:"Kitchen Equipment", name:"Gas cooker / burner", qty:"1", family:"Thiru"},
+  {cat:"Kitchen Equipment", name:"Gas cooker / burner", qty:"1", family:"Thivjhan"},
+  {cat:"Kitchen Equipment", name:"Big rice cooker / Instant Pot", qty:"1", family:"Krishanth"},
+  {cat:"Kitchen Equipment", name:"Big rice cooker / Instant Pot", qty:"1", family:"Siva"},
+  {cat:"Kitchen Equipment", name:"Big tea preparing pot", qty:"1", family:"Krishanth"},
+  {cat:"Kitchen Equipment", name:"Big non-veg curry pot", qty:"1", family:"Ramesh"},
+  {cat:"Kitchen Equipment", name:"Big curry pot (kids meal)", qty:"1", family:"Sayooran"},
+  {cat:"Kitchen Equipment", name:"Kottu pan", qty:"1", family:"Ramesh"},
+  {cat:"Kitchen Equipment", name:"Egg fry pan", qty:"1", family:"Varalakson"},
+  {cat:"Kitchen Equipment", name:"Egg fry pan", qty:"1", family:"Siva"},
+  {cat:"Kitchen Equipment", name:"Big tarp for kitchen shade", qty:"1", family:"Abarna"},
+  {cat:"Kitchen Equipment", name:"Wood/plastic spoon (rice cooker)", qty:"1", family:"Varalakson"},
+  {cat:"Kitchen Equipment", name:"Wood/plastic spoon (rice cooker)", qty:"1", family:"Krishanth"},
+  {cat:"Kitchen Equipment", name:"Cutting knife", qty:"1", family:"Varalakson"},
+  {cat:"Kitchen Equipment", name:"Cutting knife", qty:"1", family:"Krishanth"},
+  {cat:"Kitchen Equipment", name:"Cutting knife", qty:"1", family:"Thiru"},
+  {cat:"Kitchen Equipment", name:"Big cooking spoon", qty:"2", family:"Thivjhan"},
+  {cat:"Kitchen Equipment", name:"Stainless steel spoon (non-veg)", qty:"2", family:"Ramesh"},
+  {cat:"Kitchen Equipment", name:"Stainless steel spoon (non-veg)", qty:"2", family:"Krishanth"},
+  {cat:"Kitchen Equipment", name:"Silicone spoons (veg)", qty:"2", family:"Krishanth"},
+  {cat:"Kitchen Equipment", name:"Vegetable cutting board", qty:"1", family:"Varalakson"},
+  {cat:"Kitchen Equipment", name:"Vegetable cutting board", qty:"1", family:"Abarna"},
+  {cat:"Kitchen Equipment", name:"Tarp for kitchen tent floor", qty:"1", family:"Ramesh"},
+  {cat:"Kitchen Equipment", name:"Tubelight for kitchen", qty:"1", family:"Sayooran"},
+  {cat:"Kitchen Equipment", name:"Tubelight for kitchen", qty:"1", family:"Thivjhan"},
+  {cat:"Kitchen Equipment", name:"Outdoor electric cord & connectors", qty:"50 ft", family:"Sayooran"},
+  {cat:"Kitchen Equipment", name:"Multi-plug", qty:"2", family:"Varalakson"},
+  {cat:"Kitchen Equipment", name:"Rope for kitchen", qty:"2", family:"Thivjhan"},
+  {cat:"Kitchen Equipment", name:"Rope for kitchen", qty:"2", family:"Siva"},
+  {cat:"Kitchen Equipment", name:"Water carrying bucket", qty:"1", family:"Abarna"},
+  {cat:"Kitchen Equipment", name:"Water carrying bucket", qty:"1", family:"Thiru"},
+  {cat:"Kitchen Equipment", name:"S'mores forks", qty:"2", family:"Thivjhan"},
+  {cat:"Kitchen Equipment", name:"S'mores forks", qty:"2", family:"Thiru"},
+  {cat:"Kitchen Equipment", name:"Volleyball", qty:"1", family:"Ramesh"},
+  {cat:"Kitchen Equipment", name:"Chilli powder", qty:"small portion", note:"most curry cooking is pre-done", family:"Abarna"},
+  {cat:"Kitchen Equipment", name:"Turmeric", qty:"small portion", family:"Abarna"},
+  {cat:"Kitchen Equipment", name:"Pepper", qty:"small portion", family:"Abarna"},
+
+  // ---- FOOD & GROCERIES ----
+  {cat:"Food & Groceries", name:"Frozen chicken curry (Sunday lunch)", qty:"1 set", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Frozen chicken curry (Sunday lunch)", qty:"1 set", family:"Ramesh"},
+  {cat:"Food & Groceries", name:"Frozen mutton curry (Saturday lunch)", qty:"1 set (~5 lb)", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Frozen mutton curry (Saturday lunch)", qty:"1 set (~5 lb)", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Frozen mutton curry (Saturday lunch)", qty:"1 set (~5 lb)", family:"Siva"},
+  {cat:"Food & Groceries", name:"Shrimp curry", qty:"1 Costco pack", family:"Sayooran"},
+  {cat:"Food & Groceries", name:"Shrimp curry", qty:"1 Costco pack", family:"Abarna"},
+  {cat:"Food & Groceries", name:"Shrimp curry", qty:"1 Costco pack", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Bread (brown)", qty:"3", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Bread (1 brown, 1 white)", qty:"2", family:"Sayooran"},
+  {cat:"Food & Groceries", name:"Frozen rotti", qty:"4 packs", family:"Ramesh"},
+  {cat:"Food & Groceries", name:"Frozen rotti", qty:"4 packs", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Eggs (white)", qty:"90", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Eggs (white)", qty:"30", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Eggs (white)", qty:"30", family:"Siva"},
+  {cat:"Food & Groceries", name:"Cake", qty:"3 dates + 3 butter", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Seeni sambal", qty:"optional", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Noodles (Harishchandra)", qty:"5", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Carrot", qty:"3 lb", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Leeks", qty:"1 bunch", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Red onion", qty:"10 lb", family:"Ramesh"},
+  {cat:"Food & Groceries", name:"Green chilli", qty:"1 pack", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Basmati rice (8 lb bag)", qty:"2", family:"Abarna"},
+  {cat:"Food & Groceries", name:"Eggplant", qty:"5 packs", family:"Abarna"},
+  {cat:"Food & Groceries", name:"Dhal", qty:"2 × 2 lb", family:"Abarna"},
+  {cat:"Food & Groceries", name:"Tin fish (Captain)", qty:"6", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Salt", qty:"Mora Day pickup", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Coconut milk tins", qty:"1 box (6) Costco Organic", family:"Sayooran"},
+  {cat:"Food & Groceries", name:"Vegetable oil", qty:"2 L", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Curry leaves", qty:"1", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Garlic", qty:"Walmart", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Tomato", qty:"3", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Watermelon (big)", qty:"3", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Watermelon (big)", qty:"3", family:"Siva"},
+  {cat:"Food & Groceries", name:"Pineapple", qty:"2", family:"Ramesh"},
+  {cat:"Food & Groceries", name:"Pineapple", qty:"2", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Marshmallows", qty:"2 packs", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Graham crackers", qty:"3 (NoName wafers 400g)", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Dairy milk chocolate", qty:"4", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Tea bags", qty:"Mora Day pickup", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Coffee", qty:"Mora Day pickup", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Tin milk", qty:"19", family:"Sayooran"},
+  {cat:"Food & Groceries", name:"Tin milk", qty:"6", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Dishwasher liquid", qty:"Mora Day pickup", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Cleaning / hand soap", qty:"1", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Kitchen table sheets", qty:"2, Mora Day pickup", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Paper plates", qty:"300, Costco", family:"Sayooran"},
+  {cat:"Food & Groceries", name:"Paper cups (no foam)", qty:"200, Costco", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Paper towels", qty:"Mora Day pickup", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Aluminium tray", qty:"Mora Day, Dollarama", family:"Thiru"},
+  {cat:"Food & Groceries", name:"Aluminum foil", qty:"1", family:"Krishanth"},
+  {cat:"Food & Groceries", name:"Mosquito device (Thermacell)", qty:"1/2 share", family:"Thivjhan"},
+  {cat:"Food & Groceries", name:"Fire starter", qty:"1, Dollarama", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Garbage bags", qty:"1 box", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Kitchen sponge", qty:"1 set, Dollarama", family:"Varalakson"},
+  {cat:"Food & Groceries", name:"Masala tea spices (cinnamon/cardamom/clove/ginger)", qty:"1 set", family:"Krishanth"},
+
+  // ---- EVERY FAMILY (bring your own) ----
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Sayooran"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Thiru"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Thivjhan"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Abarna"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Varalakson"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Siva"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Ramesh"},
+  {cat:"Every Family Brings", name:"Water bottles (4L jugs, for cooking)", qty:"2", family:"Krishanth"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Sayooran"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Thiru"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Thivjhan"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Abarna"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Varalakson"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Siva"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Ramesh"},
+  {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Krishanth"},
+];
+
+const FAMILIES = ["All","Ramesh","Sayooran","Thiru","Thivjhan","Abarna","Varalakson","Siva","Krishanth"];
+const CATS = ["Kitchen Equipment","Food & Groceries","Every Family Brings"];
+
+// give every item a stable id
+DATA.forEach((d,i)=> d.id = "item_"+i);
+
+let checked = {};
+let currentFamily = "All";
+
+const STORAGE_KEY = "trail-manifest-checked-v1";
+
+function loadState(){
+  // Browser storage: survives reloads and closing the tab, per device/browser.
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    checked = raw ? JSON.parse(raw) : {};
+  }catch(e){ checked = {}; }
+}
+
+function saveState(){
+  // Private-browsing quota errors must not break checking items off.
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); }
+  catch(e){ /* state stays in memory for this session */ }
+}
+
+function familyItemCount(fam){
+  if(fam === "All") return DATA.length;
+  return DATA.filter(d=>d.family===fam).length;
+}
+function familyCheckedCount(fam){
+  const items = fam === "All" ? DATA : DATA.filter(d=>d.family===fam);
+  return items.filter(d=>checked[d.id]).length;
+}
+
+function renderNav(){
+  const nav = document.getElementById("familyNav");
+  nav.innerHTML = "";
+  FAMILIES.forEach(fam=>{
+    const chip = document.createElement("div");
+    chip.className = "fam-chip" + (fam===currentFamily ? " active":"");
+    const total = familyItemCount(fam);
+    const done = familyCheckedCount(fam);
+    chip.innerHTML = `${fam}<span class="chip-count">${done}/${total}</span>`;
+    chip.setAttribute("role","tab");
+    chip.setAttribute("tabindex","0");
+    chip.setAttribute("aria-selected", fam===currentFamily ? "true" : "false");
+    const pick = ()=>{ currentFamily = fam; render(); };
+    chip.onclick = pick;
+    chip.onkeydown = e=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); pick(); } };
+    nav.appendChild(chip);
+  });
+}
+
+function renderList(){
+  const main = document.getElementById("mainList");
+  main.innerHTML = "";
+  const items = currentFamily === "All" ? DATA : DATA.filter(d=>d.family===currentFamily);
+
+  if(items.length === 0){
+    main.innerHTML = `<div class="empty-note">No items found.</div>`;
+    return;
+  }
+
+  CATS.forEach(cat=>{
+    const catItems = items.filter(d=>d.cat===cat);
+    if(catItems.length === 0) return;
+    const label = document.createElement("div");
+    label.className = "section-label";
+    label.textContent = cat;
+    main.appendChild(label);
+
+    catItems.forEach(d=>{
+      const row = document.createElement("div");
+      row.className = "item" + (checked[d.id] ? " checked":"");
+      row.dataset.id = d.id;
+      row.setAttribute("role","checkbox");
+      row.setAttribute("tabindex","0");
+      row.setAttribute("aria-checked", checked[d.id] ? "true" : "false");
+      row.innerHTML = `
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#0d1a12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="item-body">
+          <div class="item-name">${d.name}</div>
+          <div class="item-meta">
+            <span class="item-qty">${d.qty}</span>
+            ${d.note ? `<span class="item-note">${d.note}</span>` : ""}
+          </div>
+        </div>
+        ${currentFamily==="All" ? `<div class="item-family-tag">${d.family}</div>` : ""}
+      `;
+      const toggle = ()=>{
+        checked[d.id] = !checked[d.id];
+        saveState();
+        render();
+        // render() rebuilds the list, so restore focus to the row just toggled
+        const again = document.querySelector(`.item[data-id="${d.id}"]`);
+        if(again && document.activeElement !== again) again.focus({preventScroll:true});
+      };
+      row.onclick = toggle;
+      row.onkeydown = e=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); toggle(); } };
+      main.appendChild(row);
+    });
+  });
+}
+
+function renderOverall(){
+  const doneAll = DATA.filter(d=>checked[d.id]).length;
+  const totalAll = DATA.length;
+  const pct = totalAll ? Math.round((doneAll/totalAll)*100) : 0;
+  document.getElementById("overallStamp").textContent = pct + "%";
+  document.getElementById("overallCount").textContent = `${doneAll} / ${totalAll}`;
+  document.getElementById("metaItems").textContent = totalAll;
+  document.getElementById("metaFamilies").textContent = FAMILIES.length - 1;
+}
+
+function render(){
+  renderNav();
+  renderList();
+  renderOverall();
+}
+
+document.getElementById("resetBtn").onclick = ()=>{
+  if(confirm("Clear all checkmarks? This can't be undone.")){
+    checked = {};
+    saveState();
+    render();
+  }
+};
+
+// Reflect changes made in another tab of the same browser
+window.addEventListener("storage", e=>{
+  if(e.key === STORAGE_KEY){ loadState(); render(); }
+});
+
+loadState();
+render();
+</script>
+</body>
+</html>
