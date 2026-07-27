@@ -7,6 +7,25 @@
 <meta name="description" content="Samuel de Champlain Provincial Park, Jul 31 – Aug 3 2026: shared packing list, meal duties, daily schedule, and family roster.">
 <meta name="theme-color" content="#10231c">
 <meta name="robots" content="noindex, nofollow">
+
+<!-- Link preview (WhatsApp, iMessage, Slack, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Trail Manifest">
+<meta property="og:url" content="https://yrameshk26.github.io/static-pages/champlain-camping/">
+<meta property="og:title" content="Trail Manifest — Champlain Camping 2026">
+<meta property="og:description" content="Samuel de Champlain Provincial Park · Fri Jul 31 – Mon Aug 3, 2026. Packing list, cooking duties, daily schedule and family contacts for all 8 families.">
+<meta property="og:image" content="https://yrameshk26.github.io/static-pages/champlain-camping/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Trail Manifest — Samuel de Champlain camping trip, Jul 31 to Aug 3 2026">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trail Manifest — Champlain Camping 2026">
+<meta name="twitter:description" content="Samuel de Champlain Provincial Park · Fri Jul 31 – Mon Aug 3, 2026. Packing list, cooking duties, daily schedule and family contacts.">
+<meta name="twitter:image" content="https://yrameshk26.github.io/static-pages/champlain-camping/og-image.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛺</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Trail Manifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -325,7 +344,7 @@
     </div>
     <div class="stamp-row">
       <div class="stamp" id="overallStamp">0%</div>
-      <div class="stamp-text"><b id="overallCount">0 / 0</b> packed across all families</div>
+      <div class="stamp-text"><b id="overallCount">—</b> <span id="overallLabel">Pick your family below to track your own list</span></div>
     </div>
   </header>
 
@@ -756,12 +775,25 @@ function renderList(){
 }
 
 function renderOverall(){
-  const doneAll = DATA.filter(d=>checked[d.id]).length;
-  const totalAll = DATA.length;
-  const pct = totalAll ? Math.round((doneAll/totalAll)*100) : 0;
-  document.getElementById("overallStamp").textContent = pct + "%";
-  document.getElementById("overallCount").textContent = `${doneAll} / ${totalAll}`;
-  document.getElementById("metaItems").textContent = totalAll;
+  // Progress is per family — the only number that matters to you is your own.
+  const stamp = document.getElementById("overallStamp");
+  const count = document.getElementById("overallCount");
+  const label = document.getElementById("overallLabel");
+
+  if(currentFamily === "All"){
+    stamp.textContent = "—";
+    count.textContent = "";
+    label.textContent = "Pick your family below to track your own list";
+  } else {
+    const mine = DATA.filter(d=>d.family===currentFamily);
+    const done = mine.filter(d=>checked[d.id]).length;
+    const pct = mine.length ? Math.round((done/mine.length)*100) : 0;
+    stamp.textContent = pct + "%";
+    count.textContent = `${done} / ${mine.length}`;
+    label.textContent = `packed · ${currentFamily}`;
+  }
+
+  document.getElementById("metaItems").textContent = DATA.length;
   document.getElementById("metaFamilies").textContent = FAMILIES.length - 1;
 }
 
