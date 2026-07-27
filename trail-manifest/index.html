@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trail Manifest — Camp Packing List</title>
-<meta name="description" content="Interactive camping packing list for group trips. Track kitchen gear, food, and supplies by family with real-time progress.">
+<meta name="description" content="Camping trip organizer: shared packing list, meal duties, daily schedule, and family roster.">
 <meta name="theme-color" content="#10231c">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -148,8 +149,6 @@
     -webkit-tap-highlight-color: transparent;
   }
   .item:last-child{ border-bottom:none; }
-  .item:focus-visible{ outline:2px solid var(--ember); outline-offset:2px; border-radius:6px; }
-  .fam-chip:focus-visible{ outline:2px solid var(--ember); outline-offset:2px; }
   .check{
     width:22px; height:22px; border-radius:6px;
     border: 1.5px solid var(--tan-dim);
@@ -200,6 +199,106 @@
     max-width:640px; margin: 22px auto 0; padding: 0 16px 10px;
     font-size: 11.5px; color: var(--tan-dim); line-height:1.6;
   }
+
+  /* TOP-LEVEL TABS */
+  nav.tabs{
+    display:flex; gap:6px; padding: 18px 16px 0; overflow-x:auto;
+    -ms-overflow-style:none; scrollbar-width:none;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.tabs::-webkit-scrollbar{ display:none; }
+  .tab-chip{
+    flex-shrink:0;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size: 13.5px;
+    padding: 9px 14px 12px;
+    color: var(--tan-dim);
+    cursor:pointer;
+    border-bottom: 2px solid transparent;
+    white-space:nowrap;
+  }
+  .tab-chip.active{ color: var(--ember); border-bottom-color: var(--ember); }
+
+  .info-block{ padding: 6px 4px 4px; }
+  .info-card{
+    background: var(--bg-card-solid);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .info-card h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 14.5px; margin: 0 0 8px;
+    color: var(--gold);
+    display:flex; align-items:center; gap:8px;
+  }
+  .info-card p{ font-size: 13.5px; line-height:1.6; margin: 0 0 8px; color: var(--tan); }
+  .info-card p:last-child{ margin-bottom:0; }
+  .info-card ul{ margin:0; padding-left: 18px; }
+  .info-card li{ font-size:13.5px; line-height:1.6; margin-bottom:4px; }
+  .info-card.callout{ border-color: var(--ember-dim); }
+  .info-card.callout h3{ color: var(--ember); }
+
+  /* SCHEDULE */
+  .day-block{ margin-bottom: 16px; }
+  .day-title{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:15px;
+    color: var(--tan); margin-bottom:8px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .day-title::before{ content:"◆"; color:var(--ember); font-size:10px; }
+  .slot{
+    display:flex; gap: 12px; padding: 8px 4px; border-bottom:1px solid var(--line);
+  }
+  .slot:last-child{ border-bottom:none; }
+  .slot-time{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color: var(--gold);
+    flex-shrink:0; width: 92px; padding-top:1px;
+  }
+  .slot-activity{ font-size:13.5px; line-height:1.5; color: var(--tan); }
+  .slot-activity small{ display:block; color: var(--tan-dim); font-size:12px; margin-top:2px; }
+
+  /* MEAL DUTY TABLE */
+  .duty-table{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px;}
+  .duty-table th{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:0.06em; color: var(--gold); text-align:left; padding: 6px 6px; border-bottom:1px solid var(--line);
+  }
+  .duty-table td{ padding: 8px 6px; border-bottom:1px solid var(--line); vertical-align:top; color: var(--tan); line-height:1.45; }
+  .duty-table tr:last-child td{ border-bottom:none; }
+
+  /* ROSTER */
+  .roster-card{
+    background: var(--bg-card-solid); border:1px solid var(--line); border-radius:12px;
+    padding: 13px 16px; margin-bottom: 10px;
+  }
+  .roster-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+  .roster-name{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--tan); }
+  .roster-group{ font-family:'IBM Plex Mono',monospace; font-size:11px; color: var(--gold); }
+  .roster-row{ font-size:12.5px; color: var(--tan-dim); margin-top:5px; line-height:1.5; }
+  .roster-row b{ color: var(--tan); font-weight:500; }
+  .veg-badge{
+    display:inline-block; font-size:11.5px; color: var(--done);
+    background: rgba(111,174,124,0.12); border:1px solid rgba(111,174,124,0.35);
+    padding: 2px 8px; border-radius: 10px; margin-left:4px;
+  }
+  .fam-emoji{ margin-right:5px; }
+  .item:focus-visible, .fam-chip:focus-visible, .tab-chip:focus-visible{
+    outline:2px solid var(--ember); outline-offset:2px; border-radius:6px;
+  }
+  .roster-row a.tel{ color:inherit; text-decoration:none; }
+  .map-link{
+    display:inline-block; margin-top:6px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    color: var(--gold); text-decoration:none;
+  }
+  .map-link:hover{ text-decoration:underline; }
+  .map-embed{
+    width:100%; border:0; border-radius:10px; display:block; margin-top:8px;
+    filter: grayscale(0.15) contrast(1.05);
+  }
 </style>
 </head>
 <body>
@@ -208,7 +307,7 @@
   <header class="hero">
     <div class="eyebrow">Group Camping · Aug 1–4</div>
     <h1 class="title">Trail Manifest</h1>
-    <p class="sub">Every family's share of the common kitchen gear and food contribution — tap an item off as it goes in the car.</p>
+    <p class="sub">Packing list, duty roster, daily schedule, and family contacts for the trip — all in one place.</p>
     <div class="trip-meta">
       <div><b id="metaFamilies">8</b>families</div>
       <div><b id="metaItems">0</b>total items</div>
@@ -220,13 +319,24 @@
     </div>
   </header>
 
-  <nav class="families" id="familyNav"></nav>
+  <nav class="tabs" id="tabNav">
+    <div class="tab-chip active" data-tab="packing">🎒 Packing List</div>
+    <div class="tab-chip" data-tab="responsibilities">📋 Responsibilities</div>
+    <div class="tab-chip" data-tab="schedule">🗓️ Schedule</div>
+    <div class="tab-chip" data-tab="roster">👨‍👩‍👧‍👦 Roster</div>
+  </nav>
 
-  <main id="mainList"></main>
-
-  <div class="reset-bar">
-    <button class="reset-btn" id="resetBtn">Clear all checkmarks</button>
+  <div id="view-packing">
+    <nav class="families" id="familyNav"></nav>
+    <main id="mainList"></main>
+    <div class="reset-bar">
+      <button class="reset-btn" id="resetBtn">Clear all checkmarks</button>
+    </div>
   </div>
+
+  <div id="view-responsibilities" style="display:none;"></div>
+  <div id="view-schedule" style="display:none;"></div>
+  <div id="view-roster" style="display:none;"></div>
 
   <footer class="note">
     Kitchen setup: one person per family, either Friday tent/tarp setup (2–6pm) or Monday teardown. Water bottles and mosquito repellent are bring-your-own for every family, not shared.
@@ -355,8 +465,185 @@ const DATA = [
   {cat:"Every Family Brings", name:"Mosquito / tick repellent", qty:"1", family:"Krishanth"},
 ];
 
+const RESPONSIBILITIES = [
+  {title:"⛺ Kitchen setup & teardown", body:"One person from each family must join either Friday's setup (tarps, gazebo/kitchen tent, arranging at least 3 tables) or the final day's teardown (removing all equipment). Choose whichever fits your arrival/departure time — participation in one is mandatory."},
+  {title:"🍳 Common kitchen-use items", body:"Beyond food, every family contributes shared kitchen items (tarps, gazebo, kitchen tent, gas cylinders, cooking utensils, pots, etc). Whoever brings an item takes it back home — everyone must contribute to this category."},
+  {title:"🛒 Food contribution", body:"Every family takes part in bringing food per the meal plan below. Cost of these items gets shared and settled afterward."},
+  {title:"🧑‍🍳 Cooking & cleaning", body:"One adult per family joins cooking and cleaning per the assigned schedule (see Schedule tab)."},
+  {title:"📍 Kitchen site location", body:"Needs nearby water access and a central spot. Decide during booking — changing it on camping day is disruptive, so plan carefully up front."},
+  {title:"🏕️ Personal campsite setup", body:"Setting up, tearing down, and cleaning your own site is on you. Budget time for it, and don't let it clash with your scheduled common-kitchen duties. New to camping? Ask others for a hand."},
+  {title:"💰 Expenditure", body:"Total costs are split across all families. Log every receipt in the shared Excel sheet so it's counted in the final split."},
+];
+
+const RULES = [
+  "If your name is on a task, either you or your spouse must be present in the common kitchen area for that time slot — one adult per family is enough.",
+  "All shared items must reach the common kitchen area between 2–5pm on Friday, Aug 1st, since the tent will be up to store everything.",
+  "Receipts are required for all expenses.",
+  "Bring your own extra items, water bottles, or beverages that aren't part of the common supply."
+];
+
+const SCHEDULE_DAYS = [
+  { day:"Friday, Aug 1st", slots:[
+    {time:"2 – 6 pm", activity:"Personal tent setup"},
+    {time:"2 – 6 pm", activity:"Kitchen/common cooking area setup", note:"gazebo, big tarp, tables, tablecloths — one rep per family"},
+    {time:"4 – 6 pm", activity:"Free time", note:"explore the park, hike, swim, beach, volleyball"},
+  ]},
+  { day:"Saturday, Aug 2nd", slots:[
+    {time:"6:30 – 9:30am", activity:"Tea + breakfast", note:"Egg fry, dhal curry, bread heating"},
+    {time:"6:30 – 9:30am", activity:"Lunch prep"},
+    {time:"9:30am – 1pm", activity:"Free time", note:"swimming, beach, canoe, personal preference"},
+    {time:"1 – 3pm", activity:"Lunch", note:"Chicken curry (heat only), fresh eggplant curry, non-spicy chicken for kids, rice"},
+    {time:"3 – 5pm", activity:"Hiking"},
+    {time:"5pm", activity:"Evening tea + cake"},
+    {time:"6 – 8pm", activity:"Dinner", note:"Mutton curry (heat only), frozen rotti (heat only)"},
+    {time:"8pm", activity:"Camp fire + marshmallow s'mores for kids"},
+    {time:"8:30pm", activity:"Paddukku paaddu / games"},
+  ]},
+  { day:"Sunday, Aug 3rd", slots:[
+    {time:"6:30 – 9:30am", activity:"Tea + breakfast", note:"Egg fry, dhal curry, bread heating, tin fish curry"},
+    {time:"6:30 – 9:30am", activity:"Lunch prep"},
+    {time:"9:30am – 1pm", activity:"Free time", note:"swimming, beach, canoe, personal preference"},
+    {time:"1 – 3pm", activity:"Lunch", note:"Mutton curry (heat only), fresh eggplant curry, non-spicy egg curry for kids, rice"},
+    {time:"3 – 5pm", activity:"Hiking"},
+    {time:"5pm", activity:"Evening tea + cake"},
+    {time:"6 – 8pm", activity:"Dinner", note:"Shrimp curry (heat only), noodles cooked fresh"},
+    {time:"8pm", activity:"Camp fire + marshmallow s'mores for kids"},
+    {time:"8:30pm", activity:"Paddukku paaddu / games"},
+  ]},
+  { day:"Monday, Aug 4th", slots:[
+    {time:"6:30 – 9:30am", activity:"Tea + breakfast", note:"Egg fry, bread heating, dhal curry"},
+    {time:"after breakfast", activity:"Kitchen tent + tarp dismantle, site cleanup"},
+    {time:"10am – 2pm", activity:"Hiking"},
+    {time:"2pm", activity:"Departure"},
+  ]},
+];
+
+const DUTY_TABLE = [
+  {date:"Sat, Aug 2", meal:"Breakfast & Lunch", crew:"Thiru, Sayooran, Varalakson"},
+  {date:"Sat, Aug 2", meal:"Dinner + cleaning", crew:"1 rep each: Krishanth, Varalakson, Thivjhan, Ramesh"},
+  {date:"Sun, Aug 3", meal:"Breakfast & Lunch", crew:"Thivjhan, Abarna, Siva"},
+  {date:"Sun, Aug 3", meal:"Dinner + cleaning", crew:"1 rep each: Sayooran, Abarna, Thiru, Siva"},
+  {date:"Mon, Aug 4", meal:"Breakfast + cleaning", crew:"Krishanth, Ramesh"},
+  {date:"Mon, Aug 4", meal:"Kitchen site cleanup", crew:"1 person from every family"},
+];
+
+const ROSTER = [
+  {family:"Sayooran", group:"Group 1 · Site 48", members:"Sayoo, Vanchi, Viyoo, Vhaj", plate:"BWKJ093", phone:"647 887 3620", adults:2, kids:2, veg:""},
+  {family:"Thirupparan (Thiru)", group:"Group 1 · Site 48", members:"Thiru, Dushy, Mithra, Yathran", plate:"DHCX210", phone:"437 241 8863", adults:2, kids:2, veg:"Vegetarian on Friday only"},
+  {family:"Thivjhan", group:"Group 2 · Site 21", members:"Thivjhan, Laksi, Aara, Dhruvan", plate:"CTTC297", phone:"647 740 2499", adults:2, kids:2, veg:""},
+  {family:"Abarna", group:"Group 2 · Site 21", members:"Thuva, Abarna, Varniga, Ahaanaa", plate:"DAPR657", phone:"647 294 7245", adults:2, kids:2, veg:""},
+  {family:"Varalakson", group:"Group 4 · Site 58", members:"Varalakson, Mathurathy, Evvi", plate:"DBDP098", phone:"437 663 0260", adults:2, kids:1, veg:""},
+  {family:"Sivarajan (Siva)", group:"Group 4 · Site 58", members:"Sivarajan, Athuri", plate:"DBAH298", phone:"647 763 5873", adults:2, kids:0, veg:""},
+  {family:"Ramesh", group:"Group 3 · Site 40", members:"Ramesh, Abi, Aadhan, Aradhya", plate:"GVRS813", phone:"416 684 7983", adults:2, kids:2, veg:""},
+  {family:"Krishanth", group:"Group 3 · Site 40", members:"Krishanth, Inthuja, Nethra, Mithra", plate:"CASV995", phone:"647 676 5307", adults:2, kids:2, veg:""},
+];
+
 const FAMILIES = ["All","Ramesh","Sayooran","Thiru","Thivjhan","Abarna","Varalakson","Siva","Krishanth"];
-const CATS = ["Kitchen Equipment","Food & Groceries","Every Family Brings"];
+
+const FAMILY_EMOJI = {
+  All:"🏕️", Ramesh:"🧑‍🍳", Sayooran:"🎣", Thiru:"🥘", Thivjhan:"🌶️",
+  Abarna:"🍚", Varalakson:"🔥", Siva:"🍉", Krishanth:"🍫",
+};
+
+const ITEM_EMOJI_RULES = [
+  [/propane|gas cook|gas cylinder/i, "🔥"],
+  [/cooler|ice/i, "🧊"],
+  [/rice cooker|instant pot|rice/i, "🍚"],
+  [/tea pot|tea bag|tea /i, "🍵"],
+  [/coffee/i, "☕"],
+  [/curry pot|curry(?!.*leaves)/i, "🍛"],
+  [/kottu/i, "🥘"],
+  [/egg fry pan|egg/i, "🥚"],
+  [/tarp|tent|gazebo/i, "⛺"],
+  [/spoon|cutting board|knife/i, "🍴"],
+  [/tubelight|electric cord|multi-plug/i, "💡"],
+  [/rope/i, "🪢"],
+  [/bucket|water carrying/i, "🪣"],
+  [/s'mores|marshmallow/i, "🍡"],
+  [/volleyball/i, "🏐"],
+  [/chilli|pepper|turmeric|masala|spice/i, "🌶️"],
+  [/chicken/i, "🍗"],
+  [/mutton/i, "🍖"],
+  [/shrimp/i, "🍤"],
+  [/bread/i, "🍞"],
+  [/rotti/i, "🫓"],
+  [/cake/i, "🍰"],
+  [/noodles/i, "🍜"],
+  [/carrot|leeks|onion|eggplant|tomato|dhal|vegetable oil/i, "🥕"],
+  [/basmati|rice/i, "🍚"],
+  [/tin fish/i, "🐟"],
+  [/salt/i, "🧂"],
+  [/coconut milk/i, "🥥"],
+  [/watermelon/i, "🍉"],
+  [/pineapple/i, "🍍"],
+  [/chocolate/i, "🍫"],
+  [/graham crackers/i, "🍪"],
+  [/tin milk/i, "🥛"],
+  [/dishwasher|soap|sponge/i, "🧼"],
+  [/table sheets/i, "🧺"],
+  [/paper plates|paper cups|paper towels|aluminium tray|aluminum foil/i, "🍽️"],
+  [/mosquito|repellent|thermacell/i, "🦟"],
+  [/fire starter/i, "🔥"],
+  [/garbage bags/i, "🗑️"],
+  [/water bottle/i, "💧"],
+  [/^tent$|footprint|ground tarp/i, "⛺"],
+  [/rain cover|shade.*tarp|extra tarp/i, "🌂"],
+  [/sleeping bag/i, "🛏️"],
+  [/sleeping pad|air mattress/i, "🛌"],
+  [/pillow/i, "🛋️"],
+  [/camp chair/i, "🪑"],
+  [/camp table/i, "🪵"],
+  [/headlamp|flashlight/i, "🔦"],
+  [/lantern/i, "🏮"],
+  [/battery|power bank/i, "🔋"],
+  [/rain jacket|poncho/i, "🧥"],
+  [/warm layer/i, "🧣"],
+  [/swimwear|towels/i, "🏊"],
+  [/toiletries/i, "🧴"],
+  [/sunscreen/i, "🧴"],
+  [/first aid|meds/i, "🩹"],
+  [/phone charger/i, "🔌"],
+  [/personal cooler/i, "🧊"],
+  [/kids. essentials|diapers|wipes/i, "🍼"],
+];
+
+function itemEmoji(name){
+  for(const [re, emoji] of ITEM_EMOJI_RULES){
+    if(re.test(name)) return emoji;
+  }
+  return "🧳";
+}
+const CATS = ["Kitchen Equipment","Food & Groceries","Every Family Brings","Personal Camping Gear"];
+const CAT_EMOJI = { "Personal Camping Gear":"⛺", "Kitchen Equipment":"🍳", "Food & Groceries":"🛒", "Every Family Brings":"🎒" };
+
+const PERSONAL_ITEMS = [
+  {name:"Tent", qty:"1 per family"},
+  {name:"Tent footprint / ground tarp", qty:"1"},
+  {name:"Extra tarp (rain cover / shade)", qty:"1"},
+  {name:"Sleeping bags", qty:"1 per person"},
+  {name:"Sleeping pad / air mattress", qty:"1 per person"},
+  {name:"Pillows", qty:"1 per person"},
+  {name:"Camp chairs", qty:"1 per person"},
+  {name:"Camp table (personal site)", qty:"1", note:"if not using shared kitchen table"},
+  {name:"Flashlight / headlamp", qty:"1–2"},
+  {name:"Lantern", qty:"1"},
+  {name:"Extra batteries / power bank", qty:"as needed"},
+  {name:"Rain jacket / poncho", qty:"1 per person"},
+  {name:"Warm layer for night", qty:"1 per person"},
+  {name:"Swimwear & towels", qty:"1 per person"},
+  {name:"Toiletries", qty:"1 kit"},
+  {name:"Sunscreen", qty:"1"},
+  {name:"First aid / personal meds", qty:"1 kit"},
+  {name:"Phone charger", qty:"1"},
+  {name:"Personal cooler (snacks/drinks)", qty:"1"},
+  {name:"Kids' essentials (diapers, wipes, snacks)", qty:"as needed"},
+];
+
+FAMILIES.filter(f=>f!=="All").forEach(fam=>{
+  PERSONAL_ITEMS.forEach(pi=>{
+    DATA.push({cat:"Personal Camping Gear", name:pi.name, qty:pi.qty, note:pi.note, family:fam});
+  });
+});
 
 // give every item a stable id
 DATA.forEach((d,i)=> d.id = "item_"+i);
@@ -367,17 +654,15 @@ let currentFamily = "All";
 const STORAGE_KEY = "trail-manifest-checked-v1";
 
 function loadState(){
-  // Browser storage: survives reloads and closing the tab, per device/browser.
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    checked = raw ? JSON.parse(raw) : {};
+    if(raw){ checked = JSON.parse(raw); }
   }catch(e){ checked = {}; }
 }
 
 function saveState(){
-  // Private-browsing quota errors must not break checking items off.
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); }
-  catch(e){ /* state stays in memory for this session */ }
+  catch(e){ console.error("save failed", e); }
 }
 
 function familyItemCount(fam){
@@ -397,7 +682,7 @@ function renderNav(){
     chip.className = "fam-chip" + (fam===currentFamily ? " active":"");
     const total = familyItemCount(fam);
     const done = familyCheckedCount(fam);
-    chip.innerHTML = `${fam}<span class="chip-count">${done}/${total}</span>`;
+    chip.innerHTML = `<span class="fam-emoji">${FAMILY_EMOJI[fam]||"🏕️"}</span>${fam}<span class="chip-count">${done}/${total}</span>`;
     chip.setAttribute("role","tab");
     chip.setAttribute("tabindex","0");
     chip.setAttribute("aria-selected", fam===currentFamily ? "true" : "false");
@@ -423,7 +708,7 @@ function renderList(){
     if(catItems.length === 0) return;
     const label = document.createElement("div");
     label.className = "section-label";
-    label.textContent = cat;
+    label.textContent = `${CAT_EMOJI[cat]||"📦"} ${cat}`;
     main.appendChild(label);
 
     catItems.forEach(d=>{
@@ -438,7 +723,7 @@ function renderList(){
           <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#0d1a12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="item-body">
-          <div class="item-name">${d.name}</div>
+          <div class="item-name">${itemEmoji(d.name)} ${d.name}</div>
           <div class="item-meta">
             <span class="item-qty">${d.qty}</span>
             ${d.note ? `<span class="item-note">${d.note}</span>` : ""}
@@ -450,7 +735,6 @@ function renderList(){
         checked[d.id] = !checked[d.id];
         saveState();
         render();
-        // render() rebuilds the list, so restore focus to the row just toggled
         const again = document.querySelector(`.item[data-id="${d.id}"]`);
         if(again && document.activeElement !== again) again.focus({preventScroll:true});
       };
@@ -477,15 +761,121 @@ function render(){
   renderOverall();
 }
 
+function renderResponsibilities(){
+  const el = document.getElementById("view-responsibilities");
+  let html = `<div class="info-block">`;
+  RESPONSIBILITIES.forEach(r=>{
+    html += `<div class="info-card"><h3>${r.title}</h3><p>${r.body}</p></div>`;
+  });
+  html += `<div class="info-card callout"><h3>⚠️ Please read</h3><ul>`;
+  RULES.forEach(r=> html += `<li>${r}</li>`);
+  html += `</ul></div></div>`;
+  el.innerHTML = html;
+}
+
+function renderSchedule(){
+  const el = document.getElementById("view-schedule");
+  let html = `<div class="info-block">`;
+  html += `<div class="info-card"><h3>🧑‍🍳 Cooking & cleaning duty roster</h3>
+    <table class="duty-table"><tr><th>Day</th><th>Duty</th><th>Crew</th></tr>`;
+  DUTY_TABLE.forEach(d=>{
+    html += `<tr><td>${d.date}</td><td>${d.meal}</td><td>${d.crew}</td></tr>`;
+  });
+  html += `</table></div>`;
+
+  const DAY_EMOJI = {"Friday, Aug 1st":"🚗","Saturday, Aug 2nd":"🏖️","Sunday, Aug 3rd":"🥾","Monday, Aug 4th":"🧹"};
+  const slotEmoji = (a)=>{
+    if(/breakfast|tea/i.test(a)) return "☕";
+    if(/lunch/i.test(a)) return "🍽️";
+    if(/dinner/i.test(a)) return "🍛";
+    if(/hik/i.test(a)) return "🥾";
+    if(/camp fire|marshmallow/i.test(a)) return "🔥";
+    if(/game|paddukku/i.test(a)) return "🎲";
+    if(/free time/i.test(a)) return "🏊";
+    if(/setup|tent/i.test(a)) return "⛺";
+    if(/dismantle|cleanup/i.test(a)) return "🧹";
+    if(/departure/i.test(a)) return "🚗";
+    return "•";
+  };
+  SCHEDULE_DAYS.forEach(day=>{
+    html += `<div class="info-card day-block"><div class="day-title">${DAY_EMOJI[day.day]||"📅"} ${day.day}</div>`;
+    day.slots.forEach(s=>{
+      html += `<div class="slot">
+        <div class="slot-time">${s.time}</div>
+        <div class="slot-activity">${slotEmoji(s.activity)} ${s.activity}${s.note ? `<small>${s.note}</small>` : ""}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function renderRoster(){
+  const el = document.getElementById("view-roster");
+  let html = `<div class="info-block">`;
+  html += `<div class="info-card">
+    <h3>📍 Campsite location</h3>
+    <p>The sheet's booking preference round compared two parks — final pick isn't confirmed in the data, so here are both:</p>
+    <p style="margin-bottom:4px;"><b style="color:var(--tan)">Option A · Pinery — Riverside Area 4</b></p>
+    <iframe class="map-embed" height="160" loading="lazy" title="Map: Pinery Provincial Park, Riverside" src="https://www.google.com/maps?q=Pinery+Provincial+Park+Riverside&output=embed"></iframe>
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Pinery+Provincial+Park+Riverside" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+    <p style="margin:12px 0 4px;"><b style="color:var(--tan)">Option B · Algonquin — Pog Lake, Campground A</b></p>
+    <iframe class="map-embed" height="160" loading="lazy" title="Map: Algonquin Provincial Park, Pog Lake Campground" src="https://www.google.com/maps?q=Algonquin+Provincial+Park+Pog+Lake+Campground&output=embed"></iframe>
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Algonquin+Provincial+Park+Pog+Lake+Campground" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+  </div>`;
+  ROSTER.forEach(r=>{
+    html += `<div class="roster-card">
+      <div class="roster-head">
+        <div class="roster-name">${r.family}</div>
+        <div class="roster-group">${r.group}</div>
+      </div>
+      <div class="roster-row"><b>Members:</b> ${r.members}</div>
+      <div class="roster-row"><b>Plate:</b> ${r.plate} &nbsp;·&nbsp; <b>Phone:</b> <a class="tel" href="tel:${r.phone.replace(/\s/g,"")}">${r.phone}</a></div>
+      <div class="roster-row"><b>${r.adults} adults, ${r.kids} kids</b>${r.veg ? ` <span class="veg-badge">🥦 ${r.veg}</span>` : ""}</div>
+    </div>`;
+  });
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function switchTab(tab){
+  document.querySelectorAll(".tab-chip").forEach(c=>{
+    const on = c.dataset.tab === tab;
+    c.classList.toggle("active", on);
+    c.setAttribute("aria-selected", on ? "true" : "false");
+  });
+  ["packing","responsibilities","schedule","roster"].forEach(t=>{
+    document.getElementById("view-"+t).style.display = (t===tab) ? "" : "none";
+  });
+  if(tab==="responsibilities") renderResponsibilities();
+  if(tab==="schedule") renderSchedule();
+  if(tab==="roster") renderRoster();
+}
+
+document.querySelectorAll(".tab-chip").forEach(c=>{
+  c.setAttribute("role","tab");
+  c.setAttribute("tabindex","0");
+  c.setAttribute("aria-selected", c.classList.contains("active") ? "true" : "false");
+});
+document.getElementById("tabNav").addEventListener("click", (e)=>{
+  const chip = e.target.closest(".tab-chip");
+  if(chip) switchTab(chip.dataset.tab);
+});
+document.getElementById("tabNav").addEventListener("keydown", (e)=>{
+  if(e.key !== "Enter" && e.key !== " ") return;
+  const chip = e.target.closest(".tab-chip");
+  if(chip){ e.preventDefault(); switchTab(chip.dataset.tab); chip.focus(); }
+});
+
 document.getElementById("resetBtn").onclick = ()=>{
-  if(confirm("Clear all checkmarks? This can't be undone.")){
+  if(confirm("Clear all checkmarks?")){
     checked = {};
     saveState();
     render();
   }
 };
 
-// Reflect changes made in another tab of the same browser
 window.addEventListener("storage", e=>{
   if(e.key === STORAGE_KEY){ loadState(); render(); }
 });
