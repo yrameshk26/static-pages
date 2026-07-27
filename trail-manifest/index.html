@@ -816,13 +816,10 @@ function renderRoster(){
   let html = `<div class="info-block">`;
   html += `<div class="info-card">
     <h3>📍 Campsite location</h3>
-    <p>The sheet's booking preference round compared two parks — final pick isn't confirmed in the data, so here are both:</p>
-    <p style="margin-bottom:4px;"><b style="color:var(--tan)">Option A · Pinery — Riverside Area 4</b></p>
-    <iframe class="map-embed" height="160" loading="lazy" title="Map: Pinery Provincial Park, Riverside" src="https://www.google.com/maps?q=Pinery+Provincial+Park+Riverside&output=embed"></iframe>
-    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Pinery+Provincial+Park+Riverside" target="_blank" rel="noopener">Open in Google Maps ↗</a>
-    <p style="margin:12px 0 4px;"><b style="color:var(--tan)">Option B · Algonquin — Pog Lake, Campground A</b></p>
-    <iframe class="map-embed" height="160" loading="lazy" title="Map: Algonquin Provincial Park, Pog Lake Campground" src="https://www.google.com/maps?q=Algonquin+Provincial+Park+Pog+Lake+Campground&output=embed"></iframe>
-    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Algonquin+Provincial+Park+Pog+Lake+Campground" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+    <p style="margin-bottom:6px;"><b style="color:var(--tan)">Samuel de Champlain Provincial Park</b> · Site 2 <span class="veg-badge">✓ Booked</span></p>
+    <p style="margin:0 0 4px;">Fri, Jul 31 – Mon, Aug 3, 2026 &nbsp;·&nbsp; check-in 2:00 pm, check-out 2:00 pm</p>
+    <iframe class="map-embed" height="180" loading="lazy" title="Map: Samuel de Champlain Provincial Park" src="https://www.google.com/maps?q=Samuel+de+Champlain+Provincial+Park+Ontario&output=embed"></iframe>
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Samuel+de+Champlain+Provincial+Park+Ontario" target="_blank" rel="noopener">Open in Google Maps ↗</a>
   </div>`;
   ROSTER.forEach(r=>{
     html += `<div class="roster-card">
