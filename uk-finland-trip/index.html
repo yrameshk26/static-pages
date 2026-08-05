@@ -487,20 +487,15 @@
                             <div>
                                 <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ Finland and Lapland activities</h4>
                                 <div class="space-y-2">
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-tonttula" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Tonttula Elves Village</b>, Dec 3. Gingerbread baking session.</span>
-                                    </label>
                                     <div class="text-[10px] text-slate-500 dark:text-slate-400">
                                         <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">Husky Safari booked:</b> 5 km self-drive at Levi, Fri Dec 4, 10:50 AM, runs 2 hours 30 minutes. 2 adults, 1 child, 1 infant.
                                     </div>
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
+                                        <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">Sat Dec 5 snowmobiling booked, one adult each so the other has the kids:</b> Family Safari in Levi 10:30 AM, and Early Evening Aurora Tour by Snowmobile 5:30 PM (pick-up available).
+                                    </div>
                                     <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-snowvillage" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>SnowVillage (Ylläs)</b>, Dec 5. Ice hotel day visit.</span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-sleigh" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Aurora Snowmobile-Pulled Sleigh Ride</b>, Dec 5 evening.</span>
+                                        <input type="checkbox" data-key="a-aurora-info" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Finish the aurora tour booking</b>. The confirmation still says information is missing, so add the pick-up point (Levi Suites Levin Klubi).</span>
                                     </label>
                                     <label class="flex items-start gap-3 cursor-pointer group">
                                         <input type="checkbox" data-key="a-santapark" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
@@ -746,8 +741,8 @@
                 id: "day12", day: "Day 12-14", date: "Dec 3 - Dec 5", location: "Levi, Lapland",
                 lat: 67.8040, lng: 24.8082, zoom: 12, routeIdx: 5,
                 image: "https://images.unsplash.com/photo-1547407139-3c921a66005c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Elves, Huskies & Ice",
-                desc: "The core Lapland experience. Basecamp at Levin Klubi.",
+                title: "Huskies, Sleds & Aurora",
+                desc: "The core Lapland days, run out of Levin Klubi in the village.",
                 icon: "fa-dog", color: "brand-aurora",
                 hotels: [
                     { name: "Levi Suites Levin Klubi", area: "Levi village centre, with drying cabinets for snow gear", dates: "Dec 3-6 · 3 nights", booked: true }
@@ -757,7 +752,9 @@
                         dayName: "Thursday, Dec 3 (Day 12)",
                         items: [
                             { time: "10:30 AM", text: "Load heavy luggage into SUV (acts as locker for the day)." },
-                            { time: "11:00 AM", text: "Walk to adjacent Tonttula Elves Village. Bake gingerbread." },
+                            { time: "11:15 AM", text: "Daylight is short, so get outside first. Levi gondola up the fell is stroller friendly and under 6s ride free." },
+                            { time: "01:30 PM", text: "Lunch in Levi village once the light goes." },
+                            { time: "02:30 PM", text: "Water World at Levi Hotel Spa: kids pools, slides and the Ailu indoor play area next door. Walk in, no booking." },
                             { time: "05:00 PM", text: "Strict 5PM check-in at Levi Suites Levin Klubi. Unpack into drying cabinets." }
                         ]
                     },
@@ -771,8 +768,11 @@
                     {
                         dayName: "Saturday, Dec 5 (Day 14)",
                         items: [
-                            { time: "10:30 AM", text: "Drive to SnowVillage (Ylläs). Explore ice hotel." },
-                            { time: "04:00 PM", text: "Evening Snowmobile-Pulled Sleigh Ride hunting Auroras." }
+                            { time: "10:30 AM", text: "Family Safari in Levi by snowmobile (booked, one adult). Other parent has the kids." },
+                            { time: "11:00 AM", text: "Kid shift: sledding hill in the village, or back to Water World and the Ailu play area." },
+                            { time: "01:30 PM", text: "Everyone back together for a late lunch." },
+                            { time: "03:00 PM", text: "Quiet afternoon at the cabin so the kids nap before the evening handover." },
+                            { time: "05:30 PM", text: "Early Evening Aurora Tour by Snowmobile (booked, the other adult). Pick-up available, so set it to Levin Klubi." }
                         ]
                     }
                 ]
