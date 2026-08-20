@@ -140,6 +140,29 @@
             100% { background-position: 0% 50%; }
         }
         @media (prefers-reduced-motion: reduce) { .ember-card::before { animation: none; } }
+        /* --- Stay calendar --- */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+        .cal-month + .cal-month { margin-top: 18px; }
+        .cal-mtitle { font-size: 10px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; margin: 0 0 8px; opacity: .8; }
+        .cal-dow { text-align: center; font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; opacity: .45; padding-bottom: 3px; }
+        .cal-drow { margin-bottom: 2px; }
+        .cal-day { text-align: center; font-size: 11px; font-weight: 700; line-height: 1.55; border-radius: 6px; }
+        .cal-day.out { opacity: .18; }
+        .cal-day.trip { background: rgba(249, 115, 22, .15); }
+        .cal-bars { margin-bottom: 7px; min-height: 16px; align-content: start; }
+        .cal-bar { display: flex; align-items: center; height: 16px; padding: 0 4px; border-radius: 2px;
+                   font-size: 7.5px; font-weight: 900; color: #0b1020; overflow: hidden; }
+        .cal-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .cal-bar.s { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+        .cal-bar.e { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+        .cal-bar.tv { color: #f1f5f9; background-image: repeating-linear-gradient(115deg, rgba(255,255,255,.16) 0 5px, transparent 5px 10px); }
+        .cal-key { display: flex; align-items: flex-start; gap: 8px; }
+        .cal-chip { width: 11px; height: 11px; border-radius: 4px; flex: none; margin-top: 3px; }
+        @media (min-width: 768px) {
+            .cal-day { font-size: 13px; }
+            .cal-bars { min-height: 20px; }
+            .cal-bar { height: 20px; font-size: 9.5px; }
+        }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col">
@@ -163,7 +186,7 @@
             </div>
             <div>
                 <h1 class="text-sm md:text-base font-bold grad-maple">Fall Foliage Road Trip</h1>
-                <p class="text-[10px] text-amber-100/50 font-semibold uppercase tracking-wider">Ajax → New Hampshire · Oct 9–12, 2026</p>
+                <p class="text-[10px] text-amber-100/50 font-semibold uppercase tracking-wider">Ajax → New Hampshire · Oct 9 to 12, 2026</p>
             </div>
         </div>
         <span class="text-[10px] font-black uppercase tracking-widest bg-emerald-500/15 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Hotels Booked</span>
@@ -194,9 +217,9 @@
                             <img src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Autumn road" loading="eager" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.75]">
                             <div class="absolute inset-0 bg-gradient-to-t from-fall-bg via-fall-bg/30 to-transparent"></div>
                             <div class="absolute bottom-0 left-0 w-full p-6 md:p-8">
-                                <p class="text-amber-200/90 text-[10px] font-black uppercase tracking-[0.25em] mb-2">October Long Weekend · Fri–Mon</p>
+                                <p class="text-amber-200/90 text-[10px] font-black uppercase tracking-[0.25em] mb-2">October Long Weekend · Fri to Mon</p>
                                 <h2 class="text-3xl md:text-4xl font-black text-white drop-shadow-lg leading-tight">🍁 Fall Foliage<br>Road Trip</h2>
-                                <p class="text-amber-100/80 text-sm font-semibold italic mt-2">Ajax → New Hampshire, Oct 9–12, 2026</p>
+                                <p class="text-amber-100/80 text-sm font-semibold italic mt-2">Ajax → New Hampshire, Oct 9 to 12, 2026</p>
                             </div>
                         </div>
                         <div class="glass p-5 flex items-center gap-4">
@@ -204,8 +227,8 @@
                                 <i class="fa-solid fa-car-side text-fall-maple text-lg"></i>
                             </div>
                             <div>
-                                <p class="text-[10px] uppercase tracking-wider font-bold text-amber-100/50">Wheels roll — Fri Oct 9, after 6:00 PM</p>
-                                <p id="countdown" class="text-xl md:text-2xl font-black text-white tabular-nums">—</p>
+                                <p class="text-[10px] uppercase tracking-wider font-bold text-amber-100/50">Wheels roll, Fri Oct 9 after 6:00 PM</p>
+                                <p id="countdown" class="text-xl md:text-2xl font-black text-white tabular-nums">&middot;&middot;&middot;</p>
                             </div>
                         </div>
                     </div>
@@ -234,7 +257,20 @@
                 <!-- Journey map note (map itself is the live panel) -->
                 <div class="reveal glass rounded-2xl p-4 flex items-start gap-3">
                     <i class="fa-solid fa-map-location-dot text-fall-gold mt-0.5"></i>
-                    <p class="text-xs text-amber-100/70 leading-relaxed"><b class="text-white">Journey Map:</b> the live map traces your loop between the confirmed hotels as you scroll — Ajax → Watertown → the Adirondacks → the Lakes Region → North Conway → home. Tap any marker for the stop's details.</p>
+                    <p class="text-xs text-amber-100/70 leading-relaxed"><b class="text-white">Journey Map:</b> the live map traces your loop between the confirmed hotels as you scroll: Ajax to Watertown, the Adirondacks, the Lakes Region, North Conway, then home. Tap any marker for the stop's details.</p>
+                </div>
+
+                <!-- Stay calendar -->
+                <div class="reveal glass rounded-2xl p-5">
+                    <h3 class="text-sm font-black uppercase tracking-wider mb-1 flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-calendar-days text-fall-gold"></i> Where we sleep, night by night
+                    </h3>
+                    <p class="text-[10px] text-amber-100/60 mb-4">
+                        Every bar runs from check-in to check-out. Three single night stops on the way up and across,
+                        then Monday Oct 12 is the long drive back to Ajax with no hotel at the end of it.
+                    </p>
+                    <div id="stay-calendar" class="text-amber-50"></div>
+                    <div id="stay-legend" class="mt-4 pt-4 border-t border-amber-100/10 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-amber-50"></div>
                 </div>
 
                 <!-- Day cards -->
@@ -282,8 +318,8 @@
                             </span>
                         </h2>
                         <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Accommodations: all hotels are booked and confirmed!</p>
-                        <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Flume Gorge: booked &amp; confirmed — Sat Oct 10, 2:00 PM entry window, 2 adults (print-at-home tickets).</p>
-                        <p class="text-xs text-emerald-300 font-bold mb-5">🎉 Scenic Train: booked &amp; confirmed — Valley Train Observation Dome, Sun Oct 11, 2:30–3:25 PM (2 adults, 1 child, 1 toddler). Arrive at the North Conway Depot by 2:00 PM — village traffic backs up during foliage season.</p>
+                        <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Flume Gorge: booked &amp; confirmed. Sat Oct 10, 2:00 PM entry window, 2 adults (print-at-home tickets).</p>
+                        <p class="text-xs text-emerald-300 font-bold mb-5">🎉 Scenic Train: booked &amp; confirmed. Valley Train Observation Dome, Sun Oct 11, 2:30 to 3:25 PM (2 adults, 1 child, 1 toddler). Arrive at the North Conway Depot by 2:00 PM, village traffic backs up during foliage season.</p>
                         <div class="space-y-3">
                             <label class="flex items-start gap-3 cursor-pointer group/c">
                                 <input type="checkbox" data-key="dinner" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
@@ -358,7 +394,7 @@
                     name: 'Nest Inn', confirmed: true,
                     address: '23442 NY-37, Watertown, NY',
                     room: 'Deluxe Single Room, 1 King Bed',
-                    note: 'Call ahead to let them know you will be arriving late (approx. 9:30–10:00 PM).'
+                    note: 'Call ahead to let them know you will be arriving late (around 9:30 to 10:00 PM).'
                 }
             },
             {
@@ -370,7 +406,7 @@
                 activities: [
                     { text: 'Morning: Drive through the Adirondacks (Lake Placid area).' },
                     { text: 'Afternoon: Head into New Hampshire via I-93 South.' },
-                    { text: 'Stop at Flume Gorge (Franconia Notch) on the way down — booked for the 2:00 PM entry window.', badge: 'Carrier Needed', badgeType: 'carrier' },
+                    { text: 'Stop at Flume Gorge (Franconia Notch) on the way down, booked for the 2:00 PM entry window.', badge: 'Carrier Needed', badgeType: 'carrier' },
                     { text: 'Evening: Settle into the beautiful Lakes Region.' }
                 ],
                 hotel: {
@@ -387,7 +423,7 @@
                 color: '#ef4444', colorName: 'crimson', ember: true,
                 activities: [
                     { text: 'Morning: Drive north to Lincoln, then take Kancamagus Hwy Eastbound.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
-                    { text: '2:30 PM: Valley Train Observation Dome Class from North Conway Depot, 38 Norcross Circle (booked — arrive by 2:00 PM, foliage-season traffic backs up into the village).', badge: 'Fold Stroller', badgeType: 'carrier' },
+                    { text: '2:30 PM: Valley Train Observation Dome Class from North Conway Depot, 38 Norcross Circle (booked, arrive by 2:00 PM as foliage-season traffic backs up into the village).', badge: 'Fold Stroller', badgeType: 'carrier' },
                     { text: 'Explore North Conway village and grab dinner.' }
                 ],
                 hotel: {
@@ -398,7 +434,7 @@
             },
             {
                 id: 'day4', day: 'Day 4', date: 'Monday, Oct 12',
-                route: 'North Conway → Ajax', drive: '~8–9 hr drive',
+                route: 'North Conway → Ajax', drive: '~8 to 9 hr drive',
                 lat: 43.4262, lng: -73.7123, zoom: 7, routeIdx: 8,
                 image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
                 color: '#b45309', colorName: 'bronze',
@@ -474,7 +510,7 @@
                     hotelHtml = `
                     <div class="mt-5 flex items-center gap-3 bg-stone-800/40 rounded-2xl p-4 border border-amber-100/10 justify-center">
                         <span class="text-lg">🏡</span>
-                        <p class="text-xs font-bold text-amber-100/70 italic">Heading Home — no hotel tonight</p>
+                        <p class="text-xs font-bold text-amber-100/70 italic">Heading Home, no hotel tonight</p>
                     </div>`;
                 }
 
@@ -711,6 +747,111 @@
             } catch (e) {}
         }
 
+        // --- Stay calendar: a month grid where every night is a bar from check-in to check-out ---
+        function renderStayCalendar(cfg) {
+            const grid = document.getElementById(cfg.mount);
+            const key = document.getElementById(cfg.legend);
+            if (!grid) return;
+
+            const MS = 86400000;
+            const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+                            'July', 'August', 'September', 'October', 'November', 'December'];
+            const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const toUTC = s => { const p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
+            const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+            const fmt = ms => { const d = new Date(ms); return MONTHS[d.getUTCMonth()].slice(0, 3) + ' ' + d.getUTCDate(); };
+
+            const stays = cfg.stays.map(s => Object.assign({}, s, { f: toUTC(s.from), t: toUTC(s.to) }));
+            const tripFrom = Math.min.apply(null, stays.map(s => s.f));
+            const tripTo = Math.max.apply(null, stays.map(s => s.t));
+            const ws = cfg.weekStart;
+
+            let html = '';
+            cfg.months.forEach(m => {
+                const y = m[0], mo = m[1];
+                const first = Date.UTC(y, mo - 1, 1);
+                const dim = new Date(Date.UTC(y, mo, 0)).getUTCDate();
+                const lead = (new Date(first).getUTCDay() - ws + 7) % 7;
+                const start = first - lead * MS;
+                const weeks = Math.ceil((lead + dim) / 7);
+
+                html += '<div class="cal-month">';
+                html += '<div class="cal-mtitle">' + MONTHS[mo - 1] + ' ' + y + '</div>';
+                html += '<div class="cal-grid">';
+                for (let i = 0; i < 7; i++) html += '<div class="cal-dow">' + DOW[(ws + i) % 7] + '</div>';
+                html += '</div>';
+
+                const moFrom = first, moTo = Date.UTC(y, mo, 1);
+                for (let w = 0; w < weeks; w++) {
+                    const wk = start + w * 7 * MS;
+
+                    html += '<div class="cal-grid cal-drow">';
+                    for (let i = 0; i < 7; i++) {
+                        const at = wk + i * MS;
+                        const d = new Date(at);
+                        const out = d.getUTCMonth() !== mo - 1;
+                        const on = !out && at >= tripFrom && at < tripTo;
+                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip' : '') + '">' + d.getUTCDate() + '</div>';
+                    }
+                    html += '</div>';
+
+                    const segs = [];
+                    stays.forEach(s => {
+                        const a = Math.max(s.f, wk, moFrom), b = Math.min(s.t, wk + 7 * MS, moTo);
+                        if (b <= a) return;
+                        segs.push({
+                            s: s,
+                            col: Math.round((a - wk) / MS) + 1,
+                            span: Math.round((b - a) / MS),
+                            head: a === s.f, tail: b === s.t
+                        });
+                    });
+                    segs.sort((a, b) => a.col - b.col);
+                    const lanes = [];
+                    segs.forEach(g => {
+                        let l = 0;
+                        while (lanes[l] !== undefined && lanes[l] > g.col) l++;
+                        lanes[l] = g.col + g.span;
+                        g.lane = l + 1;
+                    });
+
+                    html += '<div class="cal-grid cal-bars" style="grid-template-rows:repeat(' + Math.max(lanes.length, 1) + ',auto)">';
+                    segs.forEach(g => {
+                        html += '<div class="cal-bar' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
+                            '" style="grid-column:' + g.col + '/span ' + g.span + ';grid-row:' + g.lane +
+                            ';background:' + g.s.color + '" title="' + esc(g.s.name) + '"><span>' + esc(g.s.short) + '</span></div>';
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+            grid.innerHTML = html;
+
+            if (key) {
+                key.innerHTML = stays.map(s => {
+                    const n = Math.round((s.t - s.f) / MS);
+                    return '<div class="cal-key">' +
+                        '<span class="cal-chip" style="background:' + s.color + '"></span>' +
+                        '<div class="min-w-0">' +
+                        '<p class="text-[11px] font-black leading-tight">' + esc(s.name) + '</p>' +
+                        '<p class="text-[9px] opacity-60 leading-tight mt-0.5">' + (s.when ? esc(s.when) : fmt(s.f) + ' to ' + fmt(s.t) + ' &middot; ' + n + (n === 1 ? ' night' : ' nights')) + '</p>' +
+                        (s.area ? '<p class="text-[9px] opacity-50 leading-tight">' + esc(s.area) + '</p>' : '') +
+                        '</div></div>';
+                }).join('');
+            }
+        }
+
+        const STAY_CALENDAR = {
+            mount: 'stay-calendar', legend: 'stay-legend', weekStart: 0,
+            months: [[2026, 10]],
+            stays: [
+                { short: 'Nest Inn', name: 'Nest Inn', area: 'Watertown, NY. Deluxe single, 1 king bed', from: '2026-10-09', to: '2026-10-10', color: '#f59e0b' },
+                { short: 'Towne', name: 'TownePlace Suites Laconia Gilford', area: 'Gilford, NH. Free breakfast', from: '2026-10-10', to: '2026-10-11', color: '#84cc16' },
+                { short: 'Eastern', name: 'Eastern Inn & Suites', area: 'North Conway, NH. Standard, 1 king bed', from: '2026-10-11', to: '2026-10-12', color: '#f97316' },
+                { short: 'Drive', name: 'Drive home to Ajax', area: 'Roughly 8 to 9 hours on the road, sleep in your own bed', when: 'Mon Oct 12, no hotel', from: '2026-10-12', to: '2026-10-13', color: '#57534e', travel: true }
+            ]
+        };
+
         // --- Reveals, tilt, parallax, progress bar ---
         function setupReveal() {
             const els = document.querySelectorAll('.reveal, .reveal-3d');
@@ -763,6 +904,7 @@
         // --- Init ---
         window.onload = () => {
             renderFeed();
+            renderStayCalendar(STAY_CALENDAR);
             setupBookingChecklist();
             setupMapToggle();
             setupReveal();
