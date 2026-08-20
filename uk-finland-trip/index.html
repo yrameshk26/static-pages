@@ -227,6 +227,29 @@
         /* Gradient section titles */
         .grad-gold { background: linear-gradient(120deg, #facc15, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .grad-aurora { background: linear-gradient(120deg, #10b981, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* --- Stay calendar --- */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+        .cal-month + .cal-month { margin-top: 18px; }
+        .cal-mtitle { font-size: 10px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; margin: 0 0 8px; opacity: .8; }
+        .cal-dow { text-align: center; font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; opacity: .45; padding-bottom: 3px; }
+        .cal-drow { margin-bottom: 2px; }
+        .cal-day { text-align: center; font-size: 11px; font-weight: 700; line-height: 1.55; border-radius: 6px; }
+        .cal-day.out { opacity: .18; }
+        .cal-day.trip { background: rgba(250, 204, 21, .13); }
+        .cal-bars { margin-bottom: 7px; min-height: 16px; align-content: start; }
+        .cal-bar { display: flex; align-items: center; height: 16px; padding: 0 4px; border-radius: 2px;
+                   font-size: 7.5px; font-weight: 900; color: #0b1020; overflow: hidden; }
+        .cal-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .cal-bar.s { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+        .cal-bar.e { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+        .cal-bar.tv { color: #f1f5f9; background-image: repeating-linear-gradient(115deg, rgba(255,255,255,.16) 0 5px, transparent 5px 10px); }
+        .cal-key { display: flex; align-items: flex-start; gap: 8px; }
+        .cal-chip { width: 11px; height: 11px; border-radius: 4px; flex: none; margin-top: 3px; }
+        @media (min-width: 768px) {
+            .cal-day { font-size: 13px; }
+            .cal-bars { min-height: 20px; }
+            .cal-bar { height: 20px; font-size: 9.5px; }
+        }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
@@ -509,6 +532,21 @@
                         <div class="mt-4 pt-3 border-t border-slate-300 dark:border-slate-700 text-[10px] text-slate-500 italic">
                             <i class="fa-solid fa-lightbulb text-yellow-500"></i> Tip: Confirm operators provide age-appropriate helmets/blankets for the 2 and 4yo. Checkboxes save automatically on this device.
                         </div>
+                    </div>
+                </div>
+
+                <!-- Stay calendar -->
+                <div class="snap-start pt-6 reveal">
+                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+                        <h3 class="text-sm font-black uppercase tracking-wider mb-1 flex items-center gap-2 text-slate-900 dark:text-white">
+                            <i class="fa-solid fa-calendar-days text-brand-ice"></i> Where we sleep, night by night
+                        </h3>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4">
+                            Every bar runs from check-in to check-out, so a three night stay stretches across three days on the grid.
+                            Nov 22 is the overnight flight, and the last bed is Dec 7 in Helsinki before the Dec 8 flight home.
+                        </p>
+                        <div id="stay-calendar" class="text-slate-800 dark:text-slate-100"></div>
+                        <div id="stay-legend" class="mt-4 pt-4 border-t border-slate-300 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-slate-700 dark:text-slate-200"></div>
                     </div>
                 </div>
 
@@ -1265,6 +1303,116 @@
             update();
         }
 
+        // --- Stay calendar: a month grid where every night is a bar from check-in to check-out ---
+        function renderStayCalendar(cfg) {
+            const grid = document.getElementById(cfg.mount);
+            const key = document.getElementById(cfg.legend);
+            if (!grid) return;
+
+            const MS = 86400000;
+            const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+                            'July', 'August', 'September', 'October', 'November', 'December'];
+            const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const toUTC = s => { const p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
+            const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+            const fmt = ms => { const d = new Date(ms); return MONTHS[d.getUTCMonth()].slice(0, 3) + ' ' + d.getUTCDate(); };
+
+            const stays = cfg.stays.map(s => Object.assign({}, s, { f: toUTC(s.from), t: toUTC(s.to) }));
+            const tripFrom = Math.min.apply(null, stays.map(s => s.f));
+            const tripTo = Math.max.apply(null, stays.map(s => s.t));
+            const ws = cfg.weekStart;
+
+            let html = '';
+            cfg.months.forEach(m => {
+                const y = m[0], mo = m[1];
+                const first = Date.UTC(y, mo - 1, 1);
+                const dim = new Date(Date.UTC(y, mo, 0)).getUTCDate();
+                const lead = (new Date(first).getUTCDay() - ws + 7) % 7;
+                const start = first - lead * MS;
+                const weeks = Math.ceil((lead + dim) / 7);
+
+                html += '<div class="cal-month">';
+                html += '<div class="cal-mtitle">' + MONTHS[mo - 1] + ' ' + y + '</div>';
+                html += '<div class="cal-grid">';
+                for (let i = 0; i < 7; i++) html += '<div class="cal-dow">' + DOW[(ws + i) % 7] + '</div>';
+                html += '</div>';
+
+                const moFrom = first, moTo = Date.UTC(y, mo, 1);
+                for (let w = 0; w < weeks; w++) {
+                    const wk = start + w * 7 * MS;
+
+                    html += '<div class="cal-grid cal-drow">';
+                    for (let i = 0; i < 7; i++) {
+                        const at = wk + i * MS;
+                        const d = new Date(at);
+                        const out = d.getUTCMonth() !== mo - 1;
+                        const on = !out && at >= tripFrom && at < tripTo;
+                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip' : '') + '">' + d.getUTCDate() + '</div>';
+                    }
+                    html += '</div>';
+
+                    const segs = [];
+                    stays.forEach(s => {
+                        const a = Math.max(s.f, wk, moFrom), b = Math.min(s.t, wk + 7 * MS, moTo);
+                        if (b <= a) return;
+                        segs.push({
+                            s: s,
+                            col: Math.round((a - wk) / MS) + 1,
+                            span: Math.round((b - a) / MS),
+                            head: a === s.f, tail: b === s.t
+                        });
+                    });
+                    segs.sort((a, b) => a.col - b.col);
+                    const lanes = [];
+                    segs.forEach(g => {
+                        let l = 0;
+                        while (lanes[l] !== undefined && lanes[l] > g.col) l++;
+                        lanes[l] = g.col + g.span;
+                        g.lane = l + 1;
+                    });
+
+                    html += '<div class="cal-grid cal-bars" style="grid-template-rows:repeat(' + Math.max(lanes.length, 1) + ',auto)">';
+                    segs.forEach(g => {
+                        html += '<div class="cal-bar' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
+                            '" style="grid-column:' + g.col + '/span ' + g.span + ';grid-row:' + g.lane +
+                            ';background:' + g.s.color + '" title="' + esc(g.s.name) + '"><span>' + esc(g.s.short) + '</span></div>';
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+            grid.innerHTML = html;
+
+            if (key) {
+                key.innerHTML = stays.map(s => {
+                    const n = Math.round((s.t - s.f) / MS);
+                    return '<div class="cal-key">' +
+                        '<span class="cal-chip" style="background:' + s.color + '"></span>' +
+                        '<div class="min-w-0">' +
+                        '<p class="text-[11px] font-black leading-tight">' + esc(s.name) + '</p>' +
+                        '<p class="text-[9px] opacity-60 leading-tight mt-0.5">' + (s.when ? esc(s.when) : fmt(s.f) + ' to ' + fmt(s.t) + ' &middot; ' + n + (n === 1 ? ' night' : ' nights')) + '</p>' +
+                        (s.area ? '<p class="text-[9px] opacity-50 leading-tight">' + esc(s.area) + '</p>' : '') +
+                        '</div></div>';
+                }).join('');
+            }
+        }
+
+        const STAY_CALENDAR = {
+            mount: 'stay-calendar', legend: 'stay-legend', weekStart: 1,
+            months: [[2026, 11], [2026, 12]],
+            stays: [
+                { short: 'VS148', name: 'Overnight on VS148', area: 'Toronto to London, sleep on the plane', when: 'Night of Sun Nov 22, in the air', from: '2026-11-22', to: '2026-11-23', color: '#64748b', travel: true },
+                { short: 'BoTree', name: 'The BoTree London', area: 'Marylebone, London', from: '2026-11-23', to: '2026-11-24', color: '#f472b6' },
+                { short: 'The Stratford', name: 'The Stratford, Autograph Collection', area: 'Stratford, London', from: '2026-11-24', to: '2026-11-27', color: '#a78bfa' },
+                { short: 'Caledonian', name: 'The Caledonian', area: 'Princes Street, Edinburgh', from: '2026-11-27', to: '2026-11-30', color: '#facc15' },
+                { short: 'Hilton', name: 'Hilton Helsinki Airport', area: 'Indoor walkway to the terminal', from: '2026-11-30', to: '2026-12-02', color: '#38bdf8' },
+                { short: 'Igloo', name: 'Aurora Pyramid Glass Igloos', area: 'Levi, Lapland, outdoor hot tub', from: '2026-12-02', to: '2026-12-03', color: '#34d399' },
+                { short: 'Levin Klubi', name: 'Levi Suites Levin Klubi', area: 'Levi village centre, drying cabinets', from: '2026-12-03', to: '2026-12-06', color: '#22d3ee' },
+                { short: 'Lomav', name: 'Lomavekarit Apartments', area: 'Near Rovaniemi Airport', from: '2026-12-06', to: '2026-12-07', color: '#fb923c' },
+                { short: 'St.G', name: 'Hotel St. George', area: 'Helsinki centre, spa and sauna', from: '2026-12-07', to: '2026-12-08', color: '#f87171' }
+            ]
+        };
+
         // --- Scroll-in reveal animations ---
         function setupReveal() {
             const els = document.querySelectorAll('.reveal, .reveal-3d');
@@ -1460,6 +1608,7 @@
         // --- Initialization ---
         window.onload = () => {
             renderFeed();
+            renderStayCalendar(STAY_CALENDAR);
             setupBookingChecklist();
             setupMapToggle();
             setupReveal();
