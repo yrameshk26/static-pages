@@ -150,6 +150,20 @@
             .cal-bars { min-height: 20px; }
             .cal-bar { height: 20px; font-size: 9.5px; }
         }
+        /* Calendar days and bars are jump targets */
+        .cal-day.hit, .cal-bar.hit { cursor: pointer; }
+        .cal-day.hit { transition: background .15s ease, transform .15s ease; }
+        .cal-day.hit:hover { background: rgba(249, 115, 22, .34); transform: translateY(-1px); }
+        .cal-bar.hit:hover { filter: brightness(1.14); }
+        .cal-day.hit:focus-visible, .cal-bar.hit:focus-visible { outline: 2px solid #f59e0b; outline-offset: 2px; }
+        .cal-flash { animation: calFlash 2s ease; }
+        @keyframes calFlash {
+            0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+            10%  { box-shadow: 0 0 0 4px rgba(245, 158, 11, .6); }
+            60%  { box-shadow: 0 0 0 4px rgba(245, 158, 11, .38); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) { .cal-flash { animation-duration: .01s; } }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col">
@@ -255,6 +269,7 @@
                     <p class="text-[10px] text-amber-100/60 mb-4">
                         Every bar runs from check-in to check-out. Three single night stops on the way up and across,
                         then Monday Oct 12 is the long drive back to Ajax with no hotel at the end of it.
+                        Tap any highlighted day to jump straight to that part of the plan.
                     </p>
                     <div id="stay-calendar" class="text-amber-50"></div>
                     <div id="stay-legend" class="mt-4 pt-4 border-t border-amber-100/10 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-amber-50"></div>
@@ -366,7 +381,7 @@
         // --- Trip data (every detail from the original itinerary) ---
         const days = [
             {
-                id: 'day1', day: 'Day 1', date: 'Friday, Oct 9',
+                id: 'day1', day: 'Day 1', date: 'Friday, Oct 9', from: '2026-10-09', to: '2026-10-09',
                 route: 'Ajax → Watertown, NY', drive: '~3 hr drive',
                 lat: 43.9748, lng: -75.9108, zoom: 9, routeIdx: 1,
                 image: 'https://images.unsplash.com/photo-1465447142348-e9952c393450?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
@@ -384,7 +399,7 @@
                 }
             },
             {
-                id: 'day2', day: 'Day 2', date: 'Saturday, Oct 10',
+                id: 'day2', day: 'Day 2', date: 'Saturday, Oct 10', from: '2026-10-10', to: '2026-10-10',
                 route: 'Watertown → Gilford, NH', drive: '~5.5 hr drive total',
                 lat: 43.5476, lng: -71.4067, zoom: 8, routeIdx: 4,
                 image: 'https://images.unsplash.com/photo-1508923567004-3a6b8004f3d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
@@ -402,7 +417,7 @@
                 }
             },
             {
-                id: 'day3', day: 'Day 3', date: 'Sunday, Oct 11',
+                id: 'day3', day: 'Day 3', date: 'Sunday, Oct 11', from: '2026-10-11', to: '2026-10-11',
                 route: 'Gilford → North Conway', drive: '~2.5 hr total scenic drive',
                 lat: 44.0537, lng: -71.1284, zoom: 9, routeIdx: 6,
                 image: 'https://images.unsplash.com/photo-1445964047600-cdbdb873673d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
@@ -419,7 +434,7 @@
                 }
             },
             {
-                id: 'day4', day: 'Day 4', date: 'Monday, Oct 12',
+                id: 'day4', day: 'Day 4', date: 'Monday, Oct 12', from: '2026-10-12', to: '2026-10-12',
                 route: 'North Conway → Ajax', drive: '~8 to 9 hr drive',
                 lat: 43.4262, lng: -73.7123, zoom: 7, routeIdx: 8,
                 image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
@@ -477,7 +492,7 @@
                 }
 
                 container.innerHTML += `
-                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${d.ember ? 'ember-card' : ''}">
+                    <div data-from="${d.from}" data-to="${d.to}" class="snap-start scroll-mt-4 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${d.ember ? 'ember-card' : ''}">
                         <div class="tilt-card bg-fall-surface rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-amber-100/10">
                             <div class="relative w-full h-48 md:h-56 overflow-hidden">
                                 <img src="${d.image}" alt="${d.route}" loading="lazy" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.8] group-hover:brightness-95 transition-[filter] duration-700">
@@ -653,7 +668,10 @@
                         const d = new Date(at);
                         const out = d.getUTCMonth() !== mo - 1;
                         const on = !out && at >= tripFrom && at < tripTo;
-                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip' : '') + '">' + d.getUTCDate() + '</div>';
+                        const iso = d.toISOString().slice(0, 10);
+                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip hit' : '') + '"' +
+                            (on ? ' data-date="' + iso + '" role="button" tabindex="0" title="Jump to this day"' : '') +
+                            '>' + d.getUTCDate() + '</div>';
                     }
                     html += '</div>';
 
@@ -665,7 +683,8 @@
                             s: s,
                             col: Math.round((a - wk) / MS) + 1,
                             span: Math.round((b - a) / MS),
-                            head: a === s.f, tail: b === s.t
+                            head: a === s.f, tail: b === s.t,
+                            iso: new Date(a).toISOString().slice(0, 10)
                         });
                     });
                     segs.sort((a, b) => a.col - b.col);
@@ -679,9 +698,10 @@
 
                     html += '<div class="cal-grid cal-bars" style="grid-template-rows:repeat(' + Math.max(lanes.length, 1) + ',auto)">';
                     segs.forEach(g => {
-                        html += '<div class="cal-bar' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
+                        html += '<div class="cal-bar hit' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
                             '" style="grid-column:' + g.col + '/span ' + g.span + ';grid-row:' + g.lane +
-                            ';background:' + g.s.color + '" title="' + esc(g.s.name) + '"><span>' + esc(g.s.short) + '</span></div>';
+                            ';background:' + g.s.color + '" data-date="' + g.iso + '" role="button" tabindex="0"' +
+                            ' title="' + esc(g.s.name) + ', jump to this day"><span>' + esc(g.s.short) + '</span></div>';
                     });
                     html += '</div>';
                 }
@@ -713,6 +733,50 @@
                 { short: 'Drive', name: 'Drive home to Ajax', area: 'Roughly 8 to 9 hours on the road, sleep in your own bed', when: 'Mon Oct 12, no hotel', from: '2026-10-12', to: '2026-10-13', color: '#57534e', travel: true }
             ]
         };
+
+        // --- Tapping a calendar day scrolls the feed to the card that covers it ---
+        function setupCalendarJump() {
+            const grid = document.getElementById('stay-calendar');
+            const cards = document.getElementById('itinerary-feed');
+            if (!grid || !cards) return;
+
+            const jump = iso => {
+                if (!iso) return;
+                // ISO dates compare correctly as plain strings
+                const card = [...cards.querySelectorAll('[data-from]')]
+                    .find(c => iso >= c.dataset.from && iso <= c.dataset.to);
+                if (!card) return;
+                const feed = document.getElementById('feed');
+                // The reveal animation rotates and shifts the card, and scrollIntoView measures
+                // that transformed box, which overshoots by a couple of hundred pixels. Reveal it
+                // with the transition suppressed so one reflow gives the true layout position,
+                // then scroll to that instead.
+                const t = card.style.transition;
+                card.style.transition = 'none';
+                card.classList.add('in');
+                void card.offsetWidth;
+                const top = feed.scrollTop + card.getBoundingClientRect().top - feed.getBoundingClientRect().top - 12;
+                card.style.transition = t;
+                feed.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' });
+                const flash = card.querySelector('.tilt-card') || card;
+                flash.classList.remove('cal-flash');
+                void flash.offsetWidth;
+                flash.classList.add('cal-flash');
+                setTimeout(() => flash.classList.remove('cal-flash'), 2100);
+            };
+
+            grid.addEventListener('click', e => {
+                const t = e.target.closest('[data-date]');
+                if (t) jump(t.getAttribute('data-date'));
+            });
+            grid.addEventListener('keydown', e => {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                const t = e.target.closest('[data-date]');
+                if (!t) return;
+                e.preventDefault();
+                jump(t.getAttribute('data-date'));
+            });
+        }
 
         // --- Reveals, tilt, parallax, progress bar ---
         function setupReveal() {
@@ -767,6 +831,7 @@
         window.onload = () => {
             renderFeed();
             renderStayCalendar(STAY_CALENDAR);
+            setupCalendarJump();
             setupBookingChecklist();
             setupReveal();
             setupTilt();
