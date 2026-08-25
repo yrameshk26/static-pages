@@ -226,6 +226,20 @@
                    text-transform: uppercase; padding: 2.5px 7px; border-radius: 999px;
                    border: 1px solid currentColor; white-space: nowrap; }
         .att-card + .att-card { border-top: 1px solid rgba(148, 163, 184, .16); }
+        /* Calendar days and bars are jump targets */
+        .cal-day.hit, .cal-bar.hit { cursor: pointer; }
+        .cal-day.hit { transition: background .15s ease, transform .15s ease; }
+        .cal-day.hit:hover { background: rgba(250, 204, 21, .30); transform: translateY(-1px); }
+        .cal-bar.hit:hover { filter: brightness(1.14); }
+        .cal-day.hit:focus-visible, .cal-bar.hit:focus-visible { outline: 2px solid #22d3ee; outline-offset: 2px; }
+        .cal-flash { animation: calFlash 2s ease; }
+        @keyframes calFlash {
+            0%   { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+            10%  { box-shadow: 0 0 0 4px rgba(34, 211, 238, .6); }
+            60%  { box-shadow: 0 0 0 4px rgba(34, 211, 238, .38); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) { .cal-flash { animation-duration: .01s; } }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
@@ -503,6 +517,7 @@
                         <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4">
                             Every bar runs from check-in to check-out, so a three night stay stretches across three days on the grid.
                             Nov 21 is the overnight flight, and the last bed is Dec 7 in Helsinki before the Dec 8 flight home.
+                            Tap any highlighted day to jump straight to that part of the plan.
                         </p>
                         <div id="stay-calendar" class="text-slate-800 dark:text-slate-100"></div>
                         <div id="stay-legend" class="mt-4 pt-4 border-t border-slate-300 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-slate-700 dark:text-slate-200"></div>
@@ -573,7 +588,7 @@
         // Added rich images, precise map coordinates, and detailed daily schedules
         const itineraryData = [
             {
-                id: "day1", day: "Day 1", date: "Sat, Nov 21", location: "Toronto to London",
+                id: "day1", day: "Day 1", date: "Sat, Nov 21", from: "2026-11-21", to: "2026-11-21", location: "Toronto to London",
                 lat: 51.5074, lng: -0.1278, zoom: 4, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1507992781348-310259076fe0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Departure & Red-Eye",
@@ -595,7 +610,7 @@
                 ]
             },
             {
-                id: "day2", day: "Day 2-3", date: "Nov 22 - Nov 23", location: "London, UK",
+                id: "day2", day: "Day 2-3", date: "Nov 22 - Nov 23", from: "2026-11-22", to: "2026-11-23", location: "London, UK",
                 lat: 51.5074, lng: -0.1278, zoom: 12, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "The Royal Footprint",
@@ -638,7 +653,7 @@
                 ]
             },
             {
-                id: "day4", day: "Day 4-6", date: "Nov 24 - Nov 26", location: "London, UK",
+                id: "day4", day: "Day 4-6", date: "Nov 24 - Nov 26", from: "2026-11-24", to: "2026-11-26", location: "London, UK",
                 lat: 51.5074, lng: -0.1278, zoom: 13, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Waxworks, Guards and Dinosaurs",
@@ -683,7 +698,7 @@
                 ]
             },
             {
-                id: "day6", day: "Day 7-9", date: "Nov 27 - Nov 29", location: "Edinburgh, Scotland",
+                id: "day6", day: "Day 7-9", date: "Nov 27 - Nov 29", from: "2026-11-27", to: "2026-11-29", location: "Edinburgh, Scotland",
                 lat: 55.9533, lng: -3.1883, zoom: 13, routeIdx: 2,
                 image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Volcanic Vistas via Rail",
@@ -722,7 +737,7 @@
                 ]
             },
             {
-                id: "day9", day: "Day 10-11", date: "Nov 30 - Dec 1", location: "Helsinki, Finland",
+                id: "day9", day: "Day 10-11", date: "Nov 30 - Dec 1", from: "2026-11-30", to: "2026-12-01", location: "Helsinki, Finland",
                 lat: 60.1695, lng: 24.9354, zoom: 12, routeIdx: 3,
                 image: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Nordic Acclimatization",
@@ -753,7 +768,7 @@
                 ]
             },
             {
-                id: "day11", day: "Day 12", date: "Wed, Dec 2", location: "Levi, Lapland",
+                id: "day11", day: "Day 12", date: "Wed, Dec 2", from: "2026-12-02", to: "2026-12-02", location: "Levi, Lapland",
                 lat: 67.8040, lng: 24.8082, zoom: 10, routeIdx: 5,
                 image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Arctic Arrival & Igloos",
@@ -777,7 +792,7 @@
                 ]
             },
             {
-                id: "day12", day: "Day 13-15", date: "Dec 3 - Dec 5", location: "Levi, Lapland",
+                id: "day12", day: "Day 13-15", date: "Dec 3 - Dec 5", from: "2026-12-03", to: "2026-12-05", location: "Levi, Lapland",
                 lat: 67.8040, lng: 24.8082, zoom: 12, routeIdx: 5,
                 image: "https://images.unsplash.com/photo-1547407139-3c921a66005c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Huskies, Sleds & Aurora",
@@ -817,7 +832,7 @@
                 ]
             },
             {
-                id: "day15", day: "Day 16", date: "Sun, Dec 6", location: "Rovaniemi, Lapland",
+                id: "day15", day: "Day 16", date: "Sun, Dec 6", from: "2026-12-06", to: "2026-12-06", location: "Rovaniemi, Lapland",
                 lat: 66.5039, lng: 25.7294, zoom: 11, routeIdx: 6,
                 image: "https://images.unsplash.com/photo-1576692155415-95f820a2c4c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "SantaPark Underground",
@@ -839,7 +854,7 @@
                 ]
             },
             {
-                id: "day16", day: "Day 17-18", date: "Dec 7 - Dec 8", location: "Helsinki to Home",
+                id: "day16", day: "Day 17-18", date: "Dec 7 - Dec 8", from: "2026-12-07", to: "2026-12-08", location: "Helsinki to Home",
                 lat: 60.1695, lng: 24.9354, zoom: 13, routeIdx: 7,
                 image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Grand Finale & Launch Home",
@@ -936,7 +951,7 @@
 
                 const isAurora = day.color === 'brand-aurora';
                 const html = `
-                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${isAurora ? 'aurora-card' : ''}" data-snow="${isAurora ? 2.4 : 1}">
+                    <div data-from="${day.from}" data-to="${day.to}" class="snap-start scroll-mt-4 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${isAurora ? 'aurora-card' : ''}" data-snow="${isAurora ? 2.4 : 1}">
                         <div class="tilt-card bg-white dark:bg-slate-900/95 rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-slate-200 dark:border-white/10">
 
                             <!-- Header image with parallax -->
@@ -1151,7 +1166,10 @@
                         const d = new Date(at);
                         const out = d.getUTCMonth() !== mo - 1;
                         const on = !out && at >= tripFrom && at < tripTo;
-                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip' : '') + '">' + d.getUTCDate() + '</div>';
+                        const iso = d.toISOString().slice(0, 10);
+                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip hit' : '') + '"' +
+                            (on ? ' data-date="' + iso + '" role="button" tabindex="0" title="Jump to this day"' : '') +
+                            '>' + d.getUTCDate() + '</div>';
                     }
                     html += '</div>';
 
@@ -1163,7 +1181,8 @@
                             s: s,
                             col: Math.round((a - wk) / MS) + 1,
                             span: Math.round((b - a) / MS),
-                            head: a === s.f, tail: b === s.t
+                            head: a === s.f, tail: b === s.t,
+                            iso: new Date(a).toISOString().slice(0, 10)
                         });
                     });
                     segs.sort((a, b) => a.col - b.col);
@@ -1177,9 +1196,10 @@
 
                     html += '<div class="cal-grid cal-bars" style="grid-template-rows:repeat(' + Math.max(lanes.length, 1) + ',auto)">';
                     segs.forEach(g => {
-                        html += '<div class="cal-bar' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
+                        html += '<div class="cal-bar hit' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
                             '" style="grid-column:' + g.col + '/span ' + g.span + ';grid-row:' + g.lane +
-                            ';background:' + g.s.color + '" title="' + esc(g.s.name) + '"><span>' + esc(g.s.short) + '</span></div>';
+                            ';background:' + g.s.color + '" data-date="' + g.iso + '" role="button" tabindex="0"' +
+                            ' title="' + esc(g.s.name) + ', jump to this day"><span>' + esc(g.s.short) + '</span></div>';
                     });
                     html += '</div>';
                 }
@@ -1312,6 +1332,50 @@
             mount.innerHTML = t + m;
         }
 
+        // --- Tapping a calendar day scrolls the feed to the card that covers it ---
+        function setupCalendarJump() {
+            const grid = document.getElementById('stay-calendar');
+            const cards = document.getElementById('itinerary-feed');
+            if (!grid || !cards) return;
+
+            const jump = iso => {
+                if (!iso) return;
+                // ISO dates compare correctly as plain strings
+                const card = [...cards.querySelectorAll('[data-from]')]
+                    .find(c => iso >= c.dataset.from && iso <= c.dataset.to);
+                if (!card) return;
+                const feed = document.getElementById('feed');
+                // The reveal animation rotates and shifts the card, and scrollIntoView measures
+                // that transformed box, which overshoots by a couple of hundred pixels. Reveal it
+                // with the transition suppressed so one reflow gives the true layout position,
+                // then scroll to that instead.
+                const t = card.style.transition;
+                card.style.transition = 'none';
+                card.classList.add('in');
+                void card.offsetWidth;
+                const top = feed.scrollTop + card.getBoundingClientRect().top - feed.getBoundingClientRect().top - 12;
+                card.style.transition = t;
+                feed.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' });
+                const flash = card.querySelector('.tilt-card') || card;
+                flash.classList.remove('cal-flash');
+                void flash.offsetWidth;
+                flash.classList.add('cal-flash');
+                setTimeout(() => flash.classList.remove('cal-flash'), 2100);
+            };
+
+            grid.addEventListener('click', e => {
+                const t = e.target.closest('[data-date]');
+                if (t) jump(t.getAttribute('data-date'));
+            });
+            grid.addEventListener('keydown', e => {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                const t = e.target.closest('[data-date]');
+                if (!t) return;
+                e.preventDefault();
+                jump(t.getAttribute('data-date'));
+            });
+        }
+
         // --- Scroll-in reveal animations ---
         function setupReveal() {
             const els = document.querySelectorAll('.reveal, .reveal-3d');
@@ -1391,6 +1455,7 @@
             renderFeed();
             renderStayCalendar(STAY_CALENDAR);
             renderAttractions();
+            setupCalendarJump();
             setupBookingChecklist();
             setupReveal();
             setupTilt();
