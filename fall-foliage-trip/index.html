@@ -14,10 +14,6 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -60,7 +56,10 @@
             height: 100dvh;
         }
 
-        #feed { -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+        /* overflow-x is clamped because the reveal animation rotates cards on X, which
+           inflates their box and would otherwise let the page slide sideways on phones. */
+        #feed { -webkit-overflow-scrolling: touch; touch-action: pan-y;
+                overflow-x: hidden; overscroll-behavior-y: contain; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -71,10 +70,6 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(250, 200, 120, 0.09);
         }
-
-        .leaflet-container { background: #14100b; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .leaflet-popup-content-wrapper { background: rgba(29,23,16,0.92); backdrop-filter: blur(8px); color: #faf7f2; border: 1px solid rgba(250,200,120,0.15); border-radius: 12px; }
-        .leaflet-popup-tip { background: rgba(29,23,16,0.92); }
 
         /* Gradient text */
         .grad-maple { background: linear-gradient(120deg, #f59e0b, #f97316, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
@@ -96,14 +91,6 @@
 
         /* Falling leaves */
         #leaf-canvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
-
-        /* Car marker on the route */
-        .car-marker {
-            width: 32px; height: 32px; border-radius: 50%; background: #f97316;
-            display: flex; align-items: center; justify-content: center; color: #1c1006;
-            border: 2px solid #fff7ed; font-size: 14px;
-            box-shadow: 0 0 18px rgba(249, 115, 22, .85);
-        }
 
         /* 3D tilt + hover shine */
         .tilt-wrap { perspective: 1000px; }
@@ -173,45 +160,26 @@
     <!-- Scroll progress -->
     <div id="scroll-progress"></div>
 
-    <!-- Mobile: toggle between itinerary and full-screen map -->
-    <button id="map-toggle" class="md:hidden fixed bottom-5 right-5 z-[80] w-12 h-12 rounded-full glass flex items-center justify-center text-fall-maple shadow-xl active:scale-95 transition" aria-label="Toggle map view">
-        <i id="map-toggle-icon" class="fa-solid fa-map text-lg"></i>
-    </button>
-
     <!-- Top bar -->
-    <header class="absolute top-0 w-full z-50 glass p-4 flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-red-600 p-[2px]">
+    <header class="flex-none w-full z-50 glass p-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 flex-none rounded-full bg-gradient-to-br from-amber-500 to-red-600 p-[2px]">
                 <div class="w-full h-full bg-fall-bg rounded-full flex items-center justify-center text-lg">🍁</div>
             </div>
-            <div>
-                <h1 class="text-sm md:text-base font-bold grad-maple">Fall Foliage Road Trip</h1>
-                <p class="text-[10px] text-amber-100/50 font-semibold uppercase tracking-wider">Ajax → New Hampshire · Oct 9 to 12, 2026</p>
+            <div class="min-w-0">
+                <h1 class="text-sm md:text-base font-bold grad-maple truncate">Fall Foliage Road Trip</h1>
+                <p class="text-[10px] text-amber-100/50 font-semibold uppercase tracking-wider truncate">Ajax → New Hampshire · Oct 9 to 12, 2026</p>
             </div>
         </div>
-        <span class="text-[10px] font-black uppercase tracking-widest bg-emerald-500/15 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Hotels Booked</span>
+        <span class="text-[10px] font-black uppercase tracking-widest bg-emerald-500/15 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/30 whitespace-nowrap flex-none ml-2"><i class="fa-solid fa-check"></i> <span class="hidden sm:inline">Hotels </span>Booked</span>
     </header>
 
-    <!-- Split layout: map + feed -->
-    <div class="flex h-full w-full relative pt-[72px]">
-
-        <!-- Map -->
-        <div id="map-container" class="absolute inset-0 md:relative md:w-[55%] h-full z-0">
-            <div id="map" class="w-full h-full"></div>
-            <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-fall-bg to-transparent hidden md:block z-[400] pointer-events-none"></div>
-            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent md:hidden z-[400] pointer-events-none"></div>
-        </div>
-
-        <!-- Feed -->
-        <div id="feed" class="absolute inset-0 md:relative md:w-[45%] h-full z-10 overflow-y-auto no-scrollbar md:bg-fall-bg shadow-2xl border-l border-amber-100/5">
-
-            <!-- Mobile spacer so the map shows through at the top -->
-            <div class="h-[38vh] h-[38dvh] md:hidden pointer-events-none"></div>
-
-            <div class="pointer-events-auto px-4 pb-32 space-y-6 md:space-y-8 md:pt-8 md:px-8">
+    <!-- Itinerary: fills the window, no map column -->
+    <div id="feed" class="flex-1 min-h-0 w-full z-10 overflow-y-auto no-scrollbar">
+        <div class="w-full max-w-5xl mx-auto px-4 md:px-8 pt-5 md:pt-8 pb-24 space-y-6 md:space-y-8">
 
                 <!-- Hero -->
-                <div class="reveal-3d tilt-wrap group" data-lat="43.8509" data-lng="-79.0204" data-zoom="6" data-route-idx="0">
+                <div class="reveal-3d tilt-wrap group">
                     <div class="tilt-card rounded-[2rem] overflow-hidden shadow-card border border-amber-100/10 relative">
                         <div class="relative h-56 md:h-72 overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Autumn road" loading="eager" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.75]">
@@ -254,10 +222,29 @@
                     </div>
                 </div>
 
-                <!-- Journey map note (map itself is the live panel) -->
-                <div class="reveal glass rounded-2xl p-4 flex items-start gap-3">
-                    <i class="fa-solid fa-map-location-dot text-fall-gold mt-0.5"></i>
-                    <p class="text-xs text-amber-100/70 leading-relaxed"><b class="text-white">Journey Map:</b> the live map traces your loop between the confirmed hotels as you scroll: Ajax to Watertown, the Adirondacks, the Lakes Region, North Conway, then home. Tap any marker for the stop's details.</p>
+                <!-- The loop, stop by stop -->
+                <div class="reveal glass rounded-2xl p-4">
+                    <p class="text-[9px] uppercase tracking-[0.2em] font-black text-fall-gold mb-3"><i class="fa-solid fa-route"></i> The Loop</p>
+                    <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Ajax, ON <span class="opacity-60 font-medium">start</span></span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">Watertown, NY <span class="opacity-60 font-medium">night 1</span></span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lake Placid, NY</span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Flume Gorge, NH</span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">Gilford, NH <span class="opacity-60 font-medium">night 2</span></span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lincoln, NH <span class="opacity-60 font-medium">Kancamagus</span></span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">North Conway, NH <span class="opacity-60 font-medium">night 3</span></span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lake George, NY</span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Ajax, ON <span class="opacity-60 font-medium">home</span></span>
+                    </div>
+                    <p class="text-[10px] text-amber-100/50 mt-3 leading-relaxed">Gold marks the three nights. Everything between them is a drive, with the stretch and photo stops on the day cards below.</p>
                 </div>
 
                 <!-- Stay calendar -->
@@ -364,13 +351,12 @@
                     </div>
                 </div>
 
-                <!-- End marker: completes the loop home -->
-                <div class="text-center py-12 opacity-60 reveal" data-lat="43.8509" data-lng="-79.0204" data-zoom="6" data-route-idx="8">
+                <!-- End marker -->
+                <div class="text-center py-12 opacity-60 reveal">
                     <span class="text-2xl">🏡</span>
                     <p class="text-xs font-bold uppercase tracking-widest mt-2 text-amber-100/70">Home Sweet Home</p>
                 </div>
 
-            </div>
         </div>
     </div>
 
@@ -448,30 +434,6 @@
             }
         ];
 
-        // Route: Ajax → Watertown → Lake Placid → Franconia (Flume) → Gilford → Lincoln → Kancamagus → North Conway → Lake George → Ajax
-        const routeCoords = [
-            [43.8509, -79.0204], // 0 Ajax (start)
-            [43.9748, -75.9108], // 1 Watertown, NY
-            [44.2795, -73.9799], // 2 Lake Placid
-            [44.0973, -71.6810], // 3 Flume Gorge / Franconia Notch
-            [43.5476, -71.4067], // 4 Gilford, NH
-            [44.0456, -71.6706], // 5 Lincoln (Kancamagus start)
-            [44.0537, -71.1284], // 6 North Conway, NH
-            [43.4262, -73.7123], // 7 Lake George, NY
-            [43.8509, -79.0204]  // 8 Ajax (home)
-        ];
-
-        const mapStops = [
-            { name: 'Ajax, ON (Start)', coords: [43.8509, -79.0204], desc: 'Departure point' },
-            { name: 'Watertown, NY', coords: [43.9748, -75.9108], desc: 'Night 1: Nest Inn' },
-            { name: 'Lake Placid, NY', coords: [44.2795, -73.9799], desc: 'Adirondacks scenic stop · Mirror Lake stroller path' },
-            { name: 'Flume Gorge, NH', coords: [44.0973, -71.6810], desc: 'Booked: Sat Oct 10, 2:00 PM entry · carrier needed' },
-            { name: 'Gilford, NH', coords: [43.5476, -71.4067], desc: 'Night 2: TownePlace Suites' },
-            { name: 'Lincoln, NH', coords: [44.0456, -71.6706], desc: 'Start of Kancamagus Hwy' },
-            { name: 'North Conway, NH', coords: [44.0537, -71.1284], desc: 'Night 3: Eastern Inn · Valley Train 2:30 PM (booked)' },
-            { name: 'Lake George, NY', coords: [43.4262, -73.7123], desc: 'Day 4 lunch / leg-stretch stop' }
-        ];
-
         // --- Render day cards ---
         function renderFeed() {
             const container = document.getElementById('itinerary-feed');
@@ -515,7 +477,7 @@
                 }
 
                 container.innerHTML += `
-                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${d.ember ? 'ember-card' : ''}" data-lat="${d.lat}" data-lng="${d.lng}" data-zoom="${d.zoom}" data-route-idx="${d.routeIdx}">
+                    <div class="snap-start scroll-mt-24 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${d.ember ? 'ember-card' : ''}">
                         <div class="tilt-card bg-fall-surface rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-amber-100/10">
                             <div class="relative w-full h-48 md:h-56 overflow-hidden">
                                 <img src="${d.image}" alt="${d.route}" loading="lazy" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.8] group-hover:brightness-95 transition-[filter] duration-700">
@@ -536,91 +498,6 @@
                         </div>
                     </div>`;
             });
-        }
-
-        // --- Map with animated route + driving car ---
-        let map, progressLine, carMarker;
-        let routeProgress = 0, routeAnimId = null;
-
-        function routePointAt(t) {
-            const last = routeCoords.length - 1;
-            if (t >= last) return routeCoords[last];
-            if (t <= 0) return routeCoords[0];
-            const i = Math.floor(t), f = t - i;
-            const a = routeCoords[i], b = routeCoords[i + 1];
-            return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
-        }
-
-        function advanceRoute(target) {
-            if (!progressLine || isNaN(target)) return;
-            if (routeAnimId) cancelAnimationFrame(routeAnimId);
-            const start = routeProgress, delta = target - start;
-            if (Math.abs(delta) < 0.001) return;
-            const apply = t => {
-                routeProgress = t;
-                const pts = routeCoords.slice(0, Math.floor(t) + 1);
-                const p = routePointAt(t);
-                pts.push(p);
-                progressLine.setLatLngs(pts);
-                carMarker.setLatLng(p);
-            };
-            if (reduceMotion) { apply(target); return; }
-            const t0 = performance.now(), dur = 1500;
-            const step = now => {
-                const k = Math.min(1, (now - t0) / dur);
-                const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-                apply(start + delta * e);
-                if (k < 1) routeAnimId = requestAnimationFrame(step);
-            };
-            routeAnimId = requestAnimationFrame(step);
-        }
-
-        function initMap() {
-            setTimeout(() => {
-                map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([44.0, -74.5], 6);
-                L.control.zoom({ position: 'topright' }).addTo(map);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; OpenStreetMap &copy; CartoDB', maxZoom: 19
-                }).addTo(map);
-
-                L.polyline(routeCoords, { color: '#f97316', weight: 3, opacity: 0.2, dashArray: '10, 10', lineJoin: 'round' }).addTo(map);
-                progressLine = L.polyline([routeCoords[0]], { color: '#f97316', weight: 3.5, opacity: 0.95, lineJoin: 'round' }).addTo(map);
-                carMarker = L.marker(routeCoords[0], {
-                    icon: L.divIcon({ className: '', html: '<div class="car-marker"><i class="fa-solid fa-car-side"></i></div>', iconSize: [32, 32], iconAnchor: [16, 16] }),
-                    zIndexOffset: 1000
-                }).addTo(map);
-
-                mapStops.forEach((s, i) => {
-                    const icon = L.divIcon({
-                        className: 'custom-div-icon',
-                        html: `<div style="background:#f59e0b" class="w-7 h-7 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,.5)] border-2 border-white text-stone-900 text-[10px] font-black">${i + 1}</div>`,
-                        iconSize: [28, 28], iconAnchor: [14, 14]
-                    });
-                    L.marker(s.coords, { icon }).addTo(map).bindPopup(`<b>${i + 1}. ${s.name}</b><br><span style="color:#d6c9b8;font-size:11px">${s.desc}</span>`);
-                });
-
-                map.invalidateSize();
-                setupMapSync();
-            }, 300);
-        }
-
-        function setupMapSync() {
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    const lat = parseFloat(entry.target.getAttribute('data-lat'));
-                    const lng = parseFloat(entry.target.getAttribute('data-lng'));
-                    const zoom = parseInt(entry.target.getAttribute('data-zoom') || 7);
-                    const ri = entry.target.getAttribute('data-route-idx');
-                    if (ri !== null) advanceRoute(parseFloat(ri));
-                    if (!isNaN(lat) && !isNaN(lng) && map) {
-                        const isMobile = window.innerWidth < 768;
-                        if (isMobile) map.flyTo([lat - 0.35, lng], zoom, { duration: 1.5, easeLinearity: 0.25 });
-                        else map.flyTo([lat, lng + (14 / zoom)], zoom, { duration: 1.5, easeLinearity: 0.25 });
-                    }
-                });
-            }, { root: document.getElementById('feed'), threshold: 0.45 });
-            document.querySelectorAll('[data-lat]').forEach(el => observer.observe(el));
         }
 
         // --- Falling maple leaves ---
@@ -684,21 +561,6 @@
             };
             tick();
             setInterval(tick, 1000);
-        }
-
-        // --- Mobile map/itinerary toggle ---
-        function setupMapToggle() {
-            const btn = document.getElementById('map-toggle');
-            if (!btn) return;
-            const icon = document.getElementById('map-toggle-icon');
-            const feed = document.getElementById('feed');
-            let mapMode = false;
-            btn.addEventListener('click', () => {
-                mapMode = !mapMode;
-                feed.style.display = mapMode ? 'none' : '';
-                icon.className = mapMode ? 'fa-solid fa-list text-lg' : 'fa-solid fa-map text-lg';
-                if (map) map.invalidateSize();
-            });
         }
 
         // --- Booking checklist persistence + ring ---
@@ -906,15 +768,12 @@
             renderFeed();
             renderStayCalendar(STAY_CALENDAR);
             setupBookingChecklist();
-            setupMapToggle();
             setupReveal();
             setupTilt();
             setupFeedScrollFx();
             startCountdown();
             startLeaves();
             loadWeather();
-            initMap();
-            window.addEventListener('resize', () => { if (map) map.invalidateSize(); });
         };
     </script>
 </body>
