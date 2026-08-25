@@ -214,6 +214,18 @@
             .cal-bars { min-height: 20px; }
             .cal-bar { height: 20px; font-size: 9.5px; }
         }
+        /* --- Attractions table --- */
+        .att-table { width: 100%; border-collapse: collapse; }
+        .att-table th { text-align: left; font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+                        font-weight: 900; opacity: .5; padding: 0 10px 7px 0; }
+        .att-table td { padding: 9px 10px 9px 0; vertical-align: top; font-size: 12px; line-height: 1.45; }
+        .att-table tbody tr + tr td { border-top: 1px solid rgba(148, 163, 184, .16); }
+        .att-city td { padding-top: 16px; }
+        .att-city span { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; font-weight: 900; }
+        .att-tag { display: inline-block; font-size: 8.5px; font-weight: 900; letter-spacing: .06em;
+                   text-transform: uppercase; padding: 2.5px 7px; border-radius: 999px;
+                   border: 1px solid currentColor; white-space: nowrap; }
+        .att-card + .att-card { border-top: 1px solid rgba(148, 163, 184, .16); }
     </style>
 </head>
 <body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
@@ -432,6 +444,10 @@
                                         <i class="fa-solid fa-check text-brand-gold"></i> <b class="text-slate-700 dark:text-slate-300">Natural History Museum booked:</b> Wed Nov 25, 13:00 entry, 2 adults and 2 children, free admission. The slot is your arrival window only, so you can stay as long as the kids last.
                                     </div>
                                     <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-toweroflondon" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Tower of London</b>, Nov 23 late morning. The grounds and the Crown Jewels need a paid ticket, and online is cheaper than the gate. Under 5s go free. <a href="https://www.hrp.org.uk/tower-of-london/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">hrp.org.uk</a></span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
                                         <input type="checkbox" data-key="a-tussauds" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
                                         <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Madame Tussauds</b>, Nov 24 morning. Marylebone Road, two minutes from Baker Street and a direct Jubilee line ride from Stratford. Book the first slot online, cheaper than the door and the queue is shortest before eleven. Under 3s free. <a href="https://www.madametussauds.com/london/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">madametussauds.com</a></span>
                                     </label>
@@ -490,6 +506,19 @@
                         </p>
                         <div id="stay-calendar" class="text-slate-800 dark:text-slate-100"></div>
                         <div id="stay-legend" class="mt-4 pt-4 border-t border-slate-300 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-slate-700 dark:text-slate-200"></div>
+                    </div>
+                </div>
+
+                <!-- Every attraction, where it is and whether it needs booking -->
+                <div class="snap-start pt-2 reveal">
+                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+                        <h3 class="text-sm font-black uppercase tracking-wider mb-1 flex items-center gap-2 text-slate-900 dark:text-white">
+                            <i class="fa-solid fa-table-list text-brand-ice"></i> Every stop, and where it is
+                        </h3>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4">
+                            Everything on the day cards below, in one place, with the address and whether it still needs a ticket.
+                        </p>
+                        <div id="attractions" class="text-slate-800 dark:text-slate-100"></div>
                     </div>
                 </div>
 
@@ -1188,6 +1217,101 @@
             ]
         };
 
+        // --- Attractions table: one row per stop, rendered as a table on desktop and as
+        //     stacked cards on a phone, since a four column table at 375px is unreadable ---
+        const ATTRACTIONS = [
+            { city: 'London', name: 'Marylebone Farmers Market', where: 'Cramer Street car park, W1', when: 'Sun Nov 22, 10:30 AM', status: 'free' },
+            { city: 'London', name: "Regent's Park, Marylebone Green playground", where: 'Baker Street gate, NW1', when: 'Sun Nov 22, 11:30 AM', status: 'free' },
+            { city: 'London', name: 'Hyde Park Winter Wonderland', where: 'Hyde Park, Marble Arch gate, W2', when: 'Sun Nov 22, 5:30 PM', status: 'book' },
+            { city: 'London', name: 'Tower of London, Crown Jewels', where: 'Tower Hill, EC3N', when: 'Mon Nov 23, 11:30 AM', status: 'book', note: 'Exterior is free, the Jewels are not' },
+            { city: 'London', name: 'Uber Boat by Thames Clippers', where: 'Tower Pier to Westminster Pier', when: 'Mon Nov 23, 1:00 PM', status: 'onday', note: 'Contactless at the pier, stroller rolls straight on' },
+            { city: 'London', name: 'Big Ben and Parliament', where: 'Westminster Bridge, SW1', when: 'Mon Nov 23, 2:00 PM', status: 'free', note: 'From the riverside' },
+            { city: 'London', name: "St. James's Park, pelican feeding", where: 'Duck Island, SW1', when: 'Mon Nov 23, 2:30 PM', status: 'free', note: 'Fed at 2:30 daily' },
+            { city: 'London', name: 'Four O\u2019Clock Parade, Horse Guards', where: 'Whitehall, SW1', when: 'Mon Nov 23, 4:00 PM', status: 'free', note: 'Daily, no tickets' },
+            { city: 'London', name: 'Madame Tussauds', where: 'Marylebone Road, NW1', when: 'Tue Nov 24, 10:30 AM', status: 'book', note: 'Two minutes from Baker Street, under 3s free' },
+            { city: 'London', name: "Mad Hatter's Afternoon Tea", where: 'The Sanderson, 50 Berners Street, W1', when: 'Tue Nov 24, 3:00 PM', status: 'book', note: "Children's version available" },
+            { city: 'London', name: 'Hamleys', where: 'Regent Street, W1', when: 'Tue Nov 24, 5:00 PM', status: 'free', note: 'Optional, on the walk to Oxford Circus' },
+            { city: 'London', name: 'Changing the Guard', where: 'Buckingham Palace, SW1', when: 'Wed Nov 25, 11:00 AM', status: 'free', note: 'Only runs certain days, this is the one that works' },
+            { city: 'London', name: 'Natural History Museum', where: 'Cromwell Road, South Kensington, SW7', when: 'Wed Nov 25, 1:00 PM', status: 'booked' },
+            { city: 'London', name: 'Science Museum, The Garden', where: 'Exhibition Road, SW7', when: 'Wed Nov 25, wet weather backup', status: 'free', note: 'Water and construction play for under 6s' },
+            { city: 'London', name: 'Diana Memorial Playground', where: 'Kensington Gardens, W2', when: 'Wed Nov 25, 3:15 PM', status: 'free' },
+            { city: 'London', name: 'Young V&A', where: 'Cambridge Heath Road, Bethnal Green, E2', when: 'Thu Nov 26, 2:00 PM', status: 'free', note: 'Optional, ten minutes from Stratford' },
+
+            { city: 'Edinburgh', name: 'Princes Street Christmas Market', where: 'East Princes Street Gardens', when: 'Fri Nov 27, 4:30 PM', status: 'free', note: 'Entry free, rides pay as you go' },
+            { city: 'Edinburgh', name: 'National Museum of Scotland', where: 'Chambers Street, EH1', when: 'Sat Nov 28, 10:00 AM', status: 'free', note: 'No ticket needed' },
+            { city: 'Edinburgh', name: "Arthur's Seat or Calton Hill", where: 'Holyrood Park, EH8', when: 'Sat Nov 28, 1:00 PM', status: 'free', note: 'Base of the hill only with the stroller' },
+            { city: 'Edinburgh', name: 'Castle of Light', where: 'Edinburgh Castle, Castlehill, EH1', when: 'Sat Nov 28, 5:30 PM', status: 'book', note: 'Sells out heavily, book this one first' },
+            { city: 'Edinburgh', name: 'Palace of Holyroodhouse', where: 'Canongate, EH8', when: 'Sun Nov 29, 10:00 AM', status: 'book' },
+
+            { city: 'Helsinki', name: "Children's Town", where: 'Helsinki City Museum, Senate Square', when: 'Tue Dec 1, 1:00 PM', status: 'free' },
+            { city: 'Helsinki', name: 'Senate Square Christmas Market', where: 'Senate Square', when: 'Tue Dec 1, 3:30 PM', status: 'free', note: 'Vintage wooden carousel' },
+            { city: 'Helsinki', name: 'Esplanadi Christmas lights', where: 'Esplanadi, city centre', when: 'Mon Dec 7, 2:00 PM', status: 'free' },
+            { city: 'Helsinki', name: 'St. George Care spa and sauna', where: 'Hotel St. George', when: 'Mon Dec 7, 5:00 PM', status: 'onday', note: 'Parents take turns' },
+
+            { city: 'Lapland', name: 'Glass igloo hot tub', where: 'Aurora Pyramid Glass Igloos, Levi', when: 'Wed Dec 2, 4:00 PM', status: 'booked', note: 'Comes with the room' },
+            { city: 'Lapland', name: 'Levi gondola', where: 'Levi fell, village centre', when: 'Thu Dec 3, 11:15 AM', status: 'onday', note: 'Stroller friendly, under 6s free' },
+            { city: 'Lapland', name: 'Water World and Ailu play area', where: 'Levi Hotel Spa', when: 'Thu Dec 3, 2:30 PM', status: 'onday', note: 'Walk in, no booking' },
+            { city: 'Lapland', name: 'Husky Safari, 5 km self-drive', where: 'Levi', when: 'Fri Dec 4, 10:50 AM', status: 'booked', note: '2.5 hours including kitting up' },
+            { city: 'Lapland', name: 'Samiland Exhibition', where: 'Levi fell, by the gondola', when: 'Fri Dec 4, 2:00 PM', status: 'onday', note: 'Reindeer outside, warm indoors' },
+            { city: 'Lapland', name: 'Family Safari by snowmobile', where: 'Levi', when: 'Sat Dec 5, 10:30 AM', status: 'booked', note: 'One adult, other has the kids' },
+            { city: 'Lapland', name: 'Aurora Tour by snowmobile', where: 'Levi, pick-up included', when: 'Sat Dec 5, 5:30 PM', status: 'booked', note: 'The other adult' },
+            { city: 'Lapland', name: 'SantaPark', where: '1 Tarvantie, Rovaniemi', when: 'Sun Dec 6, 11:45 AM', status: 'booked', note: 'Heated underground cavern, all day access' },
+            { city: 'Lapland', name: 'Santa Claus Village, Arctic Circle', where: 'Rovaniemi', when: 'Sun Dec 6, 4:00 PM', status: 'free', note: 'Entry free, individual activities are not' }
+        ];
+
+        const ATT_TAGS = {
+            booked: ['Booked', 'text-emerald-600 dark:text-emerald-400'],
+            book:   ['To book', 'text-amber-600 dark:text-brand-gold'],
+            onday:  ['Pay on the day', 'text-violet-600 dark:text-brand-royal'],
+            free:   ['Free', 'text-sky-600 dark:text-brand-ice']
+        };
+
+        function renderAttractions() {
+            const mount = document.getElementById('attractions');
+            if (!mount) return;
+            const esc = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+            const tag = a => {
+                const t = ATT_TAGS[a.status] || ATT_TAGS.free;
+                return '<span class="att-tag ' + t[1] + '">' + t[0] + '</span>';
+            };
+            const cities = [];
+            ATTRACTIONS.forEach(a => { if (!cities.includes(a.city)) cities.push(a.city); });
+
+            // desktop: a real table
+            let t = '<div class="hidden md:block"><table class="att-table"><thead><tr>' +
+                '<th>Stop</th><th>Where</th><th>When</th><th>Ticket</th></tr></thead><tbody>';
+            cities.forEach(city => {
+                t += '<tr class="att-city"><td colspan="4"><span class="grad-gold">' + esc(city) + '</span></td></tr>';
+                ATTRACTIONS.filter(a => a.city === city).forEach(a => {
+                    t += '<tr><td class="font-bold">' + esc(a.name) +
+                        (a.note ? '<span class="block font-medium text-[10px] opacity-55 mt-0.5">' + esc(a.note) + '</span>' : '') +
+                        '</td><td class="opacity-70">' + esc(a.where) +
+                        '</td><td class="opacity-70 whitespace-nowrap">' + esc(a.when) +
+                        '</td><td>' + tag(a) + '</td></tr>';
+                });
+            });
+            t += '</tbody></table></div>';
+
+            // phone: stacked, because four columns at 375px is not a table anyone can read
+            let m = '<div class="md:hidden">';
+            cities.forEach(city => {
+                m += '<p class="text-[9px] uppercase tracking-[0.18em] font-black grad-gold mt-4 mb-1 first:mt-0">' + esc(city) + '</p>';
+                ATTRACTIONS.filter(a => a.city === city).forEach(a => {
+                    m += '<div class="att-card py-2.5">' +
+                        '<div class="flex items-start justify-between gap-2">' +
+                        '<p class="text-[12px] font-black leading-snug">' + esc(a.name) + '</p>' + tag(a) +
+                        '</div>' +
+                        '<p class="text-[10px] opacity-65 leading-snug mt-1"><i class="fa-solid fa-location-dot text-[8px]"></i> ' + esc(a.where) + '</p>' +
+                        '<p class="text-[10px] opacity-65 leading-snug"><i class="fa-solid fa-clock text-[8px]"></i> ' + esc(a.when) + '</p>' +
+                        (a.note ? '<p class="text-[10px] opacity-45 leading-snug mt-0.5">' + esc(a.note) + '</p>' : '') +
+                        '</div>';
+                });
+            });
+            m += '</div>';
+
+            mount.innerHTML = t + m;
+        }
+
         // --- Scroll-in reveal animations ---
         function setupReveal() {
             const els = document.querySelectorAll('.reveal, .reveal-3d');
@@ -1266,6 +1390,7 @@
         window.onload = () => {
             renderFeed();
             renderStayCalendar(STAY_CALENDAR);
+            renderAttractions();
             setupBookingChecklist();
             setupReveal();
             setupTilt();
