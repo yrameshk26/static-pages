@@ -447,7 +447,7 @@
                             <div>
                                 <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🏨 Hotels</h4>
                                 <div class="text-[10px] text-slate-500 dark:text-slate-400">
-                                    <i class="fa-solid fa-check text-brand-aurora"></i> All 8 hotels are booked: The BoTree London, The Stratford, The Caledonian, Hilton Helsinki Airport, Aurora Pyramid Glass Igloos, Levin Klubi, Lomavekarit Apartments, and Hotel St. George. Details on each itinerary card below.
+                                    <i class="fa-solid fa-check text-brand-aurora"></i> All 8 hotel bookings are done: The BoTree London, The Stratford, The Caledonian, Hilton Helsinki Airport on the way in and again on the last night, Aurora Pyramid Glass Igloos, Levin Klubi and Lomavekarit Apartments. Details on each itinerary card below.
                                 </div>
                             </div>
 
@@ -858,10 +858,10 @@
                 lat: 60.1695, lng: 24.9354, zoom: 13, routeIdx: 7,
                 image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Grand Finale & Launch Home",
-                desc: "A luxury farewell in Helsinki before the seamless flights back to Canada.",
+                desc: "A last afternoon in the city, then back out to the airport hotel so the journey home starts with a walk instead of a train.",
                 icon: "fa-house", color: "brand-ice",
                 hotels: [
-                    { name: "Hotel St. George", area: "Helsinki city centre, spa and sauna, artisan bakery", dates: "Dec 7-8 · 1 night", booked: true }
+                    { name: "Hilton Helsinki Airport", area: "Second stay here, indoor walkway to the terminal", dates: "Dec 7-8 · 1 night", booked: true }
                 ],
                 schedule: [
                     {
@@ -869,16 +869,19 @@
                         items: [
                             { time: "07:15 AM", text: "Drive 10 mins to drop off the Enterprise SUV at RVN airport (drop-off booked for 9:00 AM, arriving early is fine)." },
                             { time: "09:10 AM", text: "Depart RVN on Finnair AY0532 (booked)." },
-                            { time: "10:25 AM", text: "Land HEL. Train into city. Check into Hotel St. George." },
-                            { time: "02:00 PM", text: "Walk the Esplanadi for Christmas lights." },
-                            { time: "05:00 PM", text: "Parents take turns at St. George Care spa/sauna." }
+                            { time: "10:25 AM", text: "Land HEL. Walk the indoor walkway to the Hilton and leave the bags. Same hotel as Nov 30, so you already know the way." },
+                            { time: "12:30 PM", text: "Ring Rail train into Helsinki Central, about 30 minutes, and still free if one of you is pushing the stroller." },
+                            { time: "02:00 PM", text: "Walk the Esplanadi for the Christmas lights. Senate Square and its market are ten minutes north if you want a second look before you go." },
+                            { time: "04:30 PM", text: "Train back out to the airport. None of this afternoon is load-bearing, so if the Lapland week has flattened everyone, stay at the hotel and do not feel bad about it." },
+                            { time: "06:00 PM", text: "Dinner at Restaurant Gui downstairs, which does a kids menu." },
+                            { time: "07:30 PM", text: "Take turns in the hotel sauna while the other one does bedtime." }
                         ]
                     },
                     {
                         dayName: "Tuesday, Dec 8 (Day 18)",
                         items: [
-                            { time: "09:30 AM", text: "Zero-stress morning. Artisan pastries from hotel bakery." },
-                            { time: "11:00 AM", text: "Uber or train back to HEL Terminal." },
+                            { time: "08:30 AM", text: "Slow breakfast downstairs. Checkout is not until noon, so nobody is packing in the dark." },
+                            { time: "11:30 AM", text: "Walk the indoor walkway to the terminal. No train, no taxi, no coats on and off in the cold. This is the whole reason for spending the last night out here." },
                             { time: "02:00 PM", text: "Depart HEL on Icelandair FI343 (booked)." },
                             { time: "03:55 PM", text: "Arrive Keflavik (KEF). Easy ~1-hour connection." },
                             { time: "05:00 PM", text: "Depart KEF on FI603 (booked)." },
@@ -1233,7 +1236,7 @@
                 { short: 'Igloo', name: 'Aurora Pyramid Glass Igloos', area: 'Levi, Lapland, outdoor hot tub', from: '2026-12-02', to: '2026-12-03', color: '#34d399' },
                 { short: 'Levin Klubi', name: 'Levi Suites Levin Klubi', area: 'Levi village centre, drying cabinets', from: '2026-12-03', to: '2026-12-06', color: '#22d3ee' },
                 { short: 'Lomav', name: 'Lomavekarit Apartments', area: 'Near Rovaniemi Airport', from: '2026-12-06', to: '2026-12-07', color: '#fb923c' },
-                { short: 'St.G', name: 'Hotel St. George', area: 'Helsinki centre, spa and sauna', from: '2026-12-07', to: '2026-12-08', color: '#f87171' }
+                { short: 'Hilton', name: 'Hilton Helsinki Airport', area: 'Second stay, walkway to the terminal', from: '2026-12-07', to: '2026-12-08', color: '#38bdf8' }
             ]
         };
 
@@ -1266,7 +1269,7 @@
             { city: 'Helsinki', name: "Children's Town", where: 'Helsinki City Museum, Senate Square', when: 'Tue Dec 1, 1:00 PM', status: 'free' },
             { city: 'Helsinki', name: 'Senate Square Christmas Market', where: 'Senate Square', when: 'Tue Dec 1, 3:30 PM', status: 'free', note: 'Vintage wooden carousel' },
             { city: 'Helsinki', name: 'Esplanadi Christmas lights', where: 'Esplanadi, city centre', when: 'Mon Dec 7, 2:00 PM', status: 'free' },
-            { city: 'Helsinki', name: 'St. George Care spa and sauna', where: 'Hotel St. George', when: 'Mon Dec 7, 5:00 PM', status: 'onday', note: 'Parents take turns' },
+            { city: 'Helsinki', name: 'Hotel sauna', where: 'Hilton Helsinki Airport', when: 'Mon Dec 7, 7:30 PM', status: 'booked', note: 'Traditional Finnish sauna, comes with the room' },
 
             { city: 'Lapland', name: 'Glass igloo hot tub', where: 'Aurora Pyramid Glass Igloos, Levi', when: 'Wed Dec 2, 4:00 PM', status: 'booked', note: 'Comes with the room' },
             { city: 'Lapland', name: 'Levi gondola', where: 'Levi fell, village centre', when: 'Thu Dec 3, 11:15 AM', status: 'onday', note: 'Stroller friendly, under 6s free' },
