@@ -484,7 +484,7 @@
                             </div>
 
                             <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ UK activities</h4>
+                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ Activities to book</h4>
                                 <div class="space-y-2">
                                     <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
                                         <i class="fa-solid fa-check text-brand-gold"></i> <b class="text-slate-700 dark:text-slate-300">Natural History Museum booked:</b> Wed Nov 25, 13:00 entry, 2 adults and 2 children, free admission. The slot is your arrival window only, so you can stay as long as the kids last.
@@ -515,6 +515,10 @@
                                     <label class="flex items-start gap-3 cursor-pointer group">
                                         <input type="checkbox" data-key="a-holyrood" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
                                         <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Palace of Holyroodhouse</b>, Nov 29, 10:00 AM. Booked through Royal Collection Trust, <a href="https://www.rct.uk/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">rct.uk</a></span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-wonderlights" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-aurora focus:ring-brand-aurora cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Wonderlights at Malahide Castle</b>, Dec 8 early evening, ten minutes from the Dublin hotel. Timed entry and it sells out, so book a slot as soon as the 2026 dates are up. It has run from mid November into early January in recent years, so Dec 8 should be well inside the season. <a href="https://www.wonderlights.ie/malahide-castle" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">wonderlights.ie</a></span>
                                     </label>
                                 </div>
                             </div>
@@ -892,7 +896,7 @@
                 lat: 60.1695, lng: 24.9354, zoom: 13, routeIdx: 7,
                 image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Last of Helsinki, First of Dublin",
-                desc: "A last afternoon in Helsinki, then an early hop west that breaks the journey home into two manageable halves instead of one brutal day.",
+                desc: "A last afternoon in Helsinki, then an early hop west that breaks the journey home in two. Everything worth doing in Dublin is within ten minutes of the hotel, which after eighteen days is exactly right.",
                 icon: "fa-house", color: "brand-ice",
                 hotels: [
                     { name: "Hilton Helsinki Airport", area: "Second stay here, indoor walkway to the terminal", dates: "Dec 7 · 1 night", booked: true },
@@ -920,10 +924,12 @@
                             { time: "07:40 AM", text: "Depart HEL on Finnair AY1381 to Dublin, business, operated by Jettime. About 3h20m in the air." },
                             { time: "09:00 AM", text: "Land Dublin. Ireland is two hours behind Finland, so it is nine in the morning here and eleven on the body clock you woke up with." },
                             { time: "09:45 AM", text: "Over to the Hilton Dublin Airport and drop the bags. Rooms will not be ready this early, so ask about early check-in when you arrive rather than assuming it." },
-                            { time: "11:00 AM", text: "Sleep. Everyone has been up since five and there is an eight and a half hour flight tomorrow. This is the single most useful thing you can do with the morning." },
-                            { time: "03:00 PM", text: "If the nap worked and people are willing, the Airlink runs into the city centre in about 40 minutes. Grafton Street and Henry Street are lit for Christmas and it is dark by quarter past four, which is the whole point." },
-                            { time: "07:00 PM", text: "Back to the hotel, or just eat there and skip the city entirely. Nothing today is load-bearing, and tomorrow is the long one." },
-                            { time: "08:30 PM", text: "Repack for the transatlantic and get everyone down early." }
+                            { time: "11:00 AM", text: "Sleep. Everyone has been up since five and there is an eight and a half hour flight tomorrow. Do not try to fight this one, the good part of the day is in the evening anyway." },
+                            { time: "01:30 PM", text: "Late lunch in Malahide village, a seaside village ten minutes up the road. Dublin city centre is 40 minutes each way on the Airlink and there is no reason to spend 80 minutes on a bus today." },
+                            { time: "02:30 PM", text: "Malahide Castle if anyone is up for it. The Fairy Trail is a 1.8 km woodland loop of fairy houses with a treasure hunt booklet from the visitor centre, and the Butterfly House in the walled glasshouse is warm, indoors and full of exotic butterflies. Winter last entry is 3:00 PM for the trail and 3:30 PM for the castle, so this is a soft option, not a plan." },
+                            { time: "04:15 PM", text: "Dark. In Dublin in December that is not a problem today, it is the point." },
+                            { time: "05:00 PM", text: "Wonderlights at Malahide Castle. An illuminated trail through the castle grounds built around earth, wind, fire and water, with an Alpine food and drink village at the end of it. Ten minutes from the hotel, timed entry, and it sells out, so book a slot well ahead." },
+                            { time: "07:30 PM", text: "Back to the hotel. Repack for the transatlantic and get everyone down early, because tomorrow starts at six." }
                         ]
                     }
                 ]
@@ -1342,7 +1348,10 @@
             { city: 'Lapland', name: 'SantaPark', where: '1 Tarvantie, Rovaniemi', when: 'Sun Dec 6, 11:45 AM', status: 'booked', note: 'Heated underground cavern, all day access' },
             { city: 'Lapland', name: 'Santa Claus Village, Arctic Circle', where: 'Rovaniemi', when: 'Sun Dec 6, 4:00 PM', status: 'free', note: 'Entry free, individual activities are not' },
 
-            { city: 'Dublin', name: 'Grafton Street and Henry Street Christmas lights', where: 'Dublin city centre', when: 'Tue Dec 8, from 4:00 PM', status: 'free', note: 'Optional. Airlink from the airport, about 40 minutes each way' },
+            { city: 'Dublin', name: 'Malahide village', where: 'Malahide, ten minutes from the hotel', when: 'Tue Dec 8, 1:30 PM', status: 'free', note: 'Seaside village, somewhere civilised for a late lunch' },
+            { city: 'Dublin', name: 'Malahide Castle, Fairy Trail and Butterfly House', where: 'Malahide Castle and Gardens', when: 'Tue Dec 8, 2:30 PM', status: 'onday', note: '1.8 km fairy loop with a treasure hunt booklet. Winter last entry 3 PM, castle 3:30 PM' },
+            { city: 'Dublin', name: 'Wonderlights', where: 'Malahide Castle grounds', when: 'Tue Dec 8, early evening', status: 'book', note: 'Illuminated trail plus an Alpine food village. Timed entry and it sells out' },
+            { city: 'Dublin', name: 'Newbridge House and Farm', where: 'Donabate, twenty minutes from the hotel', when: 'Tue Dec 8, alternative', status: 'onday', note: 'Working 18th century farm, ponies and piglets. Winter hours Tue to Sun, 11 to 4, shut Mondays' },
             { city: 'Dublin', name: 'US Preclearance', where: 'Dublin Airport Terminal 2, ground floor', when: 'Wed Dec 9, from 7:40 AM', status: 'onday', note: 'Not an attraction, but it is the reason to be at T2 three hours early' }
         ];
 
