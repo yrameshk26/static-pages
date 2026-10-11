@@ -3,7 +3,7 @@
 Entry point for any agent picking this repo up. Read this first, then the files in
 `docs/agent/` as needed.
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-11
 
 ---
 
@@ -70,7 +70,7 @@ Generated artefacts also live outside the repo: `/home/user/winter-trip-ledger.p
 
 ## Ship sequence
 
-Used for every one of the 14 changes so far. Do not skip steps.
+Used for every change so far. Do not skip steps.
 
 ```
 1. Edit the page (see the Python edit discipline in docs/agent/architecture.md)
@@ -100,7 +100,7 @@ model identifier in any committed artefact.
 |---|---|---|
 | `index.html` | App Support and Privacy Pages | Small landing page, rarely touched |
 | `uk-finland-trip/index.html` | Winter Expedition, Nov 21 to Dec 9 2026 | **Active.** 1546 lines, the most complex page |
-| `fall-foliage-trip/index.html` | Fall Foliage Road Trip, Oct 9 to 12 2026 | **Active.** 849 lines |
+| `fall-foliage-trip/index.html` | Fall Foliage Road Trip, Oct 9 to 12 2026 | **Active.** about 860 lines |
 | `mora-camping-2026/index.html` | Mora Camping 2026, Samuel de Champlain | Stable. Has a live user checklist |
 | `scribble-sky/index.html` | Scribble Sky, Support and Privacy | Static app support page |
 | `champlain-camping/index.html` | Moved: Mora Camping 2026 | Redirect stub, 31 lines |
