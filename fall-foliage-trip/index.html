@@ -250,6 +250,8 @@
                         <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
                         <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">Gilford, NH <span class="opacity-60 font-medium">night 2</span></span>
                         <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
+                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Artist's Bluff, NH</span>
+                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
                         <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lincoln, NH <span class="opacity-60 font-medium">Kancamagus</span></span>
                         <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
                         <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">North Conway, NH <span class="opacity-60 font-medium">night 3</span></span>
@@ -291,7 +293,9 @@
                                 <ul class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
                                     <li><b>Flume Gorge:</b> Absolutely requires a baby carrier/backpack. 2 miles of stairs, steep inclines, and boardwalks.</li>
                                     <li><b>Scenic Trains:</b> Aisles are too narrow. Strollers must be folded tight or left safely at the station platform (very common).</li>
-                                    <li><b>Waterfalls (Kancamagus):</b> Short dirt/rocky paths to the falls require walking or carrying.</li>
+                                    <li><b>Artist's Bluff:</b> Steep rock steps and roots. Carrier only.</li>
+                                    <li><b>Lower Falls (Kancamagus):</b> Slippery granite ledges. Walk it, holding hands.</li>
+                                    <li><b>Diana's Baths:</b> Reports conflict and it is rougher near the falls. The carrier is the safer call.</li>
                                 </ul>
                             </div>
                             <div class="glass rounded-2xl p-5">
@@ -299,6 +303,7 @@
                                 <ul class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
                                     <li><b>North Conway Village:</b> Great sidewalks for strolling, shopping, and grabbing coffee.</li>
                                     <li><b>Scenic Pull-offs:</b> The parking areas on the Kancamagus Highway are paved and offer great views right from the car.</li>
+                                    <li><b>Sabbaday Falls and Rocky Gorge:</b> The two easiest falls on the Kancamagus. Rocky Gorge is paved. Sabbaday is wide and gradual but not smooth, so keep the carrier handy.</li>
                                     <li><b>Lake Placid (Mirror Lake):</b> Paved path around the lake if you stop to stretch your legs on Day 2.</li>
                                 </ul>
                             </div>
@@ -408,7 +413,7 @@
                     { text: 'Morning: Drive through the Adirondacks (Lake Placid area).' },
                     { text: 'Afternoon: Head into New Hampshire via I-93 South.' },
                     { text: 'Stop at Flume Gorge (Franconia Notch) on the way down, booked for the 2:00 PM entry window.', badge: 'Carrier Needed', badgeType: 'carrier' },
-                    { text: 'Optional: Tanger Outlets Tilton is 20 minutes south of Gilford on Laconia Road and stays open until 8 on a Saturday, so this is the longer window if two hours in North Conway will not cut it. Doing it here also keeps Sunday free for the foliage.' },
+                    { text: 'Optional: Tanger Outlets Tilton is 20 minutes south of Gilford on Laconia Road and stays open until 8 on a Saturday. New Hampshire has no sales tax, so the shelf price is the price you pay, and doing it here keeps Sunday free for the foliage.' },
                     { text: 'Evening: Settle into the beautiful Lakes Region.' }
                 ],
                 hotel: {
@@ -419,15 +424,24 @@
             },
             {
                 id: 'day3', day: 'Day 3', date: 'Sunday, Oct 11', from: '2026-10-11', to: '2026-10-11',
-                route: 'Gilford → North Conway', drive: '~2.5 hr total scenic drive',
+                route: 'Gilford → Franconia Notch → North Conway', drive: '~3 hr of driving, plus the stops',
                 lat: 44.0537, lng: -71.1284, zoom: 9, routeIdx: 6,
                 image: 'https://images.unsplash.com/photo-1445964047600-cdbdb873673d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
                 color: '#ef4444', colorName: 'crimson', ember: true,
                 activities: [
-                    { text: 'Morning: Drive north to Lincoln, then take Kancamagus Hwy Eastbound.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
-                    { text: '2:30 PM: Valley Train Observation Dome Class from North Conway Depot, 38 Norcross Circle (booked, arrive by 2:00 PM as foliage-season traffic backs up into the village).', badge: 'Fold Stroller', badgeType: 'carrier' },
-                    { text: '3:45 PM: Settlers Green, on Route 16 a couple of minutes from both the depot and the hotel. Over 60 outlets, and New Hampshire charges no sales tax at all, so the shelf price is the price you pay.', badge: 'No Sales Tax', badgeType: 'carrier' },
-                    { text: 'Sunday hours are 10 to 6, which gives you a bit over two hours after the train. If you would rather have the full three, do the first hour before the 2:30 departure instead, it really is that close to the depot.' },
+                    { text: 'The whole day as one route, Gilford to the depot to the Eastern Inn: <a href="https://www.google.com/maps/dir/14+Sawmill+Rd,+Gilford,+NH/Artist+Bluff+Trail,+Franconia,+NH/Lincoln,+NH/Sabbaday+Falls,+Albany,+NH/Rocky+Gorge+Scenic+Area,+Albany,+NH/Lower+Falls+Scenic+Area,+Albany,+NH/North+Conway+Scenic+Railroad,+38+Norcross+Circle,+North+Conway,+NH/Cathedral+Ledge+State+Park,+North+Conway,+NH/Dianas+Baths,+Bartlett,+NH/2955+White+Mountain+Hwy,+North+Conway,+NH" target="_blank" rel="noopener" class="underline decoration-dotted text-fall-gold font-bold">open it in Google Maps</a>. The pins are matched by name, so check each one lands where you expect before you set off.' },
+                    { text: '7:30 AM: Leave Gilford and take I-93 north, through Lincoln and on into Franconia Notch. This is the longest drive of the day, so it goes first.' },
+                    { text: '9:00 AM: Artist\'s Bluff. A 1.5 mile loop with about 436 ft of climbing, steep at the start on rock steps and roots, so it is a carrier hike, not a stroller one. As of last autumn the state runs it as a one way loop, counterclockwise, and has closed the old short trail, so plan on the full loop and read the sign at the bottom. Park in the big dirt lot across Route 18 from the Cannon base area, not in the Echo Lake lot. Allow about an hour and a half with a 4 year old.', badge: 'Carrier Needed', badgeType: 'carrier' },
+                    { text: 'Skip Artist\'s Bluff if you are not at the trailhead by about 9:30. The Kancamagus stops below need the whole window to reach the depot by 2:00 PM, and a late start there costs more than the bluff is worth.' },
+                    { text: '10:45 AM: Back through Lincoln. Fill the tank and pick up lunch to carry. There is no gas or food along the 34.5 miles of the Kancamagus and the phone signal drops out in stretches.' },
+                    { text: 'Kancamagus Highway eastbound. Hancock Overlook and Sugar Hill Overlook are roadside pull-offs worth a minute or two each. The developed falls lots charge a day use fee, so have cash or a federal pass handy and check the sign for the amount.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
+                    { text: '11:30 AM: Sabbaday Falls, the easiest waterfall on the road. Guides put the walk anywhere from 0.3 to 0.7 miles and describe a wide path with a gradual climb. One calls it only semi accessible for strollers, so have the carrier ready as a backup. Half an hour.' },
+                    { text: '12:15 PM: Rocky Gorge. A paved approach to the footbridge over the Swift River, easy with the stroller. A flat 1 mile loop around Falls Pond starts nearby if anyone has energy left. No jumping or swimming in the gorge.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
+                    { text: '12:50 PM: Lower Falls, wide granite ledges on the river. Not for the stroller. The rock is slippery and the Forest Service warns about high water, so hold hands near the edge. No restrooms here, and the site closes for the season in mid October. The Albany Covered Bridge sits near the east end of the road, a quick stop if everyone is still game.' },
+                    { text: 'Leave Lower Falls by 1:15 PM at the latest. Allow about 25 minutes to the depot, and you need to be there by 2:00 PM.' },
+                    { text: '2:30 PM: Valley Train Observation Dome Class from North Conway Depot, 38 Norcross Circle (booked, arrive by 2:00 PM as foliage-season traffic backs up into the village). Back on the platform at 3:25 PM.', badge: 'Fold Stroller', badgeType: 'carrier' },
+                    { text: '3:45 PM: Cathedral Ledge. A road runs to the top, so it works with little ones, and the view over North Conway and the valley is the reason to come. One older listing has the road open until late October and one state park listing has the gate closing at 6 PM, so look for a sign at the bottom. There are no facilities at the summit. About half an hour.' },
+                    { text: '4:30 PM: Diana\'s Baths, a short walk to a run of granite cascades, 0.6 miles each way. Stroller reports conflict. The first stretch is wide packed gravel and it gets rougher near the falls, so use the carrier. It is muddy after rain. Park off West Side Road in Bartlett. If the kids are done by now, skip it and head for dinner.', badge: 'Carrier Needed', badgeType: 'carrier' },
                     { text: '6:00 PM: Dinner in North Conway village, then back to the Eastern Inn.' }
                 ],
                 hotel: {

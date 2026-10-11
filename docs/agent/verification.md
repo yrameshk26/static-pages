@@ -4,7 +4,7 @@ Every change ships only after a real browser has rendered it. This discipline ha
 genuine bugs repeatedly, and several of the "failures" it reported were bugs in the test
 rather than the page, so read the false-negative section before trusting a red result.
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-11
 
 ---
 
@@ -93,6 +93,8 @@ These were test bugs, not page bugs. Check against this list before chasing a re
 | Element "overflows" the viewport | Boxes clipped by an `overflow-hidden` ancestor, or inflated by a 3D transform, report misleading rects |
 | First visible text is wrong | A naive probe landed on the hero image. Scan for the first element that actually has text |
 | Expected city name not visible | The visible slice showed the date chip, not the heading. Assert on what is actually in view |
+| Map route waypoints "not found" | `decodeURIComponent` leaves `+` as `+`, so `Artist+Bluff` never matches `Artist Bluff`. Replace `+` with a space first |
+| Element screenshot of a day card is mostly blank bands | The card is taller than the scroller, so the capture clips. A rendering artefact of the screenshot, not a layout fault. Assert on text and geometry instead |
 
 ---
 

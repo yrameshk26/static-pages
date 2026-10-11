@@ -2,7 +2,7 @@
 
 Decisions, history and what is still outstanding. Newest context at the top of each section.
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-11
 
 ---
 
@@ -10,27 +10,21 @@ Decisions, history and what is still outstanding. Newest context at the top of e
 
 ### Needs the owner to decide or supply
 
-1. **Fall page, Kancamagus stops.** Offered and never answered: adding Sabbaday Falls,
-   Rocky Gorge, Lower Falls, Kancamagus Pass and Sugar Hill as named items, plus a note that
-   there is no gas, food or cell signal across those 34.5 miles, and that the overlook
-   pull-offs fill up on an October Sunday.
-2. **Fall page, Best Buy Concord.** Offered and never answered: adding it to Saturday's
-   optional Tanger Tilton run, since both sit on the same I-93 stretch.
-3. **Seven winter attractions still unbooked.** Listed in `trips.md`. December dates sell out.
-4. **Print-friendly ledger.** The PDF is a single tall dark page. A light A4 version
+1. **Seven winter attractions still unbooked.** Listed in `trips.md`. December dates sell out.
+2. **Print-friendly ledger.** The PDF is a single tall dark page. A light A4 version
    paginated over three or four pages was offered and not yet requested.
 
 ### Agent can act once unblocked
 
-5. **Winter page logistics additions.** Five concrete details are ready to ship, listed at the
+3. **Winter page logistics additions.** Five concrete details are ready to ship, listed at the
    end of the winter section in `trips.md`. The owner has been told they are ready. This is
    the most obviously useful next change.
 
 ### Loose ends on the private record, not blocking any page work
 
-6. Whether the cancelled Helsinki to Toronto return was actually refunded in points and cash.
+4. Whether the cancelled Helsinki to Toronto return was actually refunded in points and cash.
    No confirmation exists in either inbox. Needs the Atmos activity log and an Amex statement.
-7. The Avios cost of the two Finnair Lapland legs. Zero cash is certain, the Avios figure was
+5. The Avios cost of the two Finnair Lapland legs. Zero cash is certain, the Avios figure was
    never recorded anywhere. Finnair Plus shows it under the booking.
 
 ---
@@ -41,6 +35,8 @@ Fourteen changes, all via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
+| next | Fall Day 3 rebuilt: Settlers Green out, Artist's Bluff, named Kancamagus stops, Cathedral Ledge and Diana's Baths in, plus a hotel to hotel Google Maps route link |
+| #47 | Agent context docs (this folder) |
 | #46 | Tax-free outlet shopping added to the New Hampshire days |
 | #45 | Dublin day rebuilt around Malahide rather than the city centre |
 | #44 | Return home via Dublin, with a night there on Dec 8 |
@@ -93,6 +89,15 @@ It was deleted rather than left lying around.
 Several verification failures turned out to be faults in the test, not the page. The full
 list is in `verification.md`. The general lesson: when a check fails, confirm the assertion
 itself is sound before changing the page.
+
+### A stale blog answered a question wrongly
+
+On Oct 4 the owner was told Artist's Bluff had a half mile shortcut. A later search found the
+state closed that short trail and made the loop one way (Oct 2025). The owner then asked for
+the bluff to be built into the day, so the error would have shipped. Caught only because the
+follow-up search read the newest source instead of the first few. **When a question involves a
+trail, park or attraction, look for a dated 2025 or 2026 source before repeating a blog.**
+Page copy for Artist's Bluff therefore carries an "as of last autumn, read the sign" caveat.
 
 ### The scratchpad gets wiped
 

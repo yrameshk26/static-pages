@@ -6,7 +6,7 @@ What each itinerary currently says, what is booked, and what is still open.
 details appear here or anywhere else in this repo. The full private record lives at
 `/home/user/finland-england-booking-record.md`, outside the repo.
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-11
 
 ---
 
@@ -116,18 +116,66 @@ Four day cards, four calendar stays, Sunday week start.
 ### Current shape of the days
 
 - **Oct 10:** Lakes Region. Carries an optional Tanger Outlets Tilton suggestion, 20 minutes
-  south of Gilford, open until 8 on a Saturday.
-- **Oct 11:** Drive north to Lincoln, then the **Kancamagus Highway eastbound**. Valley Train
-  Observation Dome from North Conway Depot at 14:30, arrive by 14:00. Then Settlers Green
-  outlets at 15:45, dinner in the village at 18:00.
+  south of Gilford, open until 8 on a Saturday. The owner confirmed on Oct 11 that they did
+  shop at Tilton on this day.
+- **Oct 11:** Titled "Gilford to Franconia Notch to North Conway". One Google Maps route link
+  runs hotel to hotel (see below). The day, in order: leave Gilford 7:30 AM, **Artist's
+  Bluff** about 9:00 (carrier hike, skip if not at the trailhead by 9:30), through Lincoln
+  10:45 for fuel and lunch, **Kancamagus eastbound** with Hancock and Sugar Hill overlooks,
+  **Sabbaday Falls** 11:30, **Rocky Gorge** 12:15, **Lower Falls** 12:50, leave by 1:15 for
+  the depot. **Valley Train Observation Dome** 2:30 to 3:25 PM, then **Cathedral Ledge**
+  3:45, **Diana's Baths** 4:30, dinner in North Conway village 6:00, Eastern Inn.
+  Settlers Green was removed at the owner's request, shopping having happened at Tilton.
 - **Oct 12:** Long drive home via I-87 and the Thousand Islands Bridge, with a note that each
   traveller including the children has a CAD $800 personal exemption after 48 hours out of
   Canada.
 
+### Day 3 stops, research behind each
+
+Times on the page are planning estimates, not measured drive times. Say so if asked.
+
+- **Artist's Bluff**, Franconia Notch State Park, north of Lincoln on I-93. Full loop about
+  1.5 miles, about 436 ft of climbing, steep rock steps and roots at the start. Difficulty
+  ratings conflict between sources. **The 0.5 mile "short trail" is reported closed** (InDepth
+  NH, Oct 2025) and the state runs the loop one way, counterclockwise. Hikers park in the big
+  dirt lot across Route 18 from the Cannon base area, **not** the Echo Lake lot. Older blogs
+  still describe a guardrail shortcut from the Echo Lake lot, treat that as out of date.
+  Nothing found on strollers, assumed unsuitable. The source is a year old, so the page tells
+  the family to read the sign at the bottom.
+- **Kancamagus pull-offs.** Hancock Overlook about 10.5 miles and Sugar Hill Overlook about
+  15.2 miles east of Lincoln. These are the only two mile markers confirmed. Every other stop
+  is known by order only.
+- **Sabbaday Falls.** Walk length quoted as 0.3, 0.6 and 0.7 miles by different guides. Wide,
+  gradual path, but one guide calls it semi accessible and not smooth.
+- **Rocky Gorge.** Paved approach. Falls Pond loop about 1 mile, flat. No jumping or swimming.
+- **Lower Falls.** Slippery granite, high water warning, no restrooms. Forest Service says
+  open mid May to mid October, so this is among its last weekends.
+- **Fees.** Driving the Kancamagus is free. Developed falls lots charge a day use fee and the
+  sources disagree on the amount ($3 to $5). Not confirmed from an official page, so the site
+  gives no figure.
+- **Cathedral Ledge.** An auto road reaches the summit. An older listing has it open mid May
+  to late October, another says the gate closes at 6 PM. No facilities at the top. Free, with
+  donations asked at kiosks.
+- **Diana's Baths.** 0.6 miles each way. Stroller reports conflict. Parking about $5 off West
+  Side Road in Bartlett per reviewers.
+- **The train.** The page says 2:30 to 3:25 PM, which matches the roughly one hour Conway run.
+  The Bartlett run is about 1 hour 45 minutes, so the ticket should be checked.
+
+### Google Maps route on Day 3
+
+A single `https://www.google.com/maps/dir/...` link in the first Day 3 activity. Ten points,
+the maximum Maps handles comfortably in a path URL: hotel street address, Artist Bluff Trail,
+Lincoln, Sabbaday Falls, Rocky Gorge, Lower Falls, the depot, Cathedral Ledge, Dianas Baths
+(no apostrophe, to avoid breaking the JS string), then the Eastern Inn street address. Lincoln
+is included to keep Maps routing over the Kancamagus. The pins are matched by name and have
+not been checked inside Google Maps itself, which this environment cannot do, so the page
+tells the reader to glance at each one. No embedded map: the owner asked for maps to be
+removed from the itinerary pages and a link respects that.
+
 ### Shopping research already done
 
-- **Settlers Green**, North Conway. Over 60 outlets, on Route 16 minutes from both the depot
-  and the hotel. Sunday hours 10 to 6. New Hampshire has no sales tax.
+- **Settlers Green**, North Conway. Researched and added, then **removed Oct 11** because the
+  family shopped at Tilton on Oct 10. Over 60 outlets, Sunday hours 10 to 6.
 - **Tanger Outlets Tilton**, verified still open. Mon to Thu 10 to 7, Fri and Sat 10 to 8,
   Sun 10 to 6.
 - **Nearest Best Buy** is Concord, 78 Damante Dr, about 30 minutes south of Gilford, on the
@@ -136,12 +184,21 @@ Four day cards, four calendar stays, Sunday week start.
   Gilford, closer to two hours from North Conway. Judged not worth the detour.
 - North Conway itself has no Apple Store or Best Buy. Only an independent Apple repair shop.
 
-### Offered but never answered by the owner
+### Resolved and still open
 
-- Adding the individual Kancamagus stops as named items (Sabbaday Falls, Rocky Gorge,
-  Lower Falls, Kancamagus Pass, Sugar Hill), plus a note that there is no gas, food or cell
-  signal across those 34.5 miles.
-- Adding Best Buy Concord to the Saturday optional Tanger run.
+- Named Kancamagus stops, with the no gas, food or signal note: **done Oct 11**.
+- Best Buy Concord on the Saturday Tanger run: **moot**, that day has passed.
+
+### Drone, researched Oct 4, not on any page
+
+Legal but nearly everywhere scenic is restricted. A Canadian flyer needs the free FAA TRUST
+certificate, FAA registration if the drone is 250 g or more, and Remote ID if registered.
+No takeoff or landing in any NH state park (so none at Flume Gorge). White Mountain National
+Forest bars takeoff and landing within a quarter mile of trailheads and protected areas, bans
+wilderness areas and the Appalachian Trail, and names Sabbaday Falls. Fort Drum restricted
+airspace R-5201 sits next to Watertown, continuous since March 2026. Gilford has Laconia
+airport in the town itself, uncontrolled. Oct 12 is Columbus Day and Canadian Thanksgiving,
+so crowds are a further problem. Advice given: leave it at home unless it is under 250 g.
 
 ---
 
