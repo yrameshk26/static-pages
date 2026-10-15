@@ -6,7 +6,7 @@ What each itinerary currently says, what is booked, and what is still open.
 details appear here or anywhere else in this repo. The full private record lives at
 `/home/user/finland-england-booking-record.md`, outside the repo.
 
-**Last updated:** 2026-10-11
+**Last updated:** 2026-10-15
 
 ---
 
@@ -79,7 +79,27 @@ Several of these sell out or get expensive at December dates. Worth prompting ab
 
 ### Content decisions already made, do not undo without asking
 
-- **Winter Wonderland moved to the arrival night**, because Hyde Park is next to the BoTree.
+- **Winter Wonderland is on Tuesday Nov 24, 5:45 PM**, at the Marble Arch gate, after the afternoon tea and
+  the Oxford Street lights. It was on the arrival night (Sun Nov 22) because Hyde Park is next to the BoTree,
+  and moved on Oct 15 when the owner decided Sunday evening is spent with family in Harrow. Tuesday was the
+  swap the page had already named as its fallback. The Central line runs Marble Arch to Stratford with no
+  changes. Wednesday is the back-up evening. The 2026 opening date was never confirmed, still worth checking.
+- **Sunday Nov 22 evening and dinner are with family in Harrow.** The day stays in Marylebone until 4:45 PM
+  (bags at the BoTree desk, farmers market, Regent's Park, lunch, check in and nap at 3 PM), then out to
+  Harrow, dinner at 6:30, back to the BoTree by about 8:30 by car. Journey times are estimates and the page
+  tells readers to check TfL status the evening before, since Sunday engineering works are common.
+  **The relatives' street address is deliberately NOT on the page or in these docs.** The repo is public
+  and home addresses are on the never commit list. The page says only "Harrow". Nearest station to that
+  part of Harrow is probably Harrow and Wealdstone (Bakerloo), but sources conflicted, so the page tells
+  readers to ask the family which station suits them.
+- **Thursday Nov 26 is a day with a friend in Coulsdon.** Jubilee line Stratford to London Bridge, then a
+  direct train to Coulsdon South. Sources put the train leg at 21 to 28 minutes. Out at 9:30 AM, back at
+  Stratford about 5 PM. Young V&A is kept as a back-up only. The old line "dedicated time with relatives"
+  and its tip to leave suitcases at their house were removed: the owner confirmed those were different
+  people and that The Stratford covers Thursday night, so nothing needs to be left anywhere.
+- **The Luggage Stash tip no longer mentions London relatives.** It now covers only the Hilton city bag.
+  That quietly means the big transatlantic bags travel to Edinburgh and Helsinki with the family, which the
+  old tip had avoided. The owner has not been asked whether that is intended.
 - **London Transport Museum removed**, the owner is not interested. Madame Tussauds replaced it.
 - **Camera Obscura and World of Illusions removed**, same reason.
 - A **kid-friendly afternoon tea** was added in London.
