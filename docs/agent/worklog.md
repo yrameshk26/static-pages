@@ -2,7 +2,7 @@
 
 Decisions, history and what is still outstanding. Newest context at the top of each section.
 
-**Last updated:** 2026-10-11
+**Last updated:** 2026-10-15
 
 ---
 
@@ -35,7 +35,8 @@ Fourteen changes, all via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
-| next | Fall Day 3 rebuilt: Settlers Green out, Artist's Bluff, named Kancamagus stops, Cathedral Ledge and Diana's Baths in, plus a hotel to hotel Google Maps route link |
+| next | London days: Sunday evening and dinner in Harrow, Winter Wonderland moved to Tuesday, Thursday is a friend in Coulsdon, suitcase tip removed |
+| #48 | Fall Day 3 rebuilt: Settlers Green out, Artist's Bluff, named Kancamagus stops, Cathedral Ledge and Diana's Baths in, plus a hotel to hotel Google Maps route link |
 | #47 | Agent context docs (this folder) |
 | #46 | Tax-free outlet shopping added to the New Hampshire days |
 | #45 | Dublin day rebuilt around Malahide rather than the city centre |
@@ -98,6 +99,14 @@ the bluff to be built into the day, so the error would have shipped. Caught only
 follow-up search read the newest source instead of the first few. **When a question involves a
 trail, park or attraction, look for a dated 2025 or 2026 source before repeating a blog.**
 Page copy for Artist's Bluff therefore carries an "as of last autumn, read the sign" caveat.
+
+### A test that passed because it found nothing
+
+While checking the London edit, the first run reported "Winter Wonderland is no longer on Sunday" as a
+pass and in the same run failed every ordering check. Both had one cause: the day headings are
+uppercased by CSS, so the section splitter found nothing and returned an empty string, and "this text
+is absent" is trivially true of an empty string. **Any "X is gone" assertion needs a companion assertion
+that the section being searched exists and is non empty.** The harness now asserts section length first.
 
 ### The scratchpad gets wiped
 
