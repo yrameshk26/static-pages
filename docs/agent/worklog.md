@@ -35,7 +35,7 @@ Fourteen changes, all via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
-| next | Winter bookings: Castle of Light out, Botanics in, prices and urgency on the to-book list, Holyroodhouse marked confirm, BA92 seats, Enterprise pick-up call |
+| #50 | Winter bookings: Castle of Light out, Botanics in, prices and urgency on the to-book list, Holyroodhouse marked confirm, BA92 seats, Enterprise pick-up call |
 | #49 | London days: Sunday evening and dinner in Harrow, Winter Wonderland moved to Tuesday, Thursday is a friend in Coulsdon, suitcase tip removed |
 | #48 | Fall Day 3 rebuilt: Settlers Green out, Artist's Bluff, named Kancamagus stops, Cathedral Ledge and Diana's Baths in, plus a hotel to hotel Google Maps route link |
 | #47 | Agent context docs (this folder) |
