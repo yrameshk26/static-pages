@@ -3,7 +3,7 @@
 How the trip pages are built, the data shapes inside them, and the traps that have already
 cost time. Read with `CLAUDE.md`.
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-27
 
 ---
 
@@ -94,17 +94,24 @@ Week start differs per page: the fall page starts weeks on **Sunday**, the winte
 
 ### `ATTRACTIONS[]` (winter page only)
 
-39 rows grouped by city, each with a `status` of `booked`, `book`, `onday` or `free`.
+40 rows grouped by city, each with a `status` of `booked`, `book`, `confirm`, `onday` or `free`.
 Rendered twice from one array: a real `<table class="att-table">` inside a
 `hidden md:block` wrapper, and stacked `.att-card` blocks inside an `md:hidden` wrapper.
 Change the array, both views follow.
 
-Current counts: 7 `booked`, 7 `book`, 7 `onday`, 18 `free`.
+`confirm` renders as "Confirm booking". It is used for Palace of Holyroodhouse, which is
+neither booked nor a fresh purchase. The note carries "Confirm booking (check Abi's email)".
+
+Current counts: 7 `booked`, 7 `book`, 1 `confirm`, 7 `onday`, 18 `free`.
 
 ### Booking checklist
 
-Seven checkbox items on the winter page under the heading "Activities to book", persisted
-to `localStorage`.
+Eight checkbox items on the winter page under the heading "Activities to book", persisted
+to `localStorage`. Order on the page is urgency: Wonderlights, Mad Hatter's Afternoon Tea,
+Christmas at the Botanics, reindeer sleigh ride, Winter Wonderland, Madame Tussauds,
+Tower of London, Holyroodhouse. Keys are `a-wonderlights`, `a-afternoontea`, `a-botanics`,
+`a-reindeer`, `a-winterwonderland`, `a-tussauds`, `a-toweroflondon`, `a-holyrood`.
+Do not reuse `a-castleoflight`. That activity was removed.
 
 ---
 
