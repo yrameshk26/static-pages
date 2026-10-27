@@ -2,11 +2,15 @@
 
 What each itinerary currently says, what is booked, and what is still open.
 
-**Public-safe by design.** No confirmation numbers, rates, points amounts or personal
-details appear here or anywhere else in this repo. The full private record lives at
+**Public-safe by design.** No confirmation numbers, personal fares, points amounts,
+loyalty numbers or personal phone numbers appear here or on the pages. Public ticket
+prices for attractions still to book are on the winter page as of 2026-10-27, because
+the owner asked for them there. The Enterprise Rovaniemi desk number is on that page
+too, for the same reason. It is their published reservations line. Do not add the
+rental confirmation number. The full private record lives at
 `/home/user/finland-england-booking-record.md`, outside the repo.
 
-**Last updated:** 2026-10-15
+**Last updated:** 2026-10-27
 
 ---
 
@@ -70,12 +74,26 @@ them so there is no room change mid-stay.
   pick-up included. The two adults split the day so one always has the children.
 - SantaPark Arctic World, all day access. Sun Dec 6, 09:00 to 18:00.
 
-### Still to book, seven items on the checklist
+### Still to book, eight items on the checklist
 
-Hyde Park Winter Wonderland, Tower of London and the Crown Jewels, Madame Tussauds,
-a kid-friendly afternoon tea, Castle of Light, Palace of Holyroodhouse, Wonderlights.
+Ordered by urgency on the page:
 
-Several of these sell out or get expensive at December dates. Worth prompting about.
+1. Wonderlights at Malahide Castle, Dec 8 evening. Urgent. Select dates Nov 12 to Dec 29 2026. Open-dated tickets are sold out, so a dated slot has to be booked, and Tue Dec 8 has to be checked. One listings calendar does not show that Tuesday. The nearest nights on that list are Sun Dec 6 and Thu Dec 10, and the trip is only in Dublin on the 8th.
+2. Mad Hatter's Afternoon Tea at the Sanderson, Nov 24, 3:00 PM. Urgent. Card hold to book. Little Hatters is ages 4 to 11.
+3. Christmas at the Botanics, Royal Botanic Garden Edinburgh, Sat Nov 28 evening. To book. Timed entry. Saturday is likely peak. This replaced Castle of Light, which Historic Environment Scotland cancelled for 2026 on Oct 1.
+4. Reindeer sleigh ride in Levi, Dec 3 or Dec 4 afternoon. Nothing reindeer is booked beyond feeding at Samiland. Early December fills up. A Beyond Arctic husky and reindeer combo is the example on the page.
+5. Hyde Park Winter Wonderland, Tue Nov 24, 5:45 PM. Open Nov 19 2026 to Jan 3 2027. On Nov 24 it runs 12pm to 10pm. Everyone needs a ticket, toddlers included.
+6. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
+7. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
+8. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
+
+### Rental car and BA92
+
+Enterprise at Rovaniemi Airport is booked, with studded tires and two toddler seats. Drop off stays Mon Dec 7, 9:00 AM. Pick-up is booked for Wed Dec 2 at 10:00 AM and AY555 lands at 11:15, so the page says to move pick-up to about 11:45 and call Enterprise to confirm the reservation is still holding. The confirmation email flags an account issue. The page does not say the booking is broken, and it does not carry the confirmation number.
+
+BA92 seats are assigned: 10K, 11K and 11F. The line about award fares and picking seats at T-24h is gone.
+
+Sunday Nov 29 lunch is still an unnamed historic pub. The card now says to reserve a family table.
 
 ### Content decisions already made, do not undo without asking
 
@@ -83,7 +101,7 @@ Several of these sell out or get expensive at December dates. Worth prompting ab
   the Oxford Street lights. It was on the arrival night (Sun Nov 22) because Hyde Park is next to the BoTree,
   and moved on Oct 15 when the owner decided Sunday evening is spent with family in Harrow. Tuesday was the
   swap the page had already named as its fallback. The Central line runs Marble Arch to Stratford with no
-  changes. Wednesday is the back-up evening. The 2026 opening date was never confirmed, still worth checking.
+  changes. Wednesday is the back-up evening. The 2026 dates are confirmed: Nov 19 2026 to Jan 3 2027, and Nov 24 is open 12pm to 10pm.
 - **Sunday Nov 22 evening and dinner are with family in Harrow.** The day stays in Marylebone until 4:45 PM
   (bags at the BoTree desk, farmers market, Regent's Park, lunch, check in and nap at 3 PM), then out to
   Harrow, dinner at 6:30, back to the BoTree by about 8:30 by car. Journey times are estimates and the page
