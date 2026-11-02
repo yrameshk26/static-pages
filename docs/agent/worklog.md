@@ -10,7 +10,7 @@ Decisions, history and what is still outstanding. Newest context at the top of e
 
 ### Needs the owner to decide or supply
 
-1. **Eight winter items still need action.** Listed in `trips.md`, in urgency order on the page. Holyroodhouse may already be in Abi's email. It is not in Ramesh's. Wonderlights on Tue Dec 8 may not be an open night. Enterprise pick-up is 10:00 AM on Dec 2 and AY555 lands at 11:15, so the pick-up time needs a call. The confirmation email flags an account issue. Do not describe that booking as broken, and do not put the confirmation number on the page. The Enterprise desk number is on the page because the owner asked for the call to be written down. It is their published reservations line. Leave it.
+1. **Seven winter items still need action.** Listed in `trips.md`, in urgency order on the page. The reindeer sleigh ride is no longer one of them. Holyroodhouse may already be in Abi's email. It is not in Ramesh's. Wonderlights on Tue Dec 8 may not be an open night. Enterprise pick-up is 10:00 AM on Dec 2 and AY555 lands at 11:15, so the pick-up time needs a call. The confirmation email flags an account issue. Do not describe that booking as broken, and do not put the confirmation number on the page. The Enterprise desk number is on the page because the owner asked for the call to be written down. It is their published reservations line. Leave it.
 2. **Print-friendly ledger.** The PDF is a single tall dark page. A light A4 version
    paginated over three or four pages was offered and not yet requested.
 
@@ -31,11 +31,12 @@ Decisions, history and what is still outstanding. Newest context at the top of e
 
 ## Shipped so far
 
-Fourteen changes, all via PR and squash merge into `main`. Most recent first.
+Shipped via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
-| next | Docs only: owner confirmed the big bags travel to Edinburgh, so the open luggage question is closed |
+| next | Reindeer sleigh ride removed from the winter checklist, Thursday card, Finland notes and Every stop list. Husky ride stays. Samiland feeding stays. |
+| #51 | Docs only: owner confirmed the big bags travel to Edinburgh, so the open luggage question is closed |
 | #50 | Winter bookings: Castle of Light out, Botanics in, prices and urgency on the to-book list, Holyroodhouse marked confirm, BA92 seats, Enterprise pick-up call |
 | #49 | London days: Sunday evening and dinner in Harrow, Winter Wonderland moved to Tuesday, Thursday is a friend in Coulsdon, suitcase tip removed |
 | #48 | Fall Day 3 rebuilt: Settlers Green out, Artist's Bluff, named Kancamagus stops, Cathedral Ledge and Diana's Baths in, plus a hotel to hotel Google Maps route link |

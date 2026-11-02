@@ -74,18 +74,19 @@ them so there is no room change mid-stay.
   pick-up included. The two adults split the day so one always has the children.
 - SantaPark Arctic World, all day access. Sun Dec 6, 09:00 to 18:00.
 
-### Still to book, eight items on the checklist
+### Still to book, seven items on the checklist
 
 Ordered by urgency on the page:
 
 1. Wonderlights at Malahide Castle, Dec 8 evening. Urgent. Select dates Nov 12 to Dec 29 2026. Open-dated tickets are sold out, so a dated slot has to be booked, and Tue Dec 8 has to be checked. One listings calendar does not show that Tuesday. The nearest nights on that list are Sun Dec 6 and Thu Dec 10, and the trip is only in Dublin on the 8th.
 2. Mad Hatter's Afternoon Tea at the Sanderson, Nov 24, 3:00 PM. Urgent. Card hold to book. Little Hatters is ages 4 to 11.
 3. Christmas at the Botanics, Royal Botanic Garden Edinburgh, Sat Nov 28 evening. To book. Timed entry. Saturday is likely peak. This replaced Castle of Light, which Historic Environment Scotland cancelled for 2026 on Oct 1.
-4. Reindeer sleigh ride in Levi, Dec 3 or Dec 4 afternoon. Nothing reindeer is booked beyond feeding at Samiland. Early December fills up. A Beyond Arctic husky and reindeer combo is the example on the page.
-5. Hyde Park Winter Wonderland, Tue Nov 24, 5:45 PM. Open Nov 19 2026 to Jan 3 2027. On Nov 24 it runs 12pm to 10pm. Everyone needs a ticket, toddlers included.
-6. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
-7. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
-8. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
+4. Hyde Park Winter Wonderland, Tue Nov 24, 5:45 PM. Open Nov 19 2026 to Jan 3 2027. On Nov 24 it runs 12pm to 10pm. Everyone needs a ticket, toddlers included.
+5. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
+6. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
+7. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
+
+The reindeer sleigh ride in Levi is no longer on this list. The family is doing the husky ride instead. Samiland Exhibition on Fri Dec 4 at 2:00 PM stays. That stop is feeding reindeer, not a ride.
 
 ### Rental car and BA92
 
@@ -120,6 +121,7 @@ Sunday Nov 29 lunch is still an unnamed historic pub. The card now says to reser
   anyone in London. The heavy moment is Friday Nov 27: the 8:15 AM Southeastern train from Stratford
   International to St Pancras, then across to King's Cross for the LNER train. The page does not yet say
   anything about handling the bags on that morning, which the owner has been offered.
+- **The reindeer sleigh ride in Levi is off the plan.** The family is doing the booked husky ride instead, so nothing replaces the sleigh. It is gone from the Activities to book checklist, the Finland activities list, the Thursday Dec 3 card and the Every stop list. The stay calendar never carried it. Samiland Exhibition on Fri Dec 4 at 2:00 PM stays, and that stop is feeding reindeer. Do not put the sleigh back, and do not reuse the checklist key `a-reindeer`.
 - **London Transport Museum removed**, the owner is not interested. Madame Tussauds replaced it.
 - **Camera Obscura and World of Illusions removed**, same reason.
 - A **kid-friendly afternoon tea** was added in London.

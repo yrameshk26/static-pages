@@ -3,7 +3,7 @@
 How the trip pages are built, the data shapes inside them, and the traps that have already
 cost time. Read with `CLAUDE.md`.
 
-**Last updated:** 2026-10-27
+**Last updated:** 2026-11-02
 
 ---
 
@@ -94,7 +94,7 @@ Week start differs per page: the fall page starts weeks on **Sunday**, the winte
 
 ### `ATTRACTIONS[]` (winter page only)
 
-40 rows grouped by city, each with a `status` of `booked`, `book`, `confirm`, `onday` or `free`.
+39 rows grouped by city, each with a `status` of `booked`, `book`, `confirm`, `onday` or `free`.
 Rendered twice from one array: a real `<table class="att-table">` inside a
 `hidden md:block` wrapper, and stacked `.att-card` blocks inside an `md:hidden` wrapper.
 Change the array, both views follow.
@@ -102,16 +102,19 @@ Change the array, both views follow.
 `confirm` renders as "Confirm booking". It is used for Palace of Holyroodhouse, which is
 neither booked nor a fresh purchase. The note carries "Confirm booking (check Abi's email)".
 
-Current counts: 7 `booked`, 7 `book`, 1 `confirm`, 7 `onday`, 18 `free`.
+Current counts: 7 `booked`, 6 `book`, 1 `confirm`, 7 `onday`, 18 `free`.
 
 ### Booking checklist
 
-Eight checkbox items on the winter page under the heading "Activities to book", persisted
-to `localStorage`. Order on the page is urgency: Wonderlights, Mad Hatter's Afternoon Tea,
-Christmas at the Botanics, reindeer sleigh ride, Winter Wonderland, Madame Tussauds,
+Seven checkbox items on the winter page under the heading "Activities to book", persisted
+to `localStorage`. The progress ring reads `.book-check` at runtime, so the total is the
+number of those boxes, not a hardcoded 8. Order on the page is urgency: Wonderlights,
+Mad Hatter's Afternoon Tea, Christmas at the Botanics, Winter Wonderland, Madame Tussauds,
 Tower of London, Holyroodhouse. Keys are `a-wonderlights`, `a-afternoontea`, `a-botanics`,
-`a-reindeer`, `a-winterwonderland`, `a-tussauds`, `a-toweroflondon`, `a-holyrood`.
-Do not reuse `a-castleoflight`. That activity was removed.
+`a-winterwonderland`, `a-tussauds`, `a-toweroflondon`, `a-holyrood`.
+Do not reuse `a-castleoflight` or `a-reindeer`. Those activities were removed. The reindeer
+sleigh ride came off because the family is doing the husky ride instead. Samiland feeding
+stays on the Friday card and in the Every stop list.
 
 ---
 
