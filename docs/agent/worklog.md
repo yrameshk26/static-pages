@@ -35,7 +35,7 @@ Shipped via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
-| next | Reindeer sleigh ride removed from the winter checklist, Thursday card, Finland notes and Every stop list. Husky ride stays. Samiland feeding stays. |
+| #52 | Reindeer sleigh ride removed from the winter checklist, Thursday card, Finland notes and Every stop list. Husky ride stays. Samiland feeding stays. |
 | #51 | Docs only: owner confirmed the big bags travel to Edinburgh, so the open luggage question is closed |
 | #50 | Winter bookings: Castle of Light out, Botanics in, prices and urgency on the to-book list, Holyroodhouse marked confirm, BA92 seats, Enterprise pick-up call |
 | #49 | London days: Sunday evening and dinner in Harrow, Winter Wonderland moved to Tuesday, Thursday is a friend in Coulsdon, suitcase tip removed |
