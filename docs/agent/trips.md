@@ -79,17 +79,20 @@ them so there is no room change mid-stay.
   the day. The Santa Land Unlimited Ride Pass is £25 online in advance, cheaper than on
   the day, and it suits Aadhan. Shown as a booked line, like the Natural History Museum,
   not as a checkbox.
+- Afternoon tea at Royal Lancaster London, Tue Nov 24, 3:00 PM, party of 4. By Lancaster
+  Gate, on the north edge of Hyde Park, about a ten minute walk to the Marble Arch gate.
+  Shown as a booked line, same treatment as Winter Wonderland. The page does not carry
+  the booking reference, the price, the street address or a phone number.
 
-### Still to book, six items on the checklist
+### Still to book, five items on the checklist
 
 Ordered by urgency on the page:
 
 1. Wonderlights at Malahide Castle, Dec 8 evening. Urgent. Select dates Nov 12 to Dec 29 2026. Open-dated tickets are sold out, so a dated slot has to be booked, and Tue Dec 8 has to be checked. One listings calendar does not show that Tuesday. The nearest nights on that list are Sun Dec 6 and Thu Dec 10, and the trip is only in Dublin on the 8th.
-2. Mad Hatter's Afternoon Tea at the Sanderson, Nov 24, 3:00 PM. Urgent. Card hold to book. Little Hatters is ages 4 to 11.
-3. Christmas at the Botanics, Royal Botanic Garden Edinburgh, Sat Nov 28 evening. To book. Timed entry. Saturday is likely peak. This replaced Castle of Light, which Historic Environment Scotland cancelled for 2026 on Oct 1.
-4. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
-5. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
-6. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
+2. Christmas at the Botanics, Royal Botanic Garden Edinburgh, Sat Nov 28 evening. To book. Timed entry. Saturday is likely peak. This replaced Castle of Light, which Historic Environment Scotland cancelled for 2026 on Oct 1.
+3. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
+4. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
+5. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
 
 The reindeer sleigh ride in Levi is no longer on this list. The family is doing the husky ride instead. Samiland Exhibition on Fri Dec 4 at 2:00 PM stays. That stop is feeding reindeer, not a ride.
 
@@ -134,7 +137,13 @@ Sunday Nov 29 lunch is still an unnamed historic pub. The card now says to reser
 - **Monday Nov 23 has a short stop at The Red Lion after Horse Guards.** 48 Parliament Street, Whitehall, at 4:30 PM, a few minutes' walk from the parade. A drink and a bowl of chips, not a sit-down meal, so nothing to book. Kids are welcome in most pubs during the day, and the card says to sit in the dining area if the bar is packed. The Every stop list marks it pay on the day. It is not on the Activities to book checklist, so that stop did not add a checkbox. Back east moves from 4:45 PM to 5:15 PM. The pub's own site lists it as families welcome, open Monday 11:00 to 23:00, with food until 22:00.
 - **London Transport Museum removed**, the owner is not interested. Madame Tussauds replaced it.
 - **Camera Obscura and World of Illusions removed**, same reason.
-- A **kid-friendly afternoon tea** was added in London.
+- **Afternoon tea is booked at Royal Lancaster London**, Tue Nov 24, 3:00 PM, party of 4.
+  Mad Hatter's Afternoon Tea at the Sanderson is off the plan, including the checklist
+  checkbox, the cost notes and the sandersonlondon.com link. Hamleys and the Oxford Street
+  lights came off Tuesday with it and were not moved to another day. Around 4:45 PM the
+  card has a short free stroll along the Hyde Park edge toward Marble Arch, then Winter
+  Wonderland at 5:45 PM as before. Do not reuse checklist key `a-afternoontea`. Do not put
+  the booking reference, the price, the street address or a phone number on the page.
 - The **Dublin day is built around Malahide**, not the city centre.
 - A **city bag is left at the Hilton Helsinki** over the Lapland leg and collected on return.
 
