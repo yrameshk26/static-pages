@@ -94,7 +94,7 @@ Week start differs per page: the fall page starts weeks on **Sunday**, the winte
 
 ### `ATTRACTIONS[]` (winter page only)
 
-39 rows grouped by city, each with a `status` of `booked`, `book`, `confirm`, `onday` or `free`.
+40 rows grouped by city, each with a `status` of `booked`, `book`, `confirm`, `onday` or `free`.
 Rendered twice from one array: a real `<table class="att-table">` inside a
 `hidden md:block` wrapper, and stacked `.att-card` blocks inside an `md:hidden` wrapper.
 Change the array, both views follow.
@@ -102,7 +102,7 @@ Change the array, both views follow.
 `confirm` renders as "Confirm booking". It is used for Palace of Holyroodhouse, which is
 neither booked nor a fresh purchase. The note carries "Confirm booking (check Abi's email)".
 
-Current counts: 7 `booked`, 6 `book`, 1 `confirm`, 7 `onday`, 18 `free`.
+Current counts: 7 `booked`, 6 `book`, 1 `confirm`, 8 `onday`, 18 `free`.
 
 ### Booking checklist
 
