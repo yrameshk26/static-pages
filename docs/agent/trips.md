@@ -10,7 +10,7 @@ too, for the same reason. It is their published reservations line. Do not add th
 rental confirmation number. The full private record lives at
 `/home/user/finland-england-booking-record.md`, outside the repo.
 
-**Last updated:** 2026-10-27
+**Last updated:** 2026-11-02
 
 ---
 
@@ -115,9 +115,11 @@ Sunday Nov 29 lunch is still an unnamed historic pub. The card now says to reser
   Stratford about 5 PM. Young V&A is kept as a back-up only. The old line "dedicated time with relatives"
   and its tip to leave suitcases at their house were removed: the owner confirmed those were different
   people and that The Stratford covers Thursday night, so nothing needs to be left anywhere.
-- **The Luggage Stash tip no longer mentions London relatives.** It now covers only the Hilton city bag.
-  That quietly means the big transatlantic bags travel to Edinburgh and Helsinki with the family, which the
-  old tip had avoided. The owner has not been asked whether that is intended.
+- **The big transatlantic bags travel with the family to Edinburgh, and on to Helsinki.** Confirmed by the
+  owner on Nov 2. The Luggage Stash tip therefore covers only the Hilton city bag, and nothing is left with
+  anyone in London. The heavy moment is Friday Nov 27: the 8:15 AM Southeastern train from Stratford
+  International to St Pancras, then across to King's Cross for the LNER train. The page does not yet say
+  anything about handling the bags on that morning, which the owner has been offered.
 - **London Transport Museum removed**, the owner is not interested. Madame Tussauds replaced it.
 - **Camera Obscura and World of Illusions removed**, same reason.
 - A **kid-friendly afternoon tea** was added in London.
