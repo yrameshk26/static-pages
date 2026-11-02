@@ -10,7 +10,7 @@ Decisions, history and what is still outstanding. Newest context at the top of e
 
 ### Needs the owner to decide or supply
 
-1. **Six winter items still need action.** Listed in `trips.md`, in urgency order on the page. Hyde Park Winter Wonderland is booked, so it is a static done line rather than a checkbox, and the progress ring now totals six. The reindeer sleigh ride is no longer one of them. Holyroodhouse may already be in Abi's email. It is not in Ramesh's. Wonderlights on Tue Dec 8 may not be an open night. Enterprise pick-up is 10:00 AM on Dec 2 and AY555 lands at 11:15, so the pick-up time needs a call. The confirmation email flags an account issue. Do not describe that booking as broken, and do not put the confirmation number on the page. The Enterprise desk number is on the page because the owner asked for the call to be written down. It is their published reservations line. Leave it.
+1. **Five winter items still need action.** Listed in `trips.md`, in urgency order on the page. Hyde Park Winter Wonderland and Royal Lancaster afternoon tea are booked, so each is a static done line rather than a checkbox, and the progress ring now totals five. The reindeer sleigh ride is no longer one of them. Holyroodhouse may already be in Abi's email. It is not in Ramesh's. Wonderlights on Tue Dec 8 may not be an open night. Enterprise pick-up is 10:00 AM on Dec 2 and AY555 lands at 11:15, so the pick-up time needs a call. The confirmation email flags an account issue. Do not describe that booking as broken, and do not put the confirmation number on the page. The Enterprise desk number is on the page because the owner asked for the call to be written down. It is their published reservations line. Leave it.
 2. **Print-friendly ledger.** The PDF is a single tall dark page. A light A4 version
    paginated over three or four pages was offered and not yet requested.
 
@@ -35,6 +35,7 @@ Shipped via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
+| #55 | Royal Lancaster afternoon tea marked booked for Tue Nov 24 at 3:00 PM, party of 4. Mad Hatter's at the Sanderson, Hamleys and the Oxford Street lights are off Tuesday. Tea is a done line, and the progress ring now counts five checkboxes. |
 | #54 | Hyde Park Winter Wonderland marked booked on the checklist, the Tuesday Nov 24 card and the Every stop list. Off-peak slot is 5:00 to 6:00 PM at the Marble Arch gate. The progress ring now counts six checkboxes. |
 | #53 | Monday Nov 23: The Red Lion after the Horse Guards parade, back east moved to 5:15 PM. Pay on the day in Every stop. Not added to the booking checklist. The ring total at that point stayed at seven, and Winter Wonderland later took it to six. |
 | #52 | Reindeer sleigh ride removed from the winter checklist, Thursday card, Finland notes and Every stop list. Husky ride stays. Samiland feeding stays. |

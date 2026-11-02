@@ -102,22 +102,22 @@ Change the array, both views follow.
 `confirm` renders as "Confirm booking". It is used for Palace of Holyroodhouse, which is
 neither booked nor a fresh purchase. The note carries "Confirm booking (check Abi's email)".
 
-Current counts: 8 `booked`, 5 `book`, 1 `confirm`, 8 `onday`, 18 `free`.
+Current counts: 9 `booked`, 4 `book`, 1 `confirm`, 8 `onday`, 18 `free`.
 
 ### Booking checklist
 
-Six checkbox items on the winter page under the heading "Activities to book", persisted
+Five checkbox items on the winter page under the heading "Activities to book", persisted
 to `localStorage`. The progress ring reads `.book-check` at runtime, so the total is the
 number of those boxes, not a hardcoded 8. Order on the page is urgency: Wonderlights,
-Mad Hatter's Afternoon Tea, Christmas at the Botanics, Madame Tussauds, Tower of London,
-Holyroodhouse. Keys are `a-wonderlights`, `a-afternoontea`, `a-botanics`, `a-tussauds`,
-`a-toweroflondon`, `a-holyrood`. Hyde Park Winter Wonderland is a static booked line under
-that heading, same treatment as the Natural History Museum, so it is not a checkbox and
-does not change the ring when someone ticks the list.
-Do not reuse `a-winterwonderland`, `a-castleoflight` or `a-reindeer`. Winter Wonderland
-left the checkbox list because it is booked. Castle of Light and the reindeer sleigh ride
-were removed. The family is doing the husky ride instead. Samiland feeding stays on the
-Friday card and in the Every stop list.
+Christmas at the Botanics, Madame Tussauds, Tower of London, Holyroodhouse. Keys are
+`a-wonderlights`, `a-botanics`, `a-tussauds`, `a-toweroflondon`, `a-holyrood`. Hyde Park
+Winter Wonderland and Royal Lancaster afternoon tea are static booked lines under that
+heading, same treatment as the Natural History Museum, so they are not checkboxes and
+do not change the ring when someone ticks the list.
+Do not reuse `a-winterwonderland`, `a-afternoontea`, `a-castleoflight` or `a-reindeer`.
+Winter Wonderland and the afternoon tea left the checkbox list because they are booked.
+Castle of Light and the reindeer sleigh ride were removed. The family is doing the husky
+ride instead. Samiland feeding stays on the Friday card and in the Every stop list.
 
 ---
 
