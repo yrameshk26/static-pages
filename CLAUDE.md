@@ -99,7 +99,7 @@ model identifier in any committed artefact.
 | Path | Title | State |
 |---|---|---|
 | `index.html` | App Support and Privacy Pages | Small landing page, rarely touched |
-| `uk-finland-trip/index.html` | Winter Expedition, Nov 21 to Dec 9 2026 | **Active.** 1557 lines, the most complex page |
+| `uk-finland-trip/index.html` | Winter Expedition, Nov 21 to Dec 9 2026 | **Active.** 1556 lines, the most complex page |
 | `fall-foliage-trip/index.html` | Fall Foliage Road Trip, Oct 9 to 12 2026 | **Active.** about 860 lines |
 | `mora-camping-2026/index.html` | Mora Camping 2026, Samuel de Champlain | Stable. Has a live user checklist |
 | `scribble-sky/index.html` | Scribble Sky, Support and Privacy | Static app support page |

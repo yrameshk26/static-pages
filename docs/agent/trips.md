@@ -73,18 +73,23 @@ them so there is no room change mid-stay.
 - Early Evening Aurora Tour by snowmobile. Sat Dec 5, 17:30 to 19:30. The other adult,
   pick-up included. The two adults split the day so one always has the children.
 - SantaPark Arctic World, all day access. Sun Dec 6, 09:00 to 18:00.
+- Hyde Park Winter Wonderland, Tue Nov 24. Off-peak entry through SeeTickets, Marble Arch
+  gate, entry slot 5:00 to 6:00 PM. Arrive around 5:45 PM, which is inside the slot.
+  2 adults, 1 child aged 3 to 12, and 1 infant aged 2 and under. Rides can be bought on
+  the day. The Santa Land Unlimited Ride Pass is £25 online in advance, cheaper than on
+  the day, and it suits Aadhan. Shown as a booked line, like the Natural History Museum,
+  not as a checkbox.
 
-### Still to book, seven items on the checklist
+### Still to book, six items on the checklist
 
 Ordered by urgency on the page:
 
 1. Wonderlights at Malahide Castle, Dec 8 evening. Urgent. Select dates Nov 12 to Dec 29 2026. Open-dated tickets are sold out, so a dated slot has to be booked, and Tue Dec 8 has to be checked. One listings calendar does not show that Tuesday. The nearest nights on that list are Sun Dec 6 and Thu Dec 10, and the trip is only in Dublin on the 8th.
 2. Mad Hatter's Afternoon Tea at the Sanderson, Nov 24, 3:00 PM. Urgent. Card hold to book. Little Hatters is ages 4 to 11.
 3. Christmas at the Botanics, Royal Botanic Garden Edinburgh, Sat Nov 28 evening. To book. Timed entry. Saturday is likely peak. This replaced Castle of Light, which Historic Environment Scotland cancelled for 2026 on Oct 1.
-4. Hyde Park Winter Wonderland, Tue Nov 24, 5:45 PM. Open Nov 19 2026 to Jan 3 2027. On Nov 24 it runs 12pm to 10pm. Everyone needs a ticket, toddlers included.
-5. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
-6. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
-7. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
+4. Madame Tussauds, Nov 24 morning. Under 2s free, and the free ticket still has to be added.
+5. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
+6. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
 
 The reindeer sleigh ride in Levi is no longer on this list. The family is doing the husky ride instead. Samiland Exhibition on Fri Dec 4 at 2:00 PM stays. That stop is feeding reindeer, not a ride.
 
@@ -98,11 +103,15 @@ Sunday Nov 29 lunch is still an unnamed historic pub. The card now says to reser
 
 ### Content decisions already made, do not undo without asking
 
-- **Winter Wonderland is on Tuesday Nov 24, 5:45 PM**, at the Marble Arch gate, after the afternoon tea and
-  the Oxford Street lights. It was on the arrival night (Sun Nov 22) because Hyde Park is next to the BoTree,
-  and moved on Oct 15 when the owner decided Sunday evening is spent with family in Harrow. Tuesday was the
-  swap the page had already named as its fallback. The Central line runs Marble Arch to Stratford with no
-  changes. Wednesday is the back-up evening. The 2026 dates are confirmed: Nov 19 2026 to Jan 3 2027, and Nov 24 is open 12pm to 10pm.
+- **Winter Wonderland is booked for Tuesday Nov 24**, off-peak entry through SeeTickets, Marble Arch
+  gate, slot 5:00 to 6:00 PM. The card still says arrive around 5:45 PM, which sits inside that slot, and
+  it says entry has to be between 5 and 6 PM. The old "book soon for off-peak" line and the £1 / £5.50 /
+  £8.25 price tiers are gone. Rides can be bought on the day. The Santa Land Unlimited Ride Pass is £25,
+  cheaper online in advance, and it suits Aadhan. It was on the arrival night (Sun Nov 22) because Hyde
+  Park is next to the BoTree, and moved on Oct 15 when the owner decided Sunday evening is spent with
+  family in Harrow. Tuesday was the swap the page had already named as its fallback. The Central line
+  runs Marble Arch to Stratford with no changes. The Wednesday backup line came off once the Tuesday
+  slot was booked. The 2026 dates are confirmed: Nov 19 2026 to Jan 3 2027, and Nov 24 is open 12pm to 10pm.
 - **Sunday Nov 22 evening and dinner are with family in Harrow.** The day stays in Marylebone until 4:45 PM
   (bags at the BoTree desk, farmers market, Regent's Park, lunch, check in and nap at 3 PM), then out to
   Harrow, dinner at 6:30, back to the BoTree by about 8:30 by car. Journey times are estimates and the page
@@ -122,7 +131,7 @@ Sunday Nov 29 lunch is still an unnamed historic pub. The card now says to reser
   International to St Pancras, then across to King's Cross for the LNER train. The page does not yet say
   anything about handling the bags on that morning, which the owner has been offered.
 - **The reindeer sleigh ride in Levi is off the plan.** The family is doing the booked husky ride instead, so nothing replaces the sleigh. It is gone from the Activities to book checklist, the Finland activities list, the Thursday Dec 3 card and the Every stop list. The stay calendar never carried it. Samiland Exhibition on Fri Dec 4 at 2:00 PM stays, and that stop is feeding reindeer. Do not put the sleigh back, and do not reuse the checklist key `a-reindeer`.
-- **Monday Nov 23 has a short stop at The Red Lion after Horse Guards.** 48 Parliament Street, Whitehall, at 4:30 PM, a few minutes' walk from the parade. A drink and a bowl of chips, not a sit-down meal, so nothing to book. Kids are welcome in most pubs during the day, and the card says to sit in the dining area if the bar is packed. The Every stop list marks it pay on the day. It is not on the Activities to book checklist, and the progress ring still totals the same seven boxes. Back east moves from 4:45 PM to 5:15 PM. The pub's own site lists it as families welcome, open Monday 11:00 to 23:00, with food until 22:00.
+- **Monday Nov 23 has a short stop at The Red Lion after Horse Guards.** 48 Parliament Street, Whitehall, at 4:30 PM, a few minutes' walk from the parade. A drink and a bowl of chips, not a sit-down meal, so nothing to book. Kids are welcome in most pubs during the day, and the card says to sit in the dining area if the bar is packed. The Every stop list marks it pay on the day. It is not on the Activities to book checklist, so that stop did not add a checkbox. Back east moves from 4:45 PM to 5:15 PM. The pub's own site lists it as families welcome, open Monday 11:00 to 23:00, with food until 22:00.
 - **London Transport Museum removed**, the owner is not interested. Madame Tussauds replaced it.
 - **Camera Obscura and World of Illusions removed**, same reason.
 - A **kid-friendly afternoon tea** was added in London.
