@@ -692,7 +692,7 @@
                 lat: 51.5074, lng: -0.1278, zoom: 13, routeIdx: 1,
                 image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Waxworks, Guards and Dinosaurs",
-                desc: "The extra night bought a whole free day. Waxworks, a booked afternoon tea and Winter Wonderland on the Tuesday, the two pinned bookings on the Wednesday, a friend in Coulsdon on the Thursday.",
+                desc: "The extra night bought a whole free day. Waxworks, a booked afternoon tea and Winter Wonderland on the Tuesday, the Guard and the museum on the Wednesday before dinner with a friend in Coulsdon, then an easy food and lights day on the Thursday.",
                 icon: "fa-sleigh", color: "brand-gold",
                 hotels: [
                     { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 23-27 · 4 nights", booked: true }
@@ -718,19 +718,24 @@
                             { time: "11:00 AM", text: "Changing the Guard at Buckingham Palace. Free, no tickets, runs about 45 minutes. The ceremony only runs on certain days, and this is the one date on the trip that works, so there is no second chance. It can be called off in heavy rain." },
                             { time: "12:00 PM", text: "Green Park to South Kensington, then lunch. If the ceremony is rained off, the Science Museum basement has The Garden, a free water and construction play space for under 6s, right next door to the museum." },
                             { time: "01:00 PM", text: "Natural History Museum, South Kensington (booked, 13:00 entry). Head straight for Dinosaurs and the T-Rex before the gallery backs up." },
-                            { time: "03:15 PM", text: "Walk up Exhibition Road through Kensington Gardens. The Diana Memorial Playground and its pirate ship are on the way if any light is left." },
-                            { time: "04:30 PM", text: "Head back east. Winter Wonderland was Tuesday, so this day gets to finish early, which after the Guard and the museum it will have earned." }
+                            { time: "03:15 PM", text: "Keep it light. Short play stop at the Diana Memorial Playground only if everyone is still fresh, otherwise a hot chocolate near the museum." },
+                            { time: "04:00 PM", text: "Leave South Kensington. District or Circle line to Victoria, about 10 minutes." },
+                            { time: "04:45 PM", text: "Southern train from Victoria to Coulsdon South or Coulsdon Town, about 30 to 40 minutes. Aim for a train before 5 PM to stay ahead of the commuter peak. Check step-free access for the stroller and ask your friend which station is closer." },
+                            { time: "06:00 PM", text: "Dinner with your friend at their home in Coulsdon." },
+                            { time: "08:30 PM", text: "Head back. Train from Coulsdon to London Bridge, then the Jubilee line to Stratford, about an hour and a quarter door to door. A taxi or Uber is the easier option with sleeping kids, roughly an hour by road." }
                         ]
                     },
                     {
                         dayName: "Thursday, Nov 26 (Day 6)",
                         items: [
-                            { time: "09:30 AM", text: "Out for Coulsdon. Jubilee line from Stratford to London Bridge, then a direct train south to Coulsdon South. Sources put the train leg at 21 to 28 minutes, so allow about an hour and a quarter from the hotel, plus the walk or a short taxi at the far end. Check step-free access for the stroller on National Rail before you go, and ask your friend which end is easier." },
-                            { time: "11:00 AM", text: "Arrive in Coulsdon and spend the day with your friend. Agree lunch beforehand so the children are not waiting on it." },
-                            { time: "03:30 PM", text: "Start back by the same route. Leaving by half past three keeps you ahead of the commuter crush into London Bridge." },
-                            { time: "05:00 PM", text: "Back at Stratford. Pack tonight, because the train to St Pancras on Friday leaves at 8:15 AM." },
-                            { time: "06:00 PM", text: "Relaxed evening at Westfield or Olympic Park near the hotel." },
-                            { time: "Back-up", text: "If the Coulsdon plan falls through or the kids need their own thing, Young V&A in Bethnal Green is ten minutes from Stratford on the Central line. Free, built for under 14s, with a sensory Play gallery for the little ones." }
+                            { time: "09:30 AM", text: "Slow start after the late night. Jubilee line from Stratford to London Bridge, about 15 minutes." },
+                            { time: "10:30 AM", text: "Borough Market. Graze for an early lunch: Bread Ahead doughnuts, toasties and hot food stalls. Busiest from noon, so go early. Or queue for Padella's fresh pasta by the market, where the line is shortest just before opening." },
+                            { time: "12:30 PM", text: "Walk west along the river past Shakespeare's Globe and Tate Modern to the Southbank. Flat, stroller friendly, and free." },
+                            { time: "01:30 PM", text: "Southbank Centre Winter Market by the London Eye. Free to wander, wooden chalets, food and Christmas lights. Nap time for the baby in the stroller." },
+                            { time: "03:00 PM", text: "Optional: Sky Garden (free, but book a slot online in advance) for the view over the city at sunset, about 4 PM. Or skip it and go straight back to rest." },
+                            { time: "05:30 PM", text: "Early dinner. Dishoom (Covent Garden or Shoreditch) for Bombay cafe food that kids love, or Flat Iron for an easy, cheap steak. Hawksmoor if you want the big steak night. Book or go before six to avoid queues." },
+                            { time: "07:00 PM", text: "Back to Stratford and pack. The train to St Pancras on Friday leaves at 8:15 AM." },
+                            { time: "Back-up", text: "If it rains, swap the river walk for the Science Museum or Young V&A in Bethnal Green, ten minutes from Stratford on the Central line. Free, built for under 14s, with a sensory Play gallery for the little ones." }
                         ]
                     }
                 ]
@@ -1331,7 +1336,11 @@
             { city: 'London', name: 'Natural History Museum', where: 'Cromwell Road, South Kensington, SW7', when: 'Wed Nov 25, 1:00 PM', status: 'booked' },
             { city: 'London', name: 'Science Museum, The Garden', where: 'Exhibition Road, SW7', when: 'Wed Nov 25, wet weather backup', status: 'free', note: 'Water and construction play for under 6s' },
             { city: 'London', name: 'Diana Memorial Playground', where: 'Kensington Gardens, W2', when: 'Wed Nov 25, 3:15 PM', status: 'free' },
-            { city: 'London', name: 'Young V&A', where: 'Cambridge Heath Road, Bethnal Green, E2', when: 'Thu Nov 26, back-up', status: 'free', note: 'Only if the Coulsdon plan falls through, ten minutes from Stratford' },
+            { city: 'London', name: 'Dinner with a friend', where: 'Coulsdon, via Victoria', when: 'Wed Nov 25, 6:00 PM', status: 'onday', note: 'Train from Victoria about 4:45 PM, back via London Bridge or a taxi' },
+            { city: 'London', name: 'Borough Market', where: 'London Bridge, SE1', when: 'Thu Nov 26, 10:30 AM', status: 'free', note: 'Go early. Padella next door for pasta' },
+            { city: 'London', name: 'Southbank Centre Winter Market', where: 'Southbank, SE1', when: 'Thu Nov 26, 1:30 PM', status: 'free' },
+            { city: 'London', name: 'Sky Garden', where: '20 Fenchurch Street, EC3', when: 'Thu Nov 26, 3:00 PM, optional', status: 'book', note: 'Free, but needs a timed slot booked online' },
+            { city: 'London', name: 'Young V&A', where: 'Cambridge Heath Road, Bethnal Green, E2', when: 'Thu Nov 26, rain back-up', status: 'free', note: 'Ten minutes from Stratford' },
 
             { city: 'Edinburgh', name: 'Princes Street Christmas Market', where: 'East Princes Street Gardens', when: 'Fri Nov 27, 4:30 PM', status: 'free', note: 'Entry free, rides pay as you go' },
             { city: 'Edinburgh', name: 'National Museum of Scotland', where: 'Chambers Street, EH1', when: 'Sat Nov 28, 10:00 AM', status: 'free', note: 'No ticket needed' },
