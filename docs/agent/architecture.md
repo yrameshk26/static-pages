@@ -102,7 +102,7 @@ Change the array, both views follow.
 `confirm` renders as "Confirm booking". It is used for Palace of Holyroodhouse, which is
 neither booked nor a fresh purchase. The note carries "Confirm booking (check Abi's email)".
 
-Current counts: 9 `booked`, 4 `book`, 1 `confirm`, 8 `onday`, 18 `free`.
+Current counts: 10 `booked`, 3 `book`, 1 `confirm`, 8 `onday`, 18 `free`.
 
 ### Booking checklist
 

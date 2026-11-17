@@ -35,6 +35,7 @@ Shipped via PR and squash merge into `main`. Most recent first.
 
 | PR | Change |
 |---|---|
+| next | Horizon 22 marked booked for Thu Nov 26, 12:30 PM arrival slot, 2 adults and 2 infants. Thursday card and Every stop row updated. |
 | #55 | Royal Lancaster afternoon tea marked booked for Tue Nov 24 at 3:00 PM, party of 4. Mad Hatter's at the Sanderson, Hamleys and the Oxford Street lights are off Tuesday. Tea is a done line, and the progress ring now counts five checkboxes. |
 | #54 | Hyde Park Winter Wonderland marked booked on the checklist, the Tuesday Nov 24 card and the Every stop list. Off-peak slot is 5:00 to 6:00 PM at the Marble Arch gate. The progress ring now counts six checkboxes. |
 | #53 | Monday Nov 23: The Red Lion after the Horse Guards parade, back east moved to 5:15 PM. Pay on the day in Every stop. Not added to the booking checklist. The ring total at that point stayed at seven, and Winter Wonderland later took it to six. |
