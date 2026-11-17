@@ -94,6 +94,8 @@ Ordered by urgency on the page:
 4. Tower of London, Nov 23. Under 5s free. Tickets are non-refundable.
 5. Palace of Holyroodhouse, Nov 29, 10:00. No confirmation in Ramesh's email. Marked "Confirm booking (check Abi's email)" on the checklist, the Sunday card and the Every stop list. The old "Booked through Royal Collection Trust" line was wrong.
 
+Horizon 22 is booked (not on the checklist, it was never a checkbox). Thu Nov 26, arrival slot 12:30 to 12:45 PM, 2 adults and 2 infants, free tickets reserved Nov 17. The order number and ticket link stay in the private record, never on the page. The Thursday card now has the stop at 12:30 PM and the Every stop row is `booked`.
+
 The reindeer sleigh ride in Levi is no longer on this list. The family is doing the husky ride instead. Samiland Exhibition on Fri Dec 4 at 2:00 PM stays. That stop is feeding reindeer, not a ride.
 
 ### Rental car and BA92
