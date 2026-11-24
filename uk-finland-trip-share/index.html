@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Winter Expedition: UK & Finland</title>
-    <meta name="description" content="London, Edinburgh, Helsinki, Lapland and Dublin, Nov 21 to Dec 9 2026. Flights, hotels, day by day plans and what is still left to book.">
-    <meta name="theme-color" content="#090d16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-
-    <!-- Link preview -->
+    <title>Winter Expedition: UK and Finland</title>
+    <meta name="description" content="A family guide to our winter trip, London, Edinburgh, Helsinki, Lapland and Dublin, Nov 21 to Dec 9 2026. The route, the hotels, and what we would recommend.">
+    <meta name="theme-color" content="#090d16">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yrameshk26.github.io/static-pages/uk-finland-trip-share/">
-    <meta property="og:title" content="Winter Expedition: UK & Finland">
-    <meta property="og:description" content="London, Edinburgh, Helsinki, Lapland and Dublin, Nov 21 to Dec 9 2026. Flights, hotels, day by day plans and what is still left to book.">
+    <meta property="og:title" content="Winter Expedition: UK and Finland">
+    <meta property="og:description" content="A family guide to our winter trip, Nov 21 to Dec 9 2026. The route, the hotels, and what we would recommend, with two young kids in tow.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630&q=75">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -20,19 +18,11 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630&q=75">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>">
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
@@ -41,1515 +31,286 @@
                             gold: '#facc15', aurora: '#10b981', ice: '#22d3ee', royal: '#8b5cf6',
                             bg: '#090d16', surface: '#111827'
                         }
-                    },
-                    boxShadow: {
-                        'card': '0 25px 60px -15px rgba(0,0,0,.55)',
-                        'card-hover': '0 35px 80px -15px rgba(0,0,0,.7)'
-                    },
-                    animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
                     }
                 }
             }
         }
     </script>
-
     <style>
-        html, body {
-            height: 100%;
-        }
-        body {
-            background-color: #090d16;
-            color: #f8fafc;
-            overscroll-behavior-y: none;
-            /* Use dynamic viewport height so the iOS URL bar doesn't cut off the layout */
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-        }
-
-        /* Smooth momentum scrolling for the itinerary feed on iOS.
-           overflow-x is clamped because the reveal animation rotates cards on X,
-           which inflates their box and would otherwise let the page slide sideways. */
-        #feed {
-            -webkit-overflow-scrolling: touch;
-            touch-action: pan-y;
-            overflow-x: hidden;
-            overscroll-behavior-y: contain;
-        }
-
-        /* Hide scrollbar for clean UI */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Glassmorphism */
-        .glass {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-light {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        /* Animated gradient text */
-        .ai-gradient {
-            background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #facc15 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-
-        /* Scroll-in reveal */
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1); }
-        .reveal.in { opacity: 1; transform: none; }
-        @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
-        }
-
-        /* Snowfall canvas sits above the cards, below the header */
-        #snow-canvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
-
-        /* Aurora glow behind Lapland cards */
-        .aurora-card { position: relative; }
-        .aurora-card::before {
-            content: ''; position: absolute; inset: -3px; border-radius: 1.7rem; z-index: 0;
-            background: linear-gradient(120deg, #10b981, #22d3ee, #8b5cf6, #10b981);
-            background-size: 300% 300%; animation: auroraShift 9s ease infinite;
-            filter: blur(16px); opacity: .3;
-        }
-        .aurora-card > div { position: relative; z-index: 1; }
-        @keyframes auroraShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .aurora-card::before { animation: none; }
-        }
-
-        /* 3D tilt (pointer devices only; JS drives the transform) */
-        .tilt-wrap { perspective: 1000px; }
-
-        /* 3D card entrance: cards rise and un-tilt as they scroll in */
-        .reveal-3d {
-            opacity: 0;
-            transform: perspective(900px) rotateX(9deg) translateY(46px) scale(.97);
-            transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
-        }
-        .reveal-3d.in { opacity: 1; transform: none; }
-        @media (prefers-reduced-motion: reduce) {
-            .reveal-3d { opacity: 1; transform: none; transition: none; }
-        }
-
-        /* Shine sweep across cards on hover */
-        .tilt-card { position: relative; }
-        .tilt-card::after {
-            content: ''; position: absolute; inset: 0; z-index: 20; pointer-events: none;
-            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.07) 45%, rgba(255,255,255,.16) 50%, rgba(255,255,255,.07) 55%, transparent 60%);
-            transform: translateX(-130%);
-            transition: transform .9s ease;
-        }
-        .group:hover .tilt-card::after { transform: translateX(130%); }
-
-        /* Card imagery gets a parallax translate from JS; over-scale hides the edges */
-        .card-img { transform: scale(1.15); will-change: transform; }
-
-        /* Feed scroll progress bar */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 70;
-            background: linear-gradient(90deg, #facc15, #ec4899, #8b5cf6, #22d3ee, #10b981);
-            box-shadow: 0 0 12px rgba(236, 72, 153, .6);
-        }
-
-        /* Boarding-pass flight path animation */
-        .flight-path { position: relative; height: 16px; }
-        .flight-path::before {
-            content: ''; position: absolute; left: 0; right: 0; top: 50%;
-            border-top: 2px dashed rgba(148, 163, 184, .35);
-        }
-        .flight-path i {
-            position: absolute; top: 50%; transform: translate(-50%, -50%);
-            font-size: 11px; animation: fly 3.2s ease-in-out infinite;
-        }
-        @keyframes fly { 0%, 100% { left: 30%; } 50% { left: 70%; } }
-        @media (prefers-reduced-motion: reduce) { .flight-path i { animation: none; left: 50%; } }
-
-        /* Gradient section titles */
-        .grad-gold { background: linear-gradient(120deg, #facc15, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-aurora { background: linear-gradient(120deg, #10b981, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        /* --- Stay calendar --- */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
-        .cal-month + .cal-month { margin-top: 18px; }
-        .cal-mtitle { font-size: 10px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; margin: 0 0 8px; opacity: .8; }
-        .cal-dow { text-align: center; font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; opacity: .45; padding-bottom: 3px; }
-        .cal-drow { margin-bottom: 2px; }
-        .cal-day { text-align: center; font-size: 11px; font-weight: 700; line-height: 1.55; border-radius: 6px; }
-        .cal-day.out { opacity: .18; }
-        .cal-day.trip { background: rgba(250, 204, 21, .13); }
-        .cal-bars { margin-bottom: 7px; min-height: 16px; align-content: start; }
-        .cal-bar { display: flex; align-items: center; height: 16px; padding: 0 4px; border-radius: 2px;
-                   font-size: 7.5px; font-weight: 900; color: #0b1020; overflow: hidden; }
-        .cal-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .cal-bar.s { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
-        .cal-bar.e { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
-        .cal-bar.tv { color: #f1f5f9; background-image: repeating-linear-gradient(115deg, rgba(255,255,255,.16) 0 5px, transparent 5px 10px); }
-        .cal-key { display: flex; align-items: flex-start; gap: 8px; }
-        .cal-chip { width: 11px; height: 11px; border-radius: 4px; flex: none; margin-top: 3px; }
-        @media (min-width: 768px) {
-            .cal-day { font-size: 13px; }
-            .cal-bars { min-height: 20px; }
-            .cal-bar { height: 20px; font-size: 9.5px; }
-        }
-        /* --- Attractions table --- */
-        .att-table { width: 100%; border-collapse: collapse; }
-        .att-table th { text-align: left; font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
-                        font-weight: 900; opacity: .5; padding: 0 10px 7px 0; }
-        .att-table td { padding: 9px 10px 9px 0; vertical-align: top; font-size: 12px; line-height: 1.45; }
-        .att-table tbody tr + tr td { border-top: 1px solid rgba(148, 163, 184, .16); }
-        .att-city td { padding-top: 16px; }
-        .att-city span { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; font-weight: 900; }
-        .att-tag { display: inline-block; font-size: 8.5px; font-weight: 900; letter-spacing: .06em;
-                   text-transform: uppercase; padding: 2.5px 7px; border-radius: 999px;
-                   border: 1px solid currentColor; white-space: nowrap; }
-        .att-card + .att-card { border-top: 1px solid rgba(148, 163, 184, .16); }
-        /* Calendar days and bars are jump targets */
-        .cal-day.hit, .cal-bar.hit { cursor: pointer; }
-        .cal-day.hit { transition: background .15s ease, transform .15s ease; }
-        .cal-day.hit:hover { background: rgba(250, 204, 21, .30); transform: translateY(-1px); }
-        .cal-bar.hit:hover { filter: brightness(1.14); }
-        .cal-day.hit:focus-visible, .cal-bar.hit:focus-visible { outline: 2px solid #22d3ee; outline-offset: 2px; }
-        .cal-flash { animation: calFlash 2s ease; }
-        @keyframes calFlash {
-            0%   { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
-            10%  { box-shadow: 0 0 0 4px rgba(34, 211, 238, .6); }
-            60%  { box-shadow: 0 0 0 4px rgba(34, 211, 238, .38); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
-        }
-        @media (prefers-reduced-motion: reduce) { .cal-flash { animation-duration: .01s; } }
+        body { background-color: #090d16; color: #f8fafc; }
+        .glass { background: rgba(17, 24, 39, 0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .grad { background: linear-gradient(120deg, #facc15, #22d3ee, #10b981); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details > summary .chev { transition: transform .2s ease; }
+        details[open] > summary .chev { transform: rotate(180deg); }
+        .route-line { position: relative; }
+        .route-line::before { content: ""; position: absolute; left: 15px; top: 28px; bottom: 12px; width: 2px; background: linear-gradient(to bottom, #22d3ee, #8b5cf6, #10b981); opacity: .45; }
+        a { color: #22d3ee; }
+        a:hover { color: #facc15; }
     </style>
 </head>
-<body class="overflow-hidden flex flex-col transition-colors duration-300 dark:bg-brand-bg dark:text-white bg-slate-50 text-slate-900">
-
-    <!-- Snowfall -->
-    <canvas id="snow-canvas"></canvas>
-
-    <!-- Feed scroll progress -->
-    <div id="scroll-progress"></div>
-
-    <!-- Top Navigation Bar -->
-    <header class="flex-none w-full z-50 glass dark:glass p-4 flex justify-between items-center transition-colors duration-300 shadow-md">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 p-[2px]">
-                <div class="w-full h-full bg-brand-bg rounded-full flex items-center justify-center">
-                    <i class="fa-solid fa-sparkles text-pink-400 text-sm"></i>
-                </div>
-            </div>
-            <div>
-                <h1 class="text-sm md:text-base font-bold ai-gradient">Winter Expedition</h1>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">UK • FIN • IE • Nov 21 - Dec 9</p>
-            </div>
+<body class="font-sans antialiased pb-16">
+    <header class="relative overflow-hidden border-b border-white/10">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=70" alt="" class="w-full h-full object-cover brightness-[.45]">
         </div>
-        <div class="flex items-center gap-3">
-            <button id="theme-toggle" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition">
-                <i class="fa-solid fa-moon text-slate-800 dark:text-yellow-300 text-lg" id="theme-icon"></i>
-            </button>
+        <div class="relative max-w-2xl mx-auto px-5 pt-14 pb-12">
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-ice">Nov 21 to Dec 9, 2026 · Family of 4</p>
+            <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold leading-tight">Winter Expedition</h1>
+            <p class="mt-1 text-xl sm:text-2xl font-semibold grad">UK and Finland, with a night in Dublin</p>
+            <p class="mt-4 text-sm sm:text-base text-slate-200/90 leading-relaxed max-w-xl">Our route, the hotels we picked, and what we would tell another family to do. Written mid-trip, so the days still ahead are the plan, not a review.</p>
         </div>
     </header>
-
-    <!-- Itinerary: fills the window, no map column -->
-    <div id="feed" class="flex-1 min-h-0 w-full z-10 overflow-y-auto no-scrollbar">
-        <div class="w-full max-w-5xl mx-auto px-4 md:px-8 pt-5 md:pt-8 pb-24 space-y-6 md:space-y-8">
-
-                <!-- Title -->
-                <div class="text-center pt-1 pb-1">
-                    <p class="text-[10px] uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400 font-bold mb-3">Nov 21 to Dec 9 &middot; 2026</p>
-                    <h2 class="text-3xl md:text-5xl font-black ai-gradient mb-2">Winter Expedition</h2>
-                    <p class="text-xs md:text-sm text-slate-500 dark:text-slate-400 font-medium">Toronto to London to Edinburgh to Helsinki to Lapland to Dublin</p>
+    <main class="max-w-2xl mx-auto px-5">
+<section class="mt-10" id="route">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold mb-4">The route at a glance</h2>
+            <div class="route-line space-y-3">
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-slate-500 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Overnight flight</p>
+                    <p class="font-semibold">Toronto to London</p>
+                    <p class="text-sm text-slate-400">A red-eye, about 7 hours. Landing at breakfast makes a long first day with young kids.</p>
                 </div>
-
-                <!-- Logistics Hub (Manifest & Checklist) -->
-                <div class="space-y-4 snap-start">
-                    <h2 class="text-xl font-bold dark:text-white text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-layer-group text-brand-ice"></i> Command Center
-                    </h2>
-
-                    <!-- Countdown to departure -->
-                    <div class="glass dark:glass rounded-3xl p-5 flex items-center gap-4 relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-gold/10 rounded-full blur-2xl pointer-events-none"></div>
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-orange-500/20 border border-brand-gold/30 flex items-center justify-center flex-shrink-0 animate-float">
-                            <i class="fa-solid fa-plane-departure text-brand-gold text-lg"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Departure: BA92, Nov 21 · 6:05 PM</p>
-                            <p id="countdown" class="text-xl md:text-2xl font-black text-slate-900 dark:text-white tabular-nums">&nbsp;</p>
-                        </div>
-                    </div>
-
-                    <!-- Trip stats -->
-                    <div class="grid grid-cols-4 gap-2 md:gap-3">
-                        <div class="glass dark:glass rounded-2xl p-3 text-center">
-                            <p class="text-xl md:text-2xl font-black grad-gold">19</p>
-                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Days</p>
-                        </div>
-                        <div class="glass dark:glass rounded-2xl p-3 text-center">
-                            <p class="text-xl md:text-2xl font-black text-brand-royal">7</p>
-                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Cities</p>
-                        </div>
-                        <div class="glass dark:glass rounded-2xl p-3 text-center">
-                            <p class="text-xl md:text-2xl font-black text-brand-ice">7</p>
-                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Flights</p>
-                        </div>
-                        <div class="glass dark:glass rounded-2xl p-3 text-center">
-                            <p class="text-xl md:text-2xl font-black grad-aurora">4</p>
-                            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-500 dark:text-slate-400">Travellers</p>
-                        </div>
-                    </div>
-
-                    <!-- Boarding passes -->
-                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 md:mx-0 md:px-0 snap-x">
-                        <!-- YYZ → LHR -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-gold"><i class="fa-solid fa-plane"></i> British Airways</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">YYZ</p><p class="text-[9px] text-slate-400 mt-1">Toronto</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-gold"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">LHR</p><p class="text-[9px] text-slate-400 mt-1">London</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>NOV 21</span><span>BA92 · A350</span><span>06:05 PM</span>
-                            </div>
-                            <p class="mt-1.5 text-[9px] font-bold text-slate-500 dark:text-slate-400">Seats assigned</p>
-                        </div>
-
-                        <!-- LNER train -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-royal"><i class="fa-solid fa-train"></i> LNER</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">KGX</p><p class="text-[9px] text-slate-400 mt-1">London</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-train text-brand-royal"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">EDI</p><p class="text-[9px] text-slate-400 mt-1">Edinburgh</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>NOV 27</span><span>COACH B · 27-30</span><span>09:30 AM → 1:38 PM</span>
-                            </div>
-                        </div>
-
-                        <!-- EDI → HEL -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-ice"><i class="fa-solid fa-plane"></i> Finnair</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">EDI</p><p class="text-[9px] text-slate-400 mt-1">Edinburgh</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-ice"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>NOV 30</span><span>AY1374</span><span>06:35 PM</span>
-                            </div>
-                        </div>
-
-                        <!-- HEL → RVN -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-aurora"><i class="fa-solid fa-plane"></i> Finnair</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-aurora"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">RVN</p><p class="text-[9px] text-slate-400 mt-1">Rovaniemi</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>DEC 2</span><span>AY555</span><span>09:50 AM</span>
-                            </div>
-                        </div>
-
-                        <!-- RVN → HEL -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-aurora"><i class="fa-solid fa-plane"></i> Finnair</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">RVN</p><p class="text-[9px] text-slate-400 mt-1">Rovaniemi</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-aurora"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>DEC 7</span><span>AY0532</span><span>09:10 → 10:25 AM</span>
-                            </div>
-                        </div>
-
-                        <!-- HEL → DUB -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-gold"><i class="fa-solid fa-plane"></i> Finnair</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">HEL</p><p class="text-[9px] text-slate-400 mt-1">Helsinki</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-gold"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">DUB</p><p class="text-[9px] text-slate-400 mt-1">Dublin</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>DEC 8</span><span>AY1381 · Business</span><span>07:40 AM</span>
-                            </div>
-                        </div>
-
-                        <!-- DUB → ORD -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-gold"><i class="fa-solid fa-plane"></i> United</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">DUB</p><p class="text-[9px] text-slate-400 mt-1">Dublin T2</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-gold"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">ORD</p><p class="text-[9px] text-slate-400 mt-1">Chicago</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>DEC 9</span><span>UA981 · Polaris</span><span>10:40 AM</span>
-                            </div>
-                        </div>
-
-                        <!-- ORD → YYZ -->
-                        <div class="min-w-[250px] glass dark:glass rounded-2xl p-4 snap-center hover:-translate-y-1 transition-transform">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-brand-gold"><i class="fa-solid fa-plane-arrival"></i> United Express</span>
-                                <span class="text-[9px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">BOOKED</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-2xl font-black leading-none">ORD</p><p class="text-[9px] text-slate-400 mt-1">Chicago</p></div>
-                                <div class="flight-path flex-1 mx-3"><i class="fa-solid fa-plane text-brand-gold"></i></div>
-                                <div class="text-right"><p class="text-2xl font-black leading-none">YYZ</p><p class="text-[9px] text-slate-400 mt-1">Toronto</p></div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-dashed border-slate-300 dark:border-slate-700 flex justify-between text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                <span>DEC 9</span><span>UA3612 · First</span><span>03:47 PM</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Booking Manifest -->
-                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-                        <h3 class="text-sm font-black uppercase tracking-wider mb-4 flex justify-between items-center text-slate-900 dark:text-white">
-                            <span><i class="fa-solid fa-ticket"></i> Still to book</span>
-                            <span class="relative w-11 h-11 flex-shrink-0" title="Booking progress">
-                                <svg viewBox="0 0 36 36" class="w-11 h-11 -rotate-90">
-                                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="3.5"></circle>
-                                    <circle id="ring-fg" cx="18" cy="18" r="15.5" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" pathLength="100" stroke-dasharray="0, 100" style="transition: stroke-dasharray .6s ease"></circle>
-                                </svg>
-                                <span id="ring-label" class="absolute inset-0 flex items-center justify-center text-[9px] font-black tabular-nums">0/0</span>
-                            </span>
-                        </h3>
-
-                        <div class="space-y-5" id="booking-manifest">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">✈️ Transport</h4>
-                                <div class="space-y-2">
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400">
-                                        <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">Rental car booked:</b> Enterprise Rent-A-Car at Rovaniemi Airport (RVN). Drop off Mon Dec 7, 9:00 AM. Studded winter tires and two toddler car seats are confirmed on the booking.
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 pl-7">
-                                        <i class="fa-solid fa-phone text-brand-gold"></i> <b class="text-slate-700 dark:text-slate-300">Call to confirm the pick-up:</b> pick-up is booked for Wed Dec 2 at 10:00 AM, but AY555 lands at 11:15, so change it to about 11:45. Call Enterprise on +358 10 5252885 to confirm it is still holding.
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 pl-7">
-                                        <i class="fa-solid fa-check text-brand-aurora"></i> All flights and trains are booked: YYZ→LHR (BA92), LNER to Edinburgh, EDI→HEL (AY1374), HEL→RVN (AY555), RVN→HEL (AY0532), HEL→DUB (AY1381), DUB→ORD (UA981) and ORD→YYZ (UA3612).
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🏨 Hotels</h4>
-                                <div class="text-[10px] text-slate-500 dark:text-slate-400">
-                                    <i class="fa-solid fa-check text-brand-aurora"></i> All 9 hotel bookings are done: The BoTree London, The Stratford, The Caledonian, Hilton Helsinki Airport twice, Aurora Pyramid Glass Igloos, Levin Klubi, Lomavekarit Apartments and the Hilton Dublin Airport for the last night. Details on each itinerary card below.
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ Activities to book</h4>
-                                <div class="space-y-2">
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-botanics" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Christmas at the Botanics</b>, Royal Botanic Garden Edinburgh, Sat Nov 28 evening. An illuminated trail running Nov 19 to Dec 30 2026. Stroller friendly, timed entry, with one steep incline on the path. From £19.50 per adult off-peak and £26 standard. Saturday is likely peak and sells out first, so book early. <a href="https://www.rbge.org.uk/whats-on/christmas-at-the-botanics-2026/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">rbge.org.uk</a></span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-tussauds" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Madame Tussauds</b>, Nov 24 morning. Marylebone Road, two minutes from Baker Street and a direct Jubilee line ride from Stratford. Book the first slot online, cheaper than the door and the queue is shortest before eleven. About £27 to £29 per adult and £24 per child aged 2 to 15 online. Under 2s free (still add a free ticket). <a href="https://www.madametussauds.com/london/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">madametussauds.com</a></span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-toweroflondon" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-gold focus:ring-brand-gold cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Tower of London</b>, Nov 23 late morning. About £38 per adult. Under 5s go free. Tickets are non-refundable, and online is cheaper than the gate. The exterior is free. The Crown Jewels are not. <a href="https://www.hrp.org.uk/tower-of-london/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">hrp.org.uk</a></span>
-                                    </label>
-                                    <label class="flex items-start gap-3 cursor-pointer group">
-                                        <input type="checkbox" data-key="a-holyrood" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
-                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Palace of Holyroodhouse</b>, Nov 29, 10:00 AM. Confirm the booking. £22 per adult in advance, under-5s free. <a href="https://www.rct.uk/event/christmas-at-the-palace-of-holyroodhouse-11-2026" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">rct.uk</a></span>
-                                    </label>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
-                                        <i class="fa-solid fa-check text-brand-gold"></i> <b class="text-slate-700 dark:text-slate-300">Royal Lancaster afternoon tea booked:</b> Tue Nov 24, 3:00 PM, party of 4. By Lancaster Gate, on the north edge of Hyde Park, about a ten minute walk to the Marble Arch gate.
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
-                                        <i class="fa-solid fa-check text-brand-gold"></i> <b class="text-slate-700 dark:text-slate-300">Hyde Park Winter Wonderland booked:</b> Tue Nov 24, off-peak entry through SeeTickets, 5:00 to 6:00 PM at the Marble Arch gate. 2 adults, 1 child aged 3 to 12, and 1 infant aged 2 and under. Arrive around 5:45 PM, inside the slot. Rides can be bought on the day. Optional: the Santa Land Unlimited Ride Pass is £25, cheaper online in advance, and it suits a 4 year old. <a href="https://hydeparkwinterwonderland.com/bundle/santa-land-unlimited-ride-pass/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">hydeparkwinterwonderland.com</a>
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
-                                        <i class="fa-solid fa-check text-brand-gold"></i> <b class="text-slate-700 dark:text-slate-300">Natural History Museum booked:</b> Wed Nov 25, 13:00 entry, 2 adults and 2 children, free admission. The slot is your arrival window only, so you can stay as long as the kids last.
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
-                                        <i class="fa-solid fa-check text-brand-royal"></i> <b class="text-slate-700 dark:text-slate-300">Nothing to book for Nov 28 morning:</b> the National Museum of Scotland on Chambers Street is free and needs no ticket. <a href="https://www.nms.ac.uk/national-museum-of-scotland/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">nms.ac.uk</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase">🎟️ Finland and Lapland activities</h4>
-                                <div class="space-y-2">
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400">
-                                        <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">Husky Safari booked:</b> 5 km self-drive at Levi, Fri Dec 4, 10:50 AM, runs 2 hours 30 minutes. 2 adults, 1 child, 1 infant.
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 mb-2">
-                                        <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">Sat Dec 5 snowmobiling confirmed, one adult each so the other has the kids:</b> Family Safari in Levi 10:30 AM, and Early Evening Aurora Tour by Snowmobile 5:30 PM with pick-up included.
-                                    </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400">
-                                        <i class="fa-solid fa-check text-brand-aurora"></i> <b class="text-slate-700 dark:text-slate-300">SantaPark booked:</b> all day access on Sun Dec 6, open 9 to 18, for 2 adults and 1 child. The 1yo is free. Save the tickets to your phone wallet or print them before you leave the cabin.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-slate-300 dark:border-slate-700 text-[10px] text-slate-500 italic">
-                            <i class="fa-solid fa-lightbulb text-yellow-500"></i> Tip: Confirm operators provide age-appropriate helmets/blankets for the 1yo and 4yo. Checkboxes save automatically on this device.
-                        </div>
-                    </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-pink-400 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">5 nights</p>
+                    <p class="font-semibold">London</p>
+                    <p class="text-sm text-slate-400">One night in Marylebone after we landed, then four nights in Stratford on the Elizabeth Line.</p>
                 </div>
-
-                <!-- Stay calendar -->
-                <div class="snap-start pt-6 reveal">
-                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-                        <h3 class="text-sm font-black uppercase tracking-wider mb-1 flex items-center gap-2 text-slate-900 dark:text-white">
-                            <i class="fa-solid fa-calendar-days text-brand-ice"></i> Where we sleep, night by night
-                        </h3>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4">
-                            Every bar runs from check-in to check-out, so a three night stay stretches across three days on the grid.
-                            Nov 21 is the overnight flight, and the last bed is Dec 8 in Dublin before the long way home on Dec 9.
-                            Tap any highlighted day to jump straight to that part of the plan.
-                        </p>
-                        <div id="stay-calendar" class="text-slate-800 dark:text-slate-100"></div>
-                        <div id="stay-legend" class="mt-4 pt-4 border-t border-slate-300 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-slate-700 dark:text-slate-200"></div>
-                    </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-brand-gold ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Morning train · 3 nights</p>
+                    <p class="font-semibold">Edinburgh</p>
+                    <p class="text-sm text-slate-400">A high-speed hop to St Pancras, then LNER from King's Cross, arriving mid-afternoon.</p>
                 </div>
-
-                <!-- Every attraction, where it is and whether it needs booking -->
-                <div class="snap-start pt-2 reveal">
-                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
-                        <h3 class="text-sm font-black uppercase tracking-wider mb-1 flex items-center gap-2 text-slate-900 dark:text-white">
-                            <i class="fa-solid fa-table-list text-brand-ice"></i> Every stop, and where it is
-                        </h3>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4">
-                            Everything on the day cards below, in one place, with the address and whether it still needs a ticket.
-                        </p>
-                        <div id="attractions" class="text-slate-800 dark:text-slate-100"></div>
-                    </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-sky-400 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Evening flight · 2 nights</p>
+                    <p class="font-semibold">Helsinki Airport</p>
+                    <p class="text-sm text-slate-400">Late landing, then an indoor walkway straight into the hotel. No taxi at midnight.</p>
                 </div>
-
-                <!-- dynamic itinerary cards will be injected here -->
-                <div id="itinerary-feed" class="space-y-6 md:space-y-12 pt-4"></div>
-
-                <!-- Family Tips Section -->
-                <div class="snap-start pt-8 pb-4 reveal">
-                    <div class="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-6 opacity-10">
-                            <i class="fa-solid fa-baby-carriage text-8xl text-white"></i>
-                        </div>
-                        <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2 mb-6">
-                            <i class="fa-solid fa-wand-magic-sparkles text-pink-400"></i> Family Survival Tips
-                        </h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
-                                <h3 class="text-sm font-bold text-brand-gold mb-2"><i class="fa-solid fa-suitcase-rolling"></i> The "Luggage Stash"</h3>
-                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Leave a city bag at the Hilton on Dec 2 and pick it up when you check back in on Dec 7, so nothing but snow gear flies to Lapland. That bag is also where the clean clothes for the two flights home on Dec 9 should live. Nothing valuable and nothing with a lithium battery goes in the stash.</p>
-                            </div>
-
-                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
-                                <h3 class="text-sm font-bold text-brand-ice mb-2"><i class="fa-solid fa-sun"></i> The 3 PM Sunset Rule</h3>
-                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">In Edinburgh and Helsinki, the sun sets around 3:30 PM. In Lapland, it sets at 1:30 PM (or doesn't rise at all). Schedule all outdoor visual activities before 1:00 PM. Use the dark afternoons for museums, train rides, or saunas.</p>
-                            </div>
-
-                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
-                                <h3 class="text-sm font-bold text-brand-aurora mb-2"><i class="fa-solid fa-layer-group"></i> Lapland Toddler Layering</h3>
-                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">The 1yo and 4yo need a strict 3-layer system: Merino wool base layer, fleece mid-layer, and a waterproof/windproof snowsuit. **Do not use cotton.** Most safari operators provide the final heavy outer thermal layer for kids.</p>
-                            </div>
-
-                            <div class="glass dark:glass rounded-2xl p-4 hover:-translate-y-1 hover:shadow-xl transition-all">
-                                <h3 class="text-sm font-bold text-brand-royal mb-2"><i class="fa-solid fa-train-subway"></i> Stroller Strategy</h3>
-                                <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Bring a sturdy, narrow travel stroller (like a Babyzen YOYO) that folds into the overhead bin. The Elizabeth Line in London is step-free. In Helsinki, parents pushing a child in a stroller ride the public transit trains completely free.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-emerald-400 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Flight, then a 2.5 hour drive · 4 nights</p>
+                    <p class="font-semibold">Levi, Lapland</p>
+                    <p class="text-sm text-slate-400">One night in a glass igloo, then three nights in the village. Sunset is early, so most of the drive is in the dark.</p>
                 </div>
-
-                <!-- End marker -->
-                <div class="text-center py-12 opacity-50 reveal">
-                    <i class="fa-solid fa-flag-checkered text-2xl mb-2"></i>
-                    <p class="text-xs font-bold uppercase tracking-widest">End of Journey</p>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-orange-400 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">2 hour drive · 1 night</p>
+                    <p class="font-semibold">Rovaniemi</p>
+                    <p class="text-sm text-slate-400">SantaPark and Santa Claus Village, then a stay near the airport for an easy morning drop-off.</p>
                 </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-sky-400 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Flight · 1 night</p>
+                    <p class="font-semibold">Helsinki Airport again</p>
+                    <p class="text-sm text-slate-400">Back to the same hotel, collect a city bag left on the way north, then a light afternoon or a rest.</p>
+                </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-lime-400 ring-4 ring-brand-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Morning flight · 1 night</p>
+                    <p class="font-semibold">Dublin</p>
+                    <p class="text-sm text-slate-400">An airport hotel by Terminal 2, a short city day, then home the next morning via US Preclearance and Chicago.</p>
+                </div>
+            </div>
+        </section>
 
-        </div>
-    </div>
+        <section class="mt-12" id="stays">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold mb-4">Where we stayed</h2>
+            <div class="space-y-3">
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">The BoTree London</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">1 night</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Marylebone</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">A one-night landing pad, eight minutes from Bond Street. The farmers market and Regent's Park are a short, flat walk. Rooms are not ready until mid-afternoon, so leave the bags and plan a nap once you can check in.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">The Stratford, Autograph Collection</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">4 nights</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Stratford, London</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">The working London base. Step-free Elizabeth and Jubilee lines, and Westfield Stratford City is right there for an easy dinner with young kids. This is the hotel we would pick again if the trip started in London for a few days.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">The Caledonian</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">3 nights</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Princes Street, Edinburgh</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">Lined up for the location: the Christmas market is under the castle, a short walk from the door. After a morning train with kids, the first afternoon is really for settling in.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">Hilton Helsinki Airport</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">2 nights, then 1 more</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Indoor walkway to the terminal</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">The practical reason for an airport hotel: late arrivals and early departures with no taxi, a Finnish buffet breakfast, a kids menu downstairs at Restaurant Gui, and a sauna. We also used it to leave a city bag while we were in Lapland, then picked it up on the way back.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">Aurora Pyramid Glass Igloos</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">1 night</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Levi, Lapland</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">The special night: outdoor hot tub and a chance at the aurora. Confirm a late check-in, because the drive from Rovaniemi arrives after dark. One night is enough, then move into the village.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">Levi Suites Levin Klubi</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">3 nights</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Levi village centre</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">The snow-week base we lined up for drying cabinets, which matter after husky and snowmobile days, and for being in the village by the gondola, the spa and the grocery stores.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">Lomavekarit Apartments</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">1 night</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">Near Rovaniemi Airport</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">A simple overnight after SantaPark, close enough that the morning car drop-off is about ten minutes.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3"><h3 class="font-bold">Hilton Dublin Airport</h3><span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">1 night</span></div>
+                    <p class="text-sm text-brand-ice mt-0.5">A short hop from Terminal 2</p>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">Picked for the early US Preclearance morning. Ask for early check-in so the kids can nap after a dawn flight from Helsinki. Shuttle or a five minute taxi from the terminal.</p>
+                </article>
+            </div>
+        </section>
+<section class="mt-12" id="highlights">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold mb-4">Highlights and what we would recommend</h2>
 
-    <script>
-        // --- Data Structure ---
-        // Added rich images, precise map coordinates, and detailed daily schedules
-        const itineraryData = [
-            {
-                id: "day1", day: "Day 1", date: "Sat, Nov 21", from: "2026-11-21", to: "2026-11-21", location: "Toronto to London",
-                lat: 51.5074, lng: -0.1278, zoom: 4, routeIdx: 1,
-                image: "https://images.unsplash.com/photo-1507992781348-310259076fe0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Departure & Red-Eye",
-                desc: "The overnight jump. Business class on the A350, so the seats go flat and the kids have a real shot at sleeping.",
-                icon: "fa-plane-departure", color: "brand-gold",
-                hotels: [
-                    { name: "Overnight on BA92", area: "Seats assigned. Sleep on the plane, no hotel tonight", dates: "Nov 21" }
-                ],
-                schedule: [
-                    {
-                        dayName: "Saturday, Nov 21",
-                        items: [
-                            { time: "03:30 PM", text: "Arrive at Toronto Pearson, Terminal 3. Two checked bags each at 32kg, so the snow gear travels out with you." },
-                            { time: "05:00 PM", text: "Through security, then the lounge. Pre-feed the kids so the meal service is not the first thing they eat." },
-                            { time: "06:05 PM", text: "Depart YYZ on British Airways BA92, an A350-1000. Seats are already assigned. Pajamas on straight after takeoff. It is only 7h 10m in the air, so lights out early or the sleep window is gone." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day2", day: "Day 2-3", date: "Nov 22 - Nov 23", from: "2026-11-22", to: "2026-11-23", location: "London, UK",
-                lat: 51.5074, lng: -0.1278, zoom: 12, routeIdx: 1,
-                image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "The Royal Footprint",
-                desc: "Land at breakfast time, sleep off the worst of it, then out to Harrow for dinner with family. One night in Marylebone, then basecamp in Stratford on the step-free Elizabeth Line.",
-                icon: "fa-chess-rook", color: "brand-gold",
-                hotels: [
-                    { name: "The BoTree London", area: "Marylebone, London", dates: "Nov 22 · 1 night", booked: true },
-                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 23-27 · 4 nights", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Sunday, Nov 22 (Day 2)",
-                        items: [
-                            { time: "06:15 AM", text: "Land at Heathrow Terminal 5. Getting in at breakfast time is the whole prize of the earlier flight, but it also makes a very long first day for the kids." },
-                            { time: "07:30 AM", text: "Elizabeth Line from Heathrow Terminal 5 to Bond Street. Step-free the whole way, about 35 minutes." },
-                            { time: "08:15 AM", text: "Walk to The BoTree, eight minutes from Bond Street. The room is not ready until 3 PM, so leave the bags at the desk." },
-                            { time: "08:45 AM", text: "Breakfast on Marylebone High Street." },
-                            { time: "10:30 AM", text: "Marylebone Farmers Market runs Sundays in the Cramer Street car park, 10 to 2. Two minutes from the hotel and flat the whole way." },
-                            { time: "11:30 AM", text: "Regent's Park is a ten minute walk north. Marylebone Green is the closest playground to the Baker Street gate." },
-                            { time: "01:00 PM", text: "Easy lunch, then back to the hotel." },
-                            { time: "03:00 PM", text: "Check in and nap. Do not skip this one. A five hour shift with toddlers is won or lost on the first afternoon." },
-                            { time: "04:45 PM", text: "Leave for Harrow. The Bakerloo line runs from Baker Street out to Harrow and Wealdstone, so plan on about 40 minutes plus a short taxi or walk at the far end, and ask the family which station suits them best. A car from Marylebone is about the same on a Sunday and keeps the stroller off the stairs, which is worth it on the first night. Look at the TfL status the evening before, because Sunday engineering works are common." },
-                            { time: "05:30 PM", text: "Arrive in Harrow. On Toronto time it is only 12:30 in the afternoon, so the children will have more left in the tank than the adults." },
-                            { time: "06:30 PM", text: "Dinner with the family." },
-                            { time: "08:30 PM", text: "Head back to The BoTree. A car is the easy way home with sleepy children, then straight to bed." }
-                        ]
-                    },
-                    {
-                        dayName: "Monday, Nov 23 (Day 3)",
-                        items: [
-                            { time: "09:00 AM", text: "Check out. Elizabeth Line from Bond Street to Stratford." },
-                            { time: "10:30 AM", text: "Drop bags at The Stratford, Autograph Collection. Home for the next four nights." },
-                            { time: "11:30 AM", text: "Tower of London exterior and Crown Jewels. About £38 per adult, under-5s free, and the tickets are non-refundable. Online is cheaper than the gate. The exterior is free. The Jewels are not." },
-                            { time: "01:00 PM", text: "Uber Boat (Thames Clipper) to Westminster. Roll stroller right on, and it is the easiest sightseeing you will do all trip." },
-                            { time: "02:00 PM", text: "Big Ben and Parliament from the riverside." },
-                            { time: "05:15 PM", text: "Back east before the rush hour crush." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day4", day: "Day 4-6", date: "Nov 24 - Nov 26", from: "2026-11-24", to: "2026-11-26", location: "London, UK",
-                lat: 51.5074, lng: -0.1278, zoom: 13, routeIdx: 1,
-                image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Waxworks, Guards and Dinosaurs",
-                desc: "The extra night bought a whole free day. Waxworks, a booked afternoon tea and Winter Wonderland on the Tuesday, the Guard and the museum on the Wednesday, then an easy food and lights day on the Thursday.",
-                icon: "fa-sleigh", color: "brand-gold",
-                hotels: [
-                    { name: "The Stratford, Autograph Collection", area: "Stratford, London", dates: "Nov 23-27 · 4 nights", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Tuesday, Nov 24 (Day 4)",
-                        items: [
-                            { time: "09:45 AM", text: "Jubilee line runs Stratford to Baker Street with no changes, about 25 minutes." },
-                            { time: "10:30 AM", text: "Madame Tussauds on Marylebone Road, two minutes from the Baker Street exit. Book the first slot of the day online. It is cheaper than the door and the queue is shortest before eleven." },
-                            { time: "12:30 PM", text: "The Spirit of London taxi ride and the Marvel floor are the parts that land with a four year old. The rest is really for the grown-ups. Under 2s free (still add a free ticket). Online is about £27 to £29 per adult and £24 per child aged 2 to 15." },
-                            { time: "01:15 PM", text: "Lunch on Marylebone High Street, ten minutes south and a lot calmer than the Baker Street strip." },
-                            { time: "03:00 PM", text: "Afternoon tea at Royal Lancaster London (booked, party of 4). The hotel is by Lancaster Gate, on the north edge of Hyde Park. From there it is about a ten minute walk to the Marble Arch gate of Winter Wonderland." },
-                            { time: "04:45 PM", text: "A short stroll along the Hyde Park edge toward Marble Arch. Free. It covers the walk from Royal Lancaster to the Winter Wonderland gate." },
-                            { time: "05:45 PM", text: "Hyde Park Winter Wonderland at the Marble Arch gate (booked, off-peak entry through SeeTickets). Arrive around 5:45 PM. Entry has to be between 5 and 6 PM. Open Nov 19 2026 to Jan 3 2027, and today it runs 12pm to 10pm. Tickets are for 2 adults, 1 child aged 3 to 12, and 1 infant aged 2 and under. Santaland, the carousels and the market. Rides can be bought on the day. Optional: the Santa Land Unlimited Ride Pass is £25, cheaper online in advance, and it suits a 4 year old. Keep it to a couple of hours and do not try to see all of it." },
-                            { time: "07:30 PM", text: "Dinner there, then the Central line from Marble Arch runs straight through to Stratford with no changes, about 25 minutes." }
-                        ]
-                    },
-                    {
-                        dayName: "Wednesday, Nov 25 (Day 5)",
-                        items: [
-                            { time: "10:15 AM", text: "Get to Buckingham Palace early. The Victoria Memorial steps are raised so short people can actually see, or catch the New Guard forming up at Wellington Barracks on Birdcage Walk around 10:30." },
-                            { time: "11:00 AM", text: "Changing the Guard at Buckingham Palace. Free, no tickets, runs about 45 minutes. The ceremony only runs on certain days, and this is the one date on the trip that works, so there is no second chance. It can be called off in heavy rain." },
-                            { time: "12:00 PM", text: "Green Park to South Kensington, then lunch. If the ceremony is rained off, the Science Museum basement has The Garden, a free water and construction play space for under 6s, right next door to the museum." },
-                            { time: "01:00 PM", text: "Natural History Museum, South Kensington (booked, 13:00 entry). Head straight for Dinosaurs and the T-Rex before the gallery backs up." },
-                            { time: "03:15 PM", text: "Keep it light. Short play stop at the Diana Memorial Playground only if everyone is still fresh, otherwise a hot chocolate near the museum." },
-                            { time: "04:00 PM", text: "Head back to Stratford. Piccadilly line from South Kensington to Green Park, then the Jubilee line, about 35 minutes." },
-                            { time: "06:00 PM", text: "Easy dinner near the hotel at Westfield Stratford City, then an early night." }
-                        ]
-                    },
-                    {
-                        dayName: "Thursday, Nov 26 (Day 6)",
-                        items: [
-                            { time: "09:30 AM", text: "Easy start. Jubilee line from Stratford to London Bridge, about 15 minutes." },
-                            { time: "10:30 AM", text: "Borough Market. Graze for an early lunch: Bread Ahead doughnuts, toasties and hot food stalls. Busiest from noon, so go early. Or queue for Padella's fresh pasta by the market, where the line is shortest just before opening." },
-                            { time: "12:30 PM", text: "Horizon 22 at 22 Bishopsgate (booked, free). 2 adults and 2 infants, arrival slot 12:30 to 12:45 PM, so be at the door by 12:30. At 254m it is the highest free viewpoint in Europe. Keep the tickets on your phone or printed. It is about a 20 minute walk from Borough Market, so leave the market by noon." },
-                            { time: "01:00 PM", text: "Back over London Bridge and walk west along the river past Shakespeare's Globe and Tate Modern to the Southbank. Flat, stroller friendly, and free." },
-                            { time: "02:30 PM", text: "Southbank Centre Winter Market by the London Eye. Free to wander, wooden chalets, food and Christmas lights. Nap time for the baby in the stroller." },
-                            { time: "05:30 PM", text: "Early dinner. Dishoom (Covent Garden or Shoreditch) for Bombay cafe food that kids love, or Flat Iron for an easy, cheap steak. Hawksmoor if you want the big steak night. Book or go before six to avoid queues." },
-                            { time: "07:00 PM", text: "Back to Stratford and pack. The train to St Pancras on Friday leaves at 8:15 AM." },
-                            { time: "Back-up", text: "If it rains, swap the river walk for the Science Museum or Young V&A in Bethnal Green, ten minutes from Stratford on the Central line. Free, built for under 14s, with a sensory Play gallery for the little ones." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day6", day: "Day 7-9", date: "Nov 27 - Nov 29", from: "2026-11-27", to: "2026-11-29", location: "Edinburgh, Scotland",
-                lat: 55.9533, lng: -3.1883, zoom: 13, routeIdx: 2,
-                image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Volcanic Vistas via Rail",
-                desc: "High-speed rail up to Scotland. Museums, Christmas lights at the botanic garden, and a hearty Sunday roast.",
-                icon: "fa-train", color: "brand-royal",
-                hotels: [
-                    { name: "The Caledonian", area: "Princes Street, Edinburgh", dates: "Nov 27-30 · 3 nights", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Friday, Nov 27 (Day 7)",
-                        items: [
-                            { time: "08:15 AM", text: "Southeastern High-Speed train from Stratford Int'l to St Pancras." },
-                            { time: "09:30 AM", text: "Board LNER train at King's Cross (booked)." },
-                            { time: "01:38 PM", text: "Arrive at Edinburgh Waverley station." },
-                            { time: "03:00 PM", text: "Check into The Caledonian. Let toddlers settle." },
-                            { time: "04:30 PM", text: "Princes Street Christmas Market under the castle." }
-                        ]
-                    },
-                    {
-                        dayName: "Saturday, Nov 28 (Day 8)",
-                        items: [
-                            { time: "10:00 AM", text: "National Museum of Scotland on Chambers Street. Free, indoors, and big enough to swallow a wet morning, with hands-on galleries that work for small children and a roof terrace looking over the Old Town." },
-                            { time: "01:00 PM", text: "Walk base of Arthur's Seat or Calton Hill." },
-                            { time: "Evening", text: "Christmas at the Botanics, Royal Botanic Garden Edinburgh. An illuminated trail, timed entry, stroller friendly, with one steep incline on the path. It runs Nov 19 to Dec 30. From £19.50 per adult off-peak and £26 standard. Saturday is likely peak and sells out first, so book it." }
-                        ]
-                    },
-                    {
-                        dayName: "Sunday, Nov 29 (Day 9)",
-                        items: [
-                            { time: "10:00 AM", text: "Palace of Holyroodhouse. Confirm the booking. £22 per adult in advance, under-5s free." },
-                            { time: "01:00 PM", text: "Hearty Scottish Sunday Roast in a historic pub. Reserve a family table for Sunday lunch." },
-                            { time: "04:00 PM", text: "Relax. Prep toddler bags for the flight to Finland tomorrow." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day9", day: "Day 10-11", date: "Nov 30 - Dec 1", from: "2026-11-30", to: "2026-12-01", location: "Helsinki, Finland",
-                lat: 60.1695, lng: 24.9354, zoom: 12, routeIdx: 3,
-                image: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Nordic Acclimatization",
-                desc: "Strategic transit hub stay at the airport to minimize toddler movement late at night.",
-                icon: "fa-snowflake", color: "brand-ice",
-                hotels: [
-                    { name: "Hilton Helsinki Airport", area: "Connected to HEL terminal by indoor walkway", dates: "Nov 30-Dec 2 · 2 nights", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Monday, Nov 30 (Day 10)",
-                        items: [
-                            { time: "12:00 PM", text: "Check out of The Caledonian. Store bags." },
-                            { time: "04:00 PM", text: "Head to EDI Airport via Tram. Gate-check stroller." },
-                            { time: "06:35 PM", text: "Depart EDI on Finnair AY1374." },
-                            { time: "11:10 PM", text: "Land in Helsinki (HEL). Walk directly via indoor walkway to Hilton Helsinki Airport. Zero commute." }
-                        ]
-                    },
-                    {
-                        dayName: "Tuesday, Dec 1 (Day 11)",
-                        items: [
-                            { time: "10:00 AM", text: "Sleep in. Huge Finnish buffet breakfast at hotel." },
-                            { time: "11:30 AM", text: "Take 30m train into Helsinki Central (Free with stroller!)." },
-                            { time: "01:00 PM", text: "Visit Children's Town on Senate Square." },
-                            { time: "03:30 PM", text: "Senate Square Christmas Market. Kids ride vintage wooden carousel." },
-                            { time: "06:00 PM", text: "Back at the hotel, split everything into two piles: snow gear and five days of clothes that fly to Lapland, and a city bag that does not. Ask the desk tonight to hold the city bag until Dec 7 rather than asking on the morning you are trying to make a flight. Holding a bag between two bookings is a normal request, but get it confirmed and keep the tag." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day11", day: "Day 12", date: "Wed, Dec 2", from: "2026-12-02", to: "2026-12-02", location: "Levi, Lapland",
-                lat: 67.8040, lng: 24.8082, zoom: 10, routeIdx: 5,
-                image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Arctic Arrival & Igloos",
-                desc: "Enter the Arctic Circle. A majestic first night in a glass igloo.",
-                icon: "fa-car-side", color: "brand-aurora",
-                hotels: [
-                    { name: "Aurora Pyramid Glass Igloos", area: "Levi, Lapland. Outdoor hot tub and aurora views", dates: "Dec 2-3 · 1 night", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Wednesday, Dec 2 (Day 12)",
-                        items: [
-                            { time: "07:45 AM", text: "Leave the city bag at the Hilton. Nothing in it is needed until Dec 7, when you check straight back into this same hotel." },
-                            { time: "08:00 AM", text: "Walk directly from Hilton to HEL terminal. These two Lapland hops are a separate ticket from the transatlantic flight, so check what your Finnair fare actually includes for bags. Every one you are not checking is one less to pay for, and one less to wedge into the SUV alongside four people and the snow gear." },
-                            { time: "09:50 AM", text: "Depart HEL on Finnair AY555." },
-                            { time: "11:15 AM", text: "Land at RVN. The Enterprise pick-up is booked for 10:00 AM, which is before this landing, so change it to about 11:45. Call Enterprise on +358 10 5252885 to confirm the reservation is still holding. Studded tires and both toddler seats are already on the booking." },
-                            { time: "11:45 AM", text: "Pick up the Enterprise SUV. Groceries can wait until Levi, or do a quick stop at the Prisma near the airport." },
-                            { time: "12:15 PM", text: "Drive north to Levi, about 2.5 hours. Sunset is around 1:15 PM, so most of it is in the dark on winter roads. Take it slow." },
-                            { time: "03:00 PM", text: "Arrive in Levi and buy groceries in the village if you skipped Prisma." },
-                            { time: "04:30 PM", text: "Check into Aurora Pyramid Glass Igloos and enjoy the outdoor hot tub. Confirm the late check-in with the property ahead of time." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day12", day: "Day 13-15", date: "Dec 3 - Dec 5", from: "2026-12-03", to: "2026-12-05", location: "Levi, Lapland",
-                lat: 67.8040, lng: 24.8082, zoom: 12, routeIdx: 5,
-                image: "https://images.unsplash.com/photo-1547407139-3c921a66005c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Huskies, Sleds & Aurora",
-                desc: "The core Lapland days, run out of Levin Klubi in the village.",
-                icon: "fa-dog", color: "brand-aurora",
-                hotels: [
-                    { name: "Levi Suites Levin Klubi", area: "Levi village centre, with drying cabinets for snow gear", dates: "Dec 3-6 · 3 nights", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Thursday, Dec 3 (Day 13)",
-                        items: [
-                            { time: "10:30 AM", text: "Load heavy luggage into SUV (acts as locker for the day)." },
-                            { time: "11:15 AM", text: "Daylight is short, so get outside first. Levi gondola up the fell is stroller friendly and under 6s ride free." },
-                            { time: "01:30 PM", text: "Lunch in Levi village once the light goes." },
-                            { time: "02:30 PM", text: "Water World at Levi Hotel Spa: kids pools, slides and the Ailu indoor play area next door. Walk in, no booking." },
-                            { time: "05:00 PM", text: "Strict 5PM check-in at Levi Suites Levin Klubi. Unpack into drying cabinets." }
-                        ]
-                    },
-                    {
-                        dayName: "Friday, Dec 4 (Day 14)",
-                        items: [
-                            { time: "10:50 AM", text: "Husky Safari at Levi (booked): 5 km self-drive, 2.5 hours including kitting up. Kids ride wrapped in blankets in the sled." },
-                            { time: "02:00 PM", text: "Samiland Exhibition. Warm up indoors, feed reindeer outside." }
-                        ]
-                    },
-                    {
-                        dayName: "Saturday, Dec 5 (Day 15)",
-                        items: [
-                            { time: "10:30 AM", text: "Family Safari in Levi by snowmobile (booked, one adult). Other parent has the kids." },
-                            { time: "11:00 AM", text: "Kid shift: sledding hill in the village, or back to Water World and the Ailu play area." },
-                            { time: "01:30 PM", text: "Everyone back together for a late lunch." },
-                            { time: "03:00 PM", text: "Quiet afternoon at the cabin so the kids nap before the evening handover." },
-                            { time: "05:30 PM", text: "Early Evening Aurora Tour by Snowmobile (confirmed, the other adult). Pick-up is included, so no driving afterwards." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day15", day: "Day 16", date: "Sun, Dec 6", from: "2026-12-06", to: "2026-12-06", location: "Rovaniemi, Lapland",
-                lat: 66.5039, lng: 25.7294, zoom: 11, routeIdx: 6,
-                image: "https://images.unsplash.com/photo-1576692155415-95f820a2c4c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "SantaPark Underground",
-                desc: "Heading back south to the official hometown of Santa Claus.",
-                icon: "fa-gift", color: "brand-aurora",
-                hotels: [
-                    { name: "Lomavekarit Apartments", area: "Near Rovaniemi Airport for an easy morning drop-off", dates: "Dec 6-7 · 1 night", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Sunday, Dec 6 (Day 16)",
-                        items: [
-                            { time: "09:30 AM", text: "Check out. 2-hour drive south to Rovaniemi." },
-                            { time: "11:45 AM", text: "SantaPark at 1 Tarvantie (booked, all day access). Heated underground cavern, so it is the warm option whatever the weather does." },
-                            { time: "04:00 PM", text: "Cross Arctic Circle at Santa Claus Village." },
-                            { time: "06:00 PM", text: "Check into Lomavekarit Apartments near airport." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day16", day: "Day 17-18", date: "Dec 7 - Dec 8", from: "2026-12-07", to: "2026-12-08", location: "Helsinki to Dublin",
-                lat: 60.1695, lng: 24.9354, zoom: 13, routeIdx: 7,
-                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "Last of Helsinki, First of Dublin",
-                desc: "A last afternoon in Helsinki, then an early hop west that breaks the journey home in two. Dublin is a free day: a light city centre afternoon (or Phoenix Park instead), then the TwinkleTown Christmas market at Smithfield after dark.",
-                icon: "fa-house", color: "brand-ice",
-                hotels: [
-                    { name: "Hilton Helsinki Airport", area: "Second stay here, indoor walkway to the terminal", dates: "Dec 7 · 1 night", booked: true },
-                    { name: "Hilton Dublin Airport", area: "A short hop from the terminal, shuttle or a five minute taxi", dates: "Dec 8 · 1 night", booked: true }
-                ],
-                schedule: [
-                    {
-                        dayName: "Monday, Dec 7 (Day 17)",
-                        items: [
-                            { time: "07:15 AM", text: "Drive 10 mins to drop off the Enterprise SUV at RVN airport (drop-off booked for 9:00 AM, arriving early is fine)." },
-                            { time: "09:10 AM", text: "Depart RVN on Finnair AY0532 (booked)." },
-                            { time: "10:25 AM", text: "Land HEL. Walk the indoor walkway to the Hilton, check in, and collect the city bag you left on Dec 2. Same hotel as Nov 30, so you already know the way." },
-                            { time: "12:30 PM", text: "Ring Rail train into Helsinki Central, about 30 minutes, and still free if one of you is pushing the stroller." },
-                            { time: "02:00 PM", text: "Walk the Esplanadi for the Christmas lights. Senate Square and its market are ten minutes north if you want a second look before you go." },
-                            { time: "04:30 PM", text: "Train back out to the airport. None of this afternoon is load-bearing, so if the Lapland week has flattened everyone, stay at the hotel and do not feel bad about it." },
-                            { time: "06:00 PM", text: "Dinner at Restaurant Gui downstairs, which does a kids menu." },
-                            { time: "07:30 PM", text: "Take turns in the hotel sauna while the other one does bedtime." }
-                        ]
-                    },
-                    {
-                        dayName: "Tuesday, Dec 8 (Day 18)",
-                        items: [
-                            { time: "05:00 AM", text: "Brutal alarm, but pack the night before and this is just shoes and coats. A 7:40 departure out of an airport hotel joined to the terminal by a covered walkway is the best version of this morning that exists." },
-                            { time: "05:45 AM", text: "Walk the walkway to the terminal. No taxi booked at dawn in a Helsinki December." },
-                            { time: "07:40 AM", text: "Depart HEL on Finnair AY1381 to Dublin, business, operated by Jettime. About 3h20m in the air." },
-                            { time: "09:00 AM", text: "Land Dublin. Ireland is two hours behind Finland, so it is nine in the morning here and eleven on the body clock you woke up with." },
-                            { time: "09:15 AM", text: "Over to the Hilton Dublin Airport, about five minutes, and drop the bags. Ask for early check-in so the kids can nap." },
-                            { time: "09:30 AM", text: "Breakfast at the hotel, then rest until 12:30. Everyone has been up since five and there is a long flight tomorrow." },
-                            { time: "12:30 PM", text: "Pick one daytime area, not both. Default is the city centre, a taxi of about 30 minutes. Alternative: Phoenix Park (free), where the wild deer herd grazes near the Papal Cross and the Fifteen Acres and the People's Flower Gardens has a playground." },
-                            { time: "01:00 PM", text: "Trinity College front square, free to walk through. The Book of Kells is optional and paid, and it is a slow, quiet museum, so keep it short with the kids if you go in." },
-                            { time: "01:30 PM", text: "Lunch nearby, then walk Grafton Street for the Christmas lights down to St Stephen's Green (free), with its duck pond and playground." },
-                            { time: "04:15 PM", text: "Short taxi to Smithfield." },
-                            { time: "04:30 PM", text: "TwinkleTown Christmas market at Smithfield Square, best once the lights are on. Free entry, open weekdays 11 AM to 9 PM. Kids rides, an ice rink (extra), and dinner from the food stalls. twinkletown.ie" },
-                            { time: "06:30 PM", text: "Taxi back to the Hilton, about 25 minutes, in by 7:00. Repack and early bed for everyone. Leave the hotel at 7:00 AM tomorrow for the 10:40 flight." },
-                            { time: "Backup", text: "If the kids are wiped out, swap the city for Newbridge House and Farm, 20 minutes from the hotel (Tue to Sun 11 to 4). If the weather is dry and you want the sea, Howth harbour, seals and fish and chips, 30 minutes away." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "day19", day: "Day 19", date: "Wed, Dec 9", from: "2026-12-09", to: "2026-12-09", location: "Dublin to Toronto",
-                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                title: "The Long Way Home",
-                desc: "Dublin clears you into the United States before you leave the ground, which is what turns a two and a half hour Chicago connection from a worry into a walk.",
-                icon: "fa-house", color: "brand-ice",
-                hotels: [],
-                schedule: [
-                    {
-                        dayName: "Wednesday, Dec 9 (Day 19)",
-                        items: [
-                            { time: "06:15 AM", text: "Breakfast, or take it away. Bags were done last night." },
-                            { time: "07:00 AM", text: "Leave the Hilton Dublin Airport, at Terminal 2 by 7:15, three hours before the 10:40 US flight because of US Preclearance. Dublin Airport asks for three hours before a long haul, and T2 security peaks between five in the morning and noon, which your 10:40 sits squarely inside." },
-                            { time: "07:40 AM", text: "Check in with United, clear Dublin security, then US Preclearance on the ground floor of T2. Screens tell you when your flight is called through. Budget 30 to 60 minutes, more when several US departures stack up." },
-                            { time: "10:40 AM", text: "Depart DUB on UA981, a Boeing 767-300 in United Polaris. Lie-flat seats and 8h 40m, so this is the sleep leg. Worth a look at the seat map first, because Polaris pods are individual and the seats are not side by side." },
-                            { time: "01:20 PM", text: "Land at Chicago O'Hare. Because you cleared US immigration back in Dublin you arrive as a domestic flight, with no queue and no bags to reclaim. That is what makes 2h 27m comfortable rather than tight." },
-                            { time: "03:47 PM", text: "Depart ORD on UA3612 to Toronto, an Embraer E175 flown by Republic as United Express. Just under two hours." },
-                            { time: "06:45 PM", text: "Land at Toronto Pearson. Nineteen days, seven cities, one very long way round. Expedition complete." }
-                        ]
-                    }
-                ]
-            }
-        ];
+            <h3 class="font-bold text-lg mt-6 mb-3">London</h3>
+            <ul class="space-y-3">
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Tower of London and an Uber Boat down the Thames</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">The Crown Jewels are the paid part, about £38 per adult, under-5s free. Tickets are non-refundable, and online is cheaper than the gate. The exterior is free. Then take the Thames Clipper from Tower Pier to Westminster. Contactless at the pier, and a stroller rolls straight on. Big Ben and Parliament are right there from the riverside. <a href="https://www.hrp.org.uk/tower-of-london/" target="_blank" rel="noopener">hrp.org.uk</a></p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Madame Tussauds</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">We did this. Book the first morning slot online, cheaper than the door, and the queue is shortest before eleven. Two minutes from Baker Street, a straight Jubilee ride from Stratford. The taxi ride and the Marvel floor were the parts that landed with a young child. Under 2s are free, but still add a free ticket. About £27 to £29 per adult and £24 per child aged 2 to 15 online. <a href="https://www.madametussauds.com/london/" target="_blank" rel="noopener">madametussauds.com</a></p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Afternoon tea, then Hyde Park Winter Wonderland</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">Royal Lancaster London sits on the north edge of Hyde Park, about a ten minute walk to the Marble Arch gate. Winter Wonderland is timed entry, so arrive inside your slot. Rides can be bought on the day. The Santa Land Unlimited Ride Pass is about £25, cheaper online, and it suits a 4 year old. <a href="https://hydeparkwinterwonderland.com/bundle/santa-land-unlimited-ride-pass/" target="_blank" rel="noopener">hydeparkwinterwonderland.com</a></p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Changing the Guard and the Natural History Museum</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">The ceremony is free, about 45 minutes, and only runs on certain days, so check the date. It can be called off in heavy rain. Get there early for a view from the Victoria Memorial steps. Then South Kensington for the Natural History Museum. Head straight for the dinosaurs. If it pours, the Science Museum basement has The Garden, free water and construction play for under 6s.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Borough Market, Horizon 22 and the Southbank market</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">Go to the market early, it backs up from noon. Horizon 22 at 22 Bishopsgate is free, 254m, and the highest free viewpoint in Europe, but you need a timed slot. Keep about 20 minutes to walk there from the market. Then a flat, stroller-friendly river walk to the Southbank Centre Winter Market, which is free to wander. Rain backup: Young V&amp;A in Bethnal Green, about ten minutes from Stratford, built for under 14s.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">A gentle first day in Marylebone</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">If you also land at breakfast, keep day one light. The Sunday farmers market in the Cramer Street car park is two minutes from The BoTree, and Marylebone Green in Regent's Park is the closest playground to the Baker Street gate. Protect the afternoon nap. A long first day with young kids is won or lost there.</p>
+                </li>
+            </ul>
+<h3 class="font-bold text-lg mt-8 mb-3">Edinburgh</h3>
+            <ul class="space-y-3">
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">National Museum of Scotland</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">Free, no ticket, and big enough to swallow a wet morning. Hands-on galleries that work for small children, plus a roof terrace over the Old Town. <a href="https://www.nms.ac.uk/national-museum-of-scotland/" target="_blank" rel="noopener">nms.ac.uk</a></p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Christmas at the Botanics, and the Princes Street market</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">The Princes Street Christmas Market is free to enter, with rides you pay as you go, and it sits under the castle. Christmas at the Botanics is the one to book early: an illuminated trail, timed entry, stroller friendly, with one steep incline. From £19.50 off-peak and £26 standard. Saturday is peak and sells out first. <a href="https://www.rbge.org.uk/whats-on/christmas-at-the-botanics-2026/" target="_blank" rel="noopener">rbge.org.uk</a></p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Palace of Holyroodhouse, and a short hill walk</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">£22 per adult in advance, under-5s free. <a href="https://www.rct.uk/event/christmas-at-the-palace-of-holyroodhouse-11-2026" target="_blank" rel="noopener">rct.uk</a> For a walk, keep to the base of Arthur's Seat or Calton Hill if you have a stroller.</p>
+                </li>
+            </ul>
 
-        // --- Render UI ---
-        function renderFeed() {
-            const container = document.getElementById('itinerary-feed');
-            container.innerHTML = '';
+            <h3 class="font-bold text-lg mt-8 mb-3">Helsinki</h3>
+            <ul class="space-y-3">
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Children's Town and the Senate Square market</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">The Ring Rail train from the airport to Helsinki Central takes about 30 minutes, and is free if someone is pushing a stroller. Children's Town at the City Museum is on Senate Square, and the Christmas market outside has a vintage wooden carousel. On the way back through Helsinki, a walk along the Esplanadi for the lights is enough if everyone is tired.</p>
+                </li>
+            </ul>
 
-            const divider = (flag, title, sub, gradClass, lineColor) => `
-                <div class="reveal flex items-center gap-3 pt-2">
-                    <span class="text-3xl drop-shadow">${flag}</span>
-                    <div>
-                        <h2 class="text-lg md:text-xl font-black ${gradClass} leading-tight">${title}</h2>
-                        <p class="text-[9px] uppercase tracking-[0.2em] font-bold text-slate-500 dark:text-slate-400">${sub}</p>
-                    </div>
-                    <div class="flex-1 h-px bg-gradient-to-r ${lineColor} to-transparent"></div>
-                </div>`;
+            <h3 class="font-bold text-lg mt-8 mb-3">Lapland</h3>
+            <ul class="space-y-3">
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Husky, snowmobile and a shot at the aurora</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">We lined up a 5 km self-drive husky safari, about 2.5 hours including kitting up, with kids riding wrapped in the sled. A family snowmobile safari works if one adult drives and the other stays with the kids for sledding or the spa. The aurora tour is an evening handover, and pick-up is included, so nobody has to drive afterwards. Book these early in peak winter.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Levi gondola, Water World and Samiland</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">Daylight is short, so get outside first. The gondola is stroller friendly and under 6s ride free. Levi Hotel Spa has kids pools, slides and the Ailu play area, walk in, no booking. Samiland, by the gondola, is a warm indoor stop with reindeer feeding outside.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">SantaPark and Santa Claus Village</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">SantaPark is a heated underground cavern, which makes it the reliable option whatever the weather does. All-day access, and the 1 year old is free. Santa Claus Village, on the Arctic Circle, is free to enter, with individual activities priced separately. Do the indoor park first, then the village.</p>
+                </li>
+            </ul>
 
-            itineraryData.forEach((day, index) => {
-                if (day.id === 'day1') container.innerHTML += divider('\u{1F1EC}\u{1F1E7}', 'United Kingdom', 'Nov 21 to Nov 30 \u00b7 London & Edinburgh', 'grad-gold', 'from-brand-gold/50');
-                if (day.id === 'day9') container.innerHTML += divider('\u{1F1EB}\u{1F1EE}', 'Finland & Lapland', 'Nov 30 to Dec 8 \u00b7 Helsinki, Levi & Rovaniemi', 'grad-aurora', 'from-brand-aurora/50');
+            <h3 class="font-bold text-lg mt-8 mb-3">Dublin</h3>
+            <ul class="space-y-3">
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">A short city day, then TwinkleTown</p>
+                    <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">Pick one daytime area, not both. The default is the centre: Trinity College front square is free to walk, the Book of Kells is optional and quiet, then Grafton Street lights down to St Stephen's Green, which has a duck pond and a playground. In the late afternoon, TwinkleTown at Smithfield Square is better once the lights are on. Free entry, kids rides and an ice rink cost extra, and you can eat from the stalls. If the kids are wiped out, Newbridge House and Farm is about 20 minutes from the airport hotel, or Howth for a harbour walk and fish and chips if it is dry. Phoenix Park is the free, closer alternative, with a wild deer herd and a playground.</p>
+                </li>
+            </ul>
+        </section>
+<section class="mt-12" id="food">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold mb-4">Food picks</h2>
+            <ul class="glass rounded-2xl divide-y divide-white/10">
+                <li class="p-4">
+                    <p class="font-semibold">Borough Market, and Padella</p>
+                    <p class="text-sm text-slate-300 mt-1">Graze early: Bread Ahead doughnuts, toasties and the hot food stalls. Or queue at Padella, next to the market, for fresh pasta. The line is shortest just before opening.</p>
+                </li>
+                <li class="p-4">
+                    <p class="font-semibold">Dishoom, Flat Iron or Hawksmoor</p>
+                    <p class="text-sm text-slate-300 mt-1">An early dinner works with young kids. Dishoom, Covent Garden or Shoreditch, is Bombay cafe food that kids like. Flat Iron is the easy, cheaper steak. Hawksmoor if you want the big steak night. Book, or go before six.</p>
+                </li>
+                <li class="p-4">
+                    <p class="font-semibold">Afternoon tea at Royal Lancaster London</p>
+                    <p class="text-sm text-slate-300 mt-1">A sit-down pause that also lands you next to Winter Wonderland. Book a table for a family of 4.</p>
+                </li>
+                <li class="p-4">
+                    <p class="font-semibold">A Scottish Sunday roast</p>
+                    <p class="text-sm text-slate-300 mt-1">Reserve a family table in a historic pub after Holyroodhouse.</p>
+                </li>
+                <li class="p-4">
+                    <p class="font-semibold">Restaurant Gui, Hilton Helsinki Airport</p>
+                    <p class="text-sm text-slate-300 mt-1">Downstairs at the hotel, with a kids menu. Useful on the night you get back from Lapland.</p>
+                </li>
+                <li class="p-4">
+                    <p class="font-semibold">TwinkleTown stalls, or fish and chips in Howth</p>
+                    <p class="text-sm text-slate-300 mt-1">Dinner from the market if you stay in the city, or a classic harbour supper if you take the Howth backup.</p>
+                </li>
+            </ul>
+        </section>
 
-                let scheduleHtml = '';
-                if (day.schedule && day.schedule.length > 0) {
-                    scheduleHtml = `<div class="mt-6 space-y-6 border-t border-slate-200 dark:border-white/5 pt-5">`;
-                    day.schedule.forEach(s => {
-                        scheduleHtml += `
-                            <div>
-                                <div class="flex items-center gap-2.5 mb-3.5">
-                                    <span class="w-7 h-7 rounded-xl bg-${day.color}/10 border border-${day.color}/30 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-calendar-day text-[10px] text-${day.color}"></i></span>
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-slate-100">${s.dayName}</h4>
-                                </div>
-                                <div class="relative ml-3.5 pl-6 border-l border-dashed border-slate-300 dark:border-slate-700 space-y-4">`;
-                        s.items.forEach(item => {
-                            scheduleHtml += `
-                                    <div class="relative">
-                                        <span class="absolute -left-[30px] top-1 w-2.5 h-2.5 rounded-full bg-${day.color} ring-4 ring-${day.color}/15"></span>
-                                        <span class="inline-block text-[9px] font-black tabular-nums bg-${day.color}/10 text-${day.color} px-2 py-0.5 rounded-md mb-1">${item.time}</span>
-                                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">${item.text}</p>
-                                    </div>`;
-                        });
-                        scheduleHtml += `</div></div>`;
-                    });
-                    scheduleHtml += `</div>`;
-                }
+        <section class="mt-12" id="tips">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold mb-4">Practical tips</h2>
+            <ul class="space-y-3 text-sm text-slate-300 leading-relaxed">
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">Getting around London.</span> The Elizabeth Line is step-free from Heathrow to Bond Street and on to Stratford. The Jubilee line runs Stratford to Baker Street with no changes, about 25 minutes, and Stratford to London Bridge in about 15. Contactless works on Tube, train and the Uber Boat.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">Travel with young kids.</span> Land, dump bags, then protect the first nap. Pre-feed before a red-eye so the meal service is not the first thing they eat, and put pajamas on after takeoff. For the snow week, two toddler car seats in the rental SUV matter, as do drying cabinets at the village hotel.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">What to book early.</span> Christmas at the Botanics on a Saturday, Winter Wonderland timed entry, Horizon 22 (free, but slotted), the Tower, Madame Tussauds first thing, Holyroodhouse, afternoon tea, the Natural History Museum, and the Lapland safaris plus SantaPark. Changing the Guard only runs on certain days, so fix the London dates around one that does.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">Helsinki and Lapland.</span> Leave a city bag at the airport hotel on the way north and collect it on the way back, no valuables and no lithium batteries. Check bag rules on the short Lapland hops, they can be a separate ticket. Pick up a rental SUV at Rovaniemi with studded winter tires, then take the drive to Levi slowly. Groceries can wait until the village, or stop at the Prisma near the airport.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">The way home.</span> Dublin's US Preclearance is why the Chicago connection works. Be at Terminal 2 three hours early. Once you clear in Dublin you arrive in Chicago as a domestic flight, with no immigration queue and no bags to reclaim.</li>
+            </ul>
+        </section>
 
-                let hotelHtml = '';
-                if (day.hotels && day.hotels.length > 0) {
-                    hotelHtml = `<div class="mt-4 space-y-2.5">` + day.hotels.map(h => `
-                        <div class="flex items-center gap-3.5 bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800/80 dark:to-slate-800/30 rounded-2xl p-3.5 border border-slate-200 dark:border-white/5">
-                            <div class="w-10 h-10 rounded-xl bg-${day.color}/10 border border-${day.color}/30 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-bed text-${day.color} text-sm"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between gap-2">
-                                    <p class="text-xs font-bold text-slate-900 dark:text-white truncate">${h.name}</p>
-                                    ${h.booked ? `<span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap flex-shrink-0"><i class="fa-solid fa-check"></i> Booked</span>` : ``}
-                                </div>
-                                <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${h.area} \u00b7 ${h.dates}</p>
-                            </div>
-                        </div>`).join('') + `</div>`;
-                }
-
-                const isAurora = day.color === 'brand-aurora';
-                const html = `
-                    <div data-from="${day.from}" data-to="${day.to}" class="snap-start scroll-mt-4 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${isAurora ? 'aurora-card' : ''}" data-snow="${isAurora ? 2.4 : 1}">
-                        <div class="tilt-card bg-white dark:bg-slate-900/95 rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-slate-200 dark:border-white/10">
-
-                            <!-- Header image with parallax -->
-                            <div class="relative w-full h-52 md:h-64 overflow-hidden">
-                                <img src="${day.image}" alt="${day.location}" loading="lazy" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.8] group-hover:brightness-95 transition-[filter] duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/20 to-slate-950/30"></div>
-                                <div class="absolute top-4 left-4">
-                                    <span class="bg-white/15 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1.5 rounded-full border border-white/25 flex items-center gap-2"><i class="fa-solid ${day.icon}"></i> ${day.day}</span>
-                                </div>
-                                <div data-weather="${day.id}" class="hidden absolute top-4 right-4 z-10 text-[11px] font-bold text-white bg-black/40 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/20"></div>
-                                <div class="absolute bottom-0 left-0 w-full p-5 md:p-6">
-                                    <p class="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-1.5"><i class="fa-solid fa-location-dot mr-1"></i>${day.location} \u00b7 ${day.date}</p>
-                                    <h3 class="text-2xl md:text-3xl font-black text-white drop-shadow-lg leading-tight">${day.title}</h3>
-                                </div>
-                            </div>
-
-                            <!-- Body -->
-                            <div class="p-5 md:p-7">
-                                <p class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">${day.desc}</p>
-
-                                <!-- Where you're sleeping -->
-                                ${hotelHtml}
-
-                                <!-- Detailed timeline -->
-                                ${scheduleHtml}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += html;
-            });
-        }
-
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        let isDarkMode = true;
-
-        // --- Snow thickens over the Lapland cards as they scroll into view ---
-        function setupIntersectionObserver() {
-            const cards = document.querySelectorAll('.itinerary-card');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const sn = entry.target.getAttribute('data-snow');
-                        if (sn && window.snowSetDensity) window.snowSetDensity(parseFloat(sn));
-                    }
-                });
-            }, { root: document.getElementById('feed'), threshold: 0.6 });
-
-            cards.forEach(card => observer.observe(card));
-        }
-
-        // --- Theme Toggle Logic ---
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const htmlElement = document.documentElement;
-
-        themeToggleBtn.addEventListener('click', () => {
-            isDarkMode = !isDarkMode;
-
-            if(isDarkMode) {
-                htmlElement.classList.add('dark');
-                htmlElement.classList.remove('bg-slate-50', 'text-slate-900');
-                themeIcon.className = 'fa-solid fa-moon text-yellow-300 text-lg';
-            } else {
-                htmlElement.classList.remove('dark');
-                htmlElement.classList.add('bg-slate-50', 'text-slate-900');
-                themeIcon.className = 'fa-solid fa-sun text-orange-500 text-lg';
-            }
-        });
-
-        // --- Booking checklist persistence (per device) + progress ring ---
-        function updateRing() {
-            const boxes = [...document.querySelectorAll('.book-check')];
-            const fg = document.getElementById('ring-fg');
-            const label = document.getElementById('ring-label');
-            if (!fg || !label || boxes.length === 0) return;
-            const done = boxes.filter(b => b.checked).length;
-            fg.setAttribute('stroke-dasharray', `${(done / boxes.length) * 100}, 100`);
-            label.textContent = `${done}/${boxes.length}`;
-        }
-
-        function setupBookingChecklist() {
-            document.querySelectorAll('.book-check').forEach(cb => {
-                const key = 'ukfin-book-' + cb.dataset.key;
-                try {
-                    cb.checked = localStorage.getItem(key) === '1';
-                    cb.addEventListener('change', () => {
-                        try { localStorage.setItem(key, cb.checked ? '1' : '0'); } catch (e) {}
-                        updateRing();
-                    });
-                } catch (e) {
-                    cb.addEventListener('change', updateRing);
-                }
-            });
-            updateRing();
-        }
-
-        // --- Countdown to departure ---
-        function startCountdown() {
-            const target = new Date('2026-11-21T18:05:00-05:00').getTime();
-            const els = [document.getElementById('countdown')];
-            const pad = n => String(n).padStart(2, '0');
-            const tick = () => {
-                const diff = target - Date.now();
-                let text;
-                if (diff <= 0) {
-                    text = 'Bon voyage! ✈️';
-                } else {
-                    const d = Math.floor(diff / 86400000);
-                    const h = Math.floor(diff / 3600000) % 24;
-                    const m = Math.floor(diff / 60000) % 60;
-                    const s = Math.floor(diff / 1000) % 60;
-                    text = `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
-                }
-                els.forEach(el => { if (el) el.textContent = text; });
-            };
-            tick();
-            setInterval(tick, 1000);
-        }
-
-        // --- Live weather per stop (Open-Meteo, free, no key; fails silently offline) ---
-        async function loadWeather() {
-            try {
-                const lats = itineraryData.map(d => d.lat).join(',');
-                const lngs = itineraryData.map(d => d.lng).join(',');
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lngs}&current=temperature_2m,weather_code`);
-                if (!res.ok) return;
-                const json = await res.json();
-                const results = Array.isArray(json) ? json : [json];
-                const icon = c => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️' : c <= 67 ? '🌧️' : c <= 77 ? '❄️' : c <= 82 ? '🌧️' : c <= 86 ? '🌨️' : '⛈️';
-                itineraryData.forEach((day, i) => {
-                    const cur = results[i] && results[i].current;
-                    const el = document.querySelector(`[data-weather="${day.id}"]`);
-                    if (cur && el) {
-                        el.textContent = `${icon(cur.weather_code)} ${Math.round(cur.temperature_2m)}°C now`;
-                        el.classList.remove('hidden');
-                    }
-                });
-            } catch (e) { /* offline, so the chips just stay hidden */ }
-        }
-
-        // --- Parallax card imagery + scroll progress bar ---
-        function setupFeedScrollFx() {
-            const feed = document.getElementById('feed');
-            const bar = document.getElementById('scroll-progress');
-            let ticking = false;
-            const update = () => {
-                ticking = false;
-                if (bar) {
-                    const max = feed.scrollHeight - feed.clientHeight;
-                    bar.style.width = max > 0 ? `${(feed.scrollTop / max) * 100}%` : '0%';
-                }
-                if (!reduceMotion) {
-                    const vh = feed.clientHeight;
-                    document.querySelectorAll('.card-img').forEach(img => {
-                        const r = img.parentElement.getBoundingClientRect();
-                        if (r.bottom < -100 || r.top > vh + 100) return;
-                        const p = (r.top + r.height / 2 - vh / 2) / vh;
-                        img.style.transform = `translateY(${(-p * 26).toFixed(1)}px) scale(1.15)`;
-                    });
-                }
-            };
-            feed.addEventListener('scroll', () => {
-                if (!ticking) { ticking = true; requestAnimationFrame(update); }
-            }, { passive: true });
-            update();
-        }
-
-        // --- Stay calendar: a month grid where every night is a bar from check-in to check-out ---
-        function renderStayCalendar(cfg) {
-            const grid = document.getElementById(cfg.mount);
-            const key = document.getElementById(cfg.legend);
-            if (!grid) return;
-
-            const MS = 86400000;
-            const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
-                            'July', 'August', 'September', 'October', 'November', 'December'];
-            const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const toUTC = s => { const p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
-            const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-            const fmt = ms => { const d = new Date(ms); return MONTHS[d.getUTCMonth()].slice(0, 3) + ' ' + d.getUTCDate(); };
-
-            const stays = cfg.stays.map(s => Object.assign({}, s, { f: toUTC(s.from), t: toUTC(s.to) }));
-            const tripFrom = Math.min.apply(null, stays.map(s => s.f));
-            const tripTo = Math.max.apply(null, stays.map(s => s.t));
-            const ws = cfg.weekStart;
-
-            let html = '';
-            cfg.months.forEach(m => {
-                const y = m[0], mo = m[1];
-                const first = Date.UTC(y, mo - 1, 1);
-                const dim = new Date(Date.UTC(y, mo, 0)).getUTCDate();
-                const lead = (new Date(first).getUTCDay() - ws + 7) % 7;
-                const start = first - lead * MS;
-                const weeks = Math.ceil((lead + dim) / 7);
-
-                html += '<div class="cal-month">';
-                html += '<div class="cal-mtitle">' + MONTHS[mo - 1] + ' ' + y + '</div>';
-                html += '<div class="cal-grid">';
-                for (let i = 0; i < 7; i++) html += '<div class="cal-dow">' + DOW[(ws + i) % 7] + '</div>';
-                html += '</div>';
-
-                const moFrom = first, moTo = Date.UTC(y, mo, 1);
-                for (let w = 0; w < weeks; w++) {
-                    const wk = start + w * 7 * MS;
-
-                    html += '<div class="cal-grid cal-drow">';
-                    for (let i = 0; i < 7; i++) {
-                        const at = wk + i * MS;
-                        const d = new Date(at);
-                        const out = d.getUTCMonth() !== mo - 1;
-                        const on = !out && at >= tripFrom && at < tripTo;
-                        const iso = d.toISOString().slice(0, 10);
-                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip hit' : '') + '"' +
-                            (on ? ' data-date="' + iso + '" role="button" tabindex="0" title="Jump to this day"' : '') +
-                            '>' + d.getUTCDate() + '</div>';
-                    }
-                    html += '</div>';
-
-                    const segs = [];
-                    stays.forEach(s => {
-                        const a = Math.max(s.f, wk, moFrom), b = Math.min(s.t, wk + 7 * MS, moTo);
-                        if (b <= a) return;
-                        segs.push({
-                            s: s,
-                            col: Math.round((a - wk) / MS) + 1,
-                            span: Math.round((b - a) / MS),
-                            head: a === s.f, tail: b === s.t,
-                            iso: new Date(a).toISOString().slice(0, 10)
-                        });
-                    });
-                    segs.sort((a, b) => a.col - b.col);
-                    const lanes = [];
-                    segs.forEach(g => {
-                        let l = 0;
-                        while (lanes[l] !== undefined && lanes[l] > g.col) l++;
-                        lanes[l] = g.col + g.span;
-                        g.lane = l + 1;
-                    });
-
-                    html += '<div class="cal-grid cal-bars" style="grid-template-rows:repeat(' + Math.max(lanes.length, 1) + ',auto)">';
-                    segs.forEach(g => {
-                        html += '<div class="cal-bar hit' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
-                            '" style="grid-column:' + g.col + '/span ' + g.span + ';grid-row:' + g.lane +
-                            ';background:' + g.s.color + '" data-date="' + g.iso + '" role="button" tabindex="0"' +
-                            ' title="' + esc(g.s.name) + ', jump to this day"><span>' + esc(g.s.short) + '</span></div>';
-                    });
-                    html += '</div>';
-                }
-                html += '</div>';
-            });
-            grid.innerHTML = html;
-
-            if (key) {
-                key.innerHTML = stays.map(s => {
-                    const n = Math.round((s.t - s.f) / MS);
-                    return '<div class="cal-key">' +
-                        '<span class="cal-chip" style="background:' + s.color + '"></span>' +
-                        '<div class="min-w-0">' +
-                        '<p class="text-[11px] font-black leading-tight">' + esc(s.name) + '</p>' +
-                        '<p class="text-[9px] opacity-60 leading-tight mt-0.5">' + (s.when ? esc(s.when) : fmt(s.f) + ' to ' + fmt(s.t) + ' &middot; ' + n + (n === 1 ? ' night' : ' nights')) + '</p>' +
-                        (s.area ? '<p class="text-[9px] opacity-50 leading-tight">' + esc(s.area) + '</p>' : '') +
-                        '</div></div>';
-                }).join('');
-            }
-        }
-
-        const STAY_CALENDAR = {
-            mount: 'stay-calendar', legend: 'stay-legend', weekStart: 1,
-            months: [[2026, 11], [2026, 12]],
-            stays: [
-                { short: 'BA92', name: 'Overnight on BA92', area: 'Toronto to London, seats assigned', when: 'Night of Sat Nov 21, in the air', from: '2026-11-21', to: '2026-11-22', color: '#64748b', travel: true },
-                { short: 'BoTree', name: 'The BoTree London', area: 'Marylebone, London', from: '2026-11-22', to: '2026-11-23', color: '#f472b6' },
-                { short: 'The Stratford', name: 'The Stratford, Autograph Collection', area: 'Stratford, London', from: '2026-11-23', to: '2026-11-27', color: '#a78bfa' },
-                { short: 'Caledonian', name: 'The Caledonian', area: 'Princes Street, Edinburgh', from: '2026-11-27', to: '2026-11-30', color: '#facc15' },
-                { short: 'Hilton', name: 'Hilton Helsinki Airport', area: 'Indoor walkway to the terminal', from: '2026-11-30', to: '2026-12-02', color: '#38bdf8' },
-                { short: 'Igloo', name: 'Aurora Pyramid Glass Igloos', area: 'Levi, Lapland, outdoor hot tub', from: '2026-12-02', to: '2026-12-03', color: '#34d399' },
-                { short: 'Levin Klubi', name: 'Levi Suites Levin Klubi', area: 'Levi village centre, drying cabinets', from: '2026-12-03', to: '2026-12-06', color: '#22d3ee' },
-                { short: 'Lomav', name: 'Lomavekarit Apartments', area: 'Near Rovaniemi Airport', from: '2026-12-06', to: '2026-12-07', color: '#fb923c' },
-                { short: 'Hilton', name: 'Hilton Helsinki Airport', area: 'Second stay, walkway to the terminal', from: '2026-12-07', to: '2026-12-08', color: '#38bdf8' },
-                { short: 'Dublin', name: 'Hilton Dublin Airport', area: 'A short hop from Terminal 2', from: '2026-12-08', to: '2026-12-09', color: '#a3e635' }
-            ]
-        };
-
-        // --- Attractions table: one row per stop, rendered as a table on desktop and as
-        //     stacked cards on a phone, since a four column table at 375px is unreadable ---
-        const ATTRACTIONS = [
-            { city: 'London', name: 'Marylebone Farmers Market', where: 'Cramer Street car park, W1', when: 'Sun Nov 22, 10:30 AM', status: 'free' },
-            { city: 'London', name: "Regent's Park, Marylebone Green playground", where: 'Baker Street gate, NW1', when: 'Sun Nov 22, 11:30 AM', status: 'free' },
-            { city: 'London', name: 'Hyde Park Winter Wonderland', where: 'Hyde Park, Marble Arch gate, W2', when: 'Tue Nov 24, 5:45 PM', status: 'booked', note: 'Off-peak entry through SeeTickets, 5:00 to 6:00 PM at the Marble Arch gate. Arrive around 5:45 PM, inside the slot. 2 adults, 1 child aged 3 to 12, 1 infant aged 2 and under. Rides can be bought on the day. Santa Land Unlimited Ride Pass is £25, cheaper online in advance, and it suits a 4 year old' },
-            { city: 'London', name: 'Tower of London, Crown Jewels', where: 'Tower Hill, EC3N', when: 'Mon Nov 23, 11:30 AM', status: 'book', note: 'Exterior is free, the Jewels are not. About £38 per adult, under-5s free. Tickets are non-refundable' },
-            { city: 'London', name: 'Uber Boat by Thames Clippers', where: 'Tower Pier to Westminster Pier', when: 'Mon Nov 23, 1:00 PM', status: 'onday', note: 'Contactless at the pier, stroller rolls straight on' },
-            { city: 'London', name: 'Big Ben and Parliament', where: 'Westminster Bridge, SW1', when: 'Mon Nov 23, 2:00 PM', status: 'free', note: 'From the riverside' },
-            { city: 'London', name: 'Madame Tussauds', where: 'Marylebone Road, NW1', when: 'Tue Nov 24, 10:30 AM', status: 'book', note: 'Two minutes from Baker Street. Under 2s free (still add a free ticket). About £27 to £29 per adult, £24 per child aged 2 to 15 online' },
-            { city: 'London', name: 'Afternoon tea at Royal Lancaster London', where: 'Lancaster Gate, north edge of Hyde Park', when: 'Tue Nov 24, 3:00 PM', status: 'booked', note: 'Party of 4. About a ten minute walk to the Marble Arch gate of Winter Wonderland' },
-            { city: 'London', name: 'Hyde Park edge stroll', where: 'North edge of Hyde Park, toward Marble Arch', when: 'Tue Nov 24, 4:45 PM', status: 'free', note: 'Short walk from Royal Lancaster to the Winter Wonderland gate' },
-            { city: 'London', name: 'Changing the Guard', where: 'Buckingham Palace, SW1', when: 'Wed Nov 25, 11:00 AM', status: 'free', note: 'Only runs certain days, this is the one that works' },
-            { city: 'London', name: 'Natural History Museum', where: 'Cromwell Road, South Kensington, SW7', when: 'Wed Nov 25, 1:00 PM', status: 'booked' },
-            { city: 'London', name: 'Science Museum, The Garden', where: 'Exhibition Road, SW7', when: 'Wed Nov 25, wet weather backup', status: 'free', note: 'Water and construction play for under 6s' },
-            { city: 'London', name: 'Diana Memorial Playground', where: 'Kensington Gardens, W2', when: 'Wed Nov 25, 3:15 PM', status: 'free' },
-            { city: 'London', name: 'Borough Market', where: 'London Bridge, SE1', when: 'Thu Nov 26, 10:30 AM', status: 'free', note: 'Go early. Padella next door for pasta' },
-            { city: 'London', name: 'Horizon 22', where: '22 Bishopsgate, EC2', when: 'Thu Nov 26, 12:30 PM', status: 'booked', note: 'Free, 254m, highest free viewpoint in Europe. 2 adults and 2 infants, arrival slot 12:30 to 12:45 PM' },
-            { city: 'London', name: 'Southbank Centre Winter Market', where: 'Southbank, SE1', when: 'Thu Nov 26, 2:30 PM', status: 'free' },
-            { city: 'London', name: 'Young V&A', where: 'Cambridge Heath Road, Bethnal Green, E2', when: 'Thu Nov 26, rain back-up', status: 'free', note: 'Ten minutes from Stratford' },
-
-            { city: 'Edinburgh', name: 'Princes Street Christmas Market', where: 'East Princes Street Gardens', when: 'Fri Nov 27, 4:30 PM', status: 'free', note: 'Entry free, rides pay as you go' },
-            { city: 'Edinburgh', name: 'National Museum of Scotland', where: 'Chambers Street, EH1', when: 'Sat Nov 28, 10:00 AM', status: 'free', note: 'No ticket needed' },
-            { city: 'Edinburgh', name: "Arthur's Seat or Calton Hill", where: 'Holyrood Park, EH8', when: 'Sat Nov 28, 1:00 PM', status: 'free', note: 'Base of the hill only with the stroller' },
-            { city: 'Edinburgh', name: 'Christmas at the Botanics', where: 'Royal Botanic Garden Edinburgh, Inverleith EH3', when: 'Sat Nov 28, evening', status: 'book', note: 'Illuminated trail, Nov 19 to Dec 30. Stroller friendly, timed entry, one steep incline. From £19.50 off-peak and £26 standard. Saturday is likely peak, book early' },
-            { city: 'Edinburgh', name: 'Palace of Holyroodhouse', where: 'Canongate, EH8', when: 'Sun Nov 29, 10:00 AM', status: 'confirm', note: "Confirm the booking. £22 per adult in advance, under-5s free" },
-
-            { city: 'Helsinki', name: "Children's Town", where: 'Helsinki City Museum, Senate Square', when: 'Tue Dec 1, 1:00 PM', status: 'free' },
-            { city: 'Helsinki', name: 'Senate Square Christmas Market', where: 'Senate Square', when: 'Tue Dec 1, 3:30 PM', status: 'free', note: 'Vintage wooden carousel' },
-            { city: 'Helsinki', name: 'Esplanadi Christmas lights', where: 'Esplanadi, city centre', when: 'Mon Dec 7, 2:00 PM', status: 'free' },
-            { city: 'Helsinki', name: 'Hotel sauna', where: 'Hilton Helsinki Airport', when: 'Mon Dec 7, 7:30 PM', status: 'booked', note: 'Traditional Finnish sauna, comes with the room' },
-
-            { city: 'Lapland', name: 'Glass igloo hot tub', where: 'Aurora Pyramid Glass Igloos, Levi', when: 'Wed Dec 2, 4:30 PM', status: 'booked', note: 'Comes with the room' },
-            { city: 'Lapland', name: 'Levi gondola', where: 'Levi fell, village centre', when: 'Thu Dec 3, 11:15 AM', status: 'onday', note: 'Stroller friendly, under 6s free' },
-            { city: 'Lapland', name: 'Water World and Ailu play area', where: 'Levi Hotel Spa', when: 'Thu Dec 3, 2:30 PM', status: 'onday', note: 'Walk in, no booking' },
-            { city: 'Lapland', name: 'Husky Safari, 5 km self-drive', where: 'Levi', when: 'Fri Dec 4, 10:50 AM', status: 'booked', note: '2.5 hours including kitting up' },
-            { city: 'Lapland', name: 'Samiland Exhibition', where: 'Levi fell, by the gondola', when: 'Fri Dec 4, 2:00 PM', status: 'onday', note: 'Feeding outside, warm indoors' },
-            { city: 'Lapland', name: 'Family Safari by snowmobile', where: 'Levi', when: 'Sat Dec 5, 10:30 AM', status: 'booked', note: 'One adult, other has the kids' },
-            { city: 'Lapland', name: 'Aurora Tour by snowmobile', where: 'Levi, pick-up included', when: 'Sat Dec 5, 5:30 PM', status: 'booked', note: 'The other adult' },
-            { city: 'Lapland', name: 'SantaPark', where: '1 Tarvantie, Rovaniemi', when: 'Sun Dec 6, 11:45 AM', status: 'booked', note: 'Heated underground cavern, all day access' },
-            { city: 'Lapland', name: 'Santa Claus Village, Arctic Circle', where: 'Rovaniemi', when: 'Sun Dec 6, 4:00 PM', status: 'free', note: 'Entry free, individual activities are not' },
-
-            { city: 'Dublin', name: 'Trinity College front square', where: 'City centre', when: 'Tue Dec 8, 1:00 PM', status: 'free', note: 'Free to walk. Book of Kells optional and paid' },
-            { city: 'Dublin', name: 'Grafton Street lights and St Stephen\'s Green', where: 'City centre', when: 'Tue Dec 8, 1:30 PM', status: 'free', note: 'Christmas lights, duck pond and playground. Lunch nearby' },
-            { city: 'Dublin', name: 'Phoenix Park', where: 'Papal Cross, Fifteen Acres, People\'s Flower Gardens', when: 'Tue Dec 8, alternative to the city centre', status: 'free', note: 'Wild deer herd and a playground. Dark by about 4:10 PM' },
-            { city: 'Dublin', name: 'TwinkleTown Christmas market', where: 'Smithfield Square', when: 'Tue Dec 8, 4:30 to 6:30 PM', status: 'free', note: 'Free entry, weekdays 11 AM to 9 PM. Kids rides, ice rink extra, dinner from the stalls' },
-            { city: 'Dublin', name: 'Howth', where: 'Thirty minutes from the hotel', when: 'Tue Dec 8, alternative', status: 'onday', note: 'Harbour walk, seals and fish and chips. Only if dry' },
-            { city: 'Dublin', name: 'Newbridge House and Farm', where: 'Donabate, twenty minutes from the hotel', when: 'Tue Dec 8, alternative', status: 'onday', note: 'Working 18th century farm, ponies and piglets. Winter hours Tue to Sun, 11 to 4, shut Mondays' },
-            { city: 'Dublin', name: 'US Preclearance', where: 'Dublin Airport Terminal 2, ground floor', when: 'Wed Dec 9, from 7:40 AM', status: 'onday', note: 'Not an attraction, but it is the reason to be at T2 three hours early' }
-        ];
-
-        const ATT_TAGS = {
-            booked: ['Booked', 'text-emerald-600 dark:text-emerald-400'],
-            book:   ['To book', 'text-amber-600 dark:text-brand-gold'],
-            confirm: ['Confirm booking', 'text-amber-600 dark:text-brand-gold'],
-            onday:  ['Pay on the day', 'text-violet-600 dark:text-brand-royal'],
-            free:   ['Free', 'text-sky-600 dark:text-brand-ice']
-        };
-
-        function renderAttractions() {
-            const mount = document.getElementById('attractions');
-            if (!mount) return;
-            const esc = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-            const tag = a => {
-                const t = ATT_TAGS[a.status] || ATT_TAGS.free;
-                return '<span class="att-tag ' + t[1] + '">' + t[0] + '</span>';
-            };
-            const cities = [];
-            ATTRACTIONS.forEach(a => { if (!cities.includes(a.city)) cities.push(a.city); });
-
-            // desktop: a real table
-            let t = '<div class="hidden md:block"><table class="att-table"><thead><tr>' +
-                '<th>Stop</th><th>Where</th><th>When</th><th>Ticket</th></tr></thead><tbody>';
-            cities.forEach(city => {
-                t += '<tr class="att-city"><td colspan="4"><span class="grad-gold">' + esc(city) + '</span></td></tr>';
-                ATTRACTIONS.filter(a => a.city === city).forEach(a => {
-                    t += '<tr><td class="font-bold">' + esc(a.name) +
-                        (a.note ? '<span class="block font-medium text-[10px] opacity-55 mt-0.5">' + esc(a.note) + '</span>' : '') +
-                        '</td><td class="opacity-70">' + esc(a.where) +
-                        '</td><td class="opacity-70 whitespace-nowrap">' + esc(a.when) +
-                        '</td><td>' + tag(a) + '</td></tr>';
-                });
-            });
-            t += '</tbody></table></div>';
-
-            // phone: stacked, because four columns at 375px is not a table anyone can read
-            let m = '<div class="md:hidden">';
-            cities.forEach(city => {
-                m += '<p class="text-[9px] uppercase tracking-[0.18em] font-black grad-gold mt-4 mb-1 first:mt-0">' + esc(city) + '</p>';
-                ATTRACTIONS.filter(a => a.city === city).forEach(a => {
-                    m += '<div class="att-card py-2.5">' +
-                        '<div class="flex items-start justify-between gap-2">' +
-                        '<p class="text-[12px] font-black leading-snug">' + esc(a.name) + '</p>' + tag(a) +
-                        '</div>' +
-                        '<p class="text-[10px] opacity-65 leading-snug mt-1"><i class="fa-solid fa-location-dot text-[8px]"></i> ' + esc(a.where) + '</p>' +
-                        '<p class="text-[10px] opacity-65 leading-snug"><i class="fa-solid fa-clock text-[8px]"></i> ' + esc(a.when) + '</p>' +
-                        (a.note ? '<p class="text-[10px] opacity-45 leading-snug mt-0.5">' + esc(a.note) + '</p>' : '') +
-                        '</div>';
-                });
-            });
-            m += '</div>';
-
-            mount.innerHTML = t + m;
-        }
-
-        // --- Tapping a calendar day scrolls the feed to the card that covers it ---
-        function setupCalendarJump() {
-            const grid = document.getElementById('stay-calendar');
-            const cards = document.getElementById('itinerary-feed');
-            if (!grid || !cards) return;
-
-            const jump = iso => {
-                if (!iso) return;
-                // ISO dates compare correctly as plain strings
-                const card = [...cards.querySelectorAll('[data-from]')]
-                    .find(c => iso >= c.dataset.from && iso <= c.dataset.to);
-                if (!card) return;
-                const feed = document.getElementById('feed');
-                // The reveal animation rotates and shifts the card, and scrollIntoView measures
-                // that transformed box, which overshoots by a couple of hundred pixels. Reveal it
-                // with the transition suppressed so one reflow gives the true layout position,
-                // then scroll to that instead.
-                const t = card.style.transition;
-                card.style.transition = 'none';
-                card.classList.add('in');
-                void card.offsetWidth;
-                const top = feed.scrollTop + card.getBoundingClientRect().top - feed.getBoundingClientRect().top - 12;
-                card.style.transition = t;
-                feed.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' });
-                const flash = card.querySelector('.tilt-card') || card;
-                flash.classList.remove('cal-flash');
-                void flash.offsetWidth;
-                flash.classList.add('cal-flash');
-                setTimeout(() => flash.classList.remove('cal-flash'), 2100);
-            };
-
-            grid.addEventListener('click', e => {
-                const t = e.target.closest('[data-date]');
-                if (t) jump(t.getAttribute('data-date'));
-            });
-            grid.addEventListener('keydown', e => {
-                if (e.key !== 'Enter' && e.key !== ' ') return;
-                const t = e.target.closest('[data-date]');
-                if (!t) return;
-                e.preventDefault();
-                jump(t.getAttribute('data-date'));
-            });
-        }
-
-        // --- Scroll-in reveal animations ---
-        function setupReveal() {
-            const els = document.querySelectorAll('.reveal, .reveal-3d');
-            if (reduceMotion) { els.forEach(el => el.classList.add('in')); return; }
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in');
-                        io.unobserve(entry.target);
-                    }
-                });
-            }, { root: document.getElementById('feed'), threshold: 0.12 });
-            els.forEach(el => io.observe(el));
-        }
-
-        // --- 3D tilt on cards (fine-pointer devices only) ---
-        function setupTilt() {
-            if (reduceMotion || !window.matchMedia('(pointer: fine)').matches) return;
-            document.querySelectorAll('.itinerary-card').forEach(wrap => {
-                const card = wrap.querySelector('.tilt-card');
-                if (!card) return;
-                wrap.addEventListener('pointermove', e => {
-                    const r = wrap.getBoundingClientRect();
-                    const x = (e.clientX - r.left) / r.width - 0.5;
-                    const y = (e.clientY - r.top) / r.height - 0.5;
-                    card.style.transform = `rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg) scale(1.01)`;
-                });
-                wrap.addEventListener('pointerleave', () => { card.style.transform = ''; });
-            });
-        }
-
-        // --- Snowfall ---
-        function startSnow() {
-            const canvas = document.getElementById('snow-canvas');
-            if (!canvas || reduceMotion) { if (canvas) canvas.remove(); return; }
-            const ctx = canvas.getContext('2d');
-            let W, H, flakes = [], density = 1;
-            const BASE = 70;
-            const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
-            resize();
-            addEventListener('resize', resize);
-            const spawn = () => ({
-                x: Math.random() * W, y: -8,
-                r: 0.8 + Math.random() * 2.2,
-                vy: 0.4 + Math.random() * 1.1,
-                drift: 0.3 + Math.random() * 0.7,
-                phase: Math.random() * Math.PI * 2
-            });
-            for (let i = 0; i < BASE; i++) flakes.push({ ...spawn(), y: Math.random() * H });
-            window.snowSetDensity = (d) => { density = d; };
-            let t = 0;
-            const frame = () => {
-                requestAnimationFrame(frame);
-                if (document.hidden) return;
-                t += 0.01;
-                const targetCount = Math.round(BASE * density);
-                while (flakes.length < targetCount) flakes.push(spawn());
-                if (flakes.length > targetCount) flakes.length = targetCount;
-                ctx.clearRect(0, 0, W, H);
-                ctx.fillStyle = 'rgba(255,255,255,0.75)';
-                flakes.forEach(f => {
-                    f.y += f.vy;
-                    f.x += Math.sin(t + f.phase) * f.drift;
-                    if (f.y > H + 8) { Object.assign(f, spawn()); }
-                    ctx.globalAlpha = 0.35 + (f.r / 3) * 0.5;
-                    ctx.beginPath();
-                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-                ctx.globalAlpha = 1;
-            };
-            frame();
-        }
-
-        // --- Initialization ---
-        window.onload = () => {
-            renderFeed();
-            renderStayCalendar(STAY_CALENDAR);
-            renderAttractions();
-            setupCalendarJump();
-            setupBookingChecklist();
-            setupReveal();
-            setupTilt();
-            setupFeedScrollFx();
-            setupIntersectionObserver();
-            startCountdown();
-            startSnow();
-            loadWeather();
-        };
-    </script>
+        <section class="mt-12 mb-8" id="days">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold mb-4">Day by day</h2>
+            <details class="glass rounded-2xl">
+                <summary class="p-4 flex items-center justify-between gap-3">
+                    <span class="font-semibold">One line per day, Nov 21 to Dec 9</span>
+                    <i class="fa-solid fa-chevron-down chev text-slate-400 text-sm"></i>
+                </summary>
+                <ol class="px-4 pb-4 space-y-2.5 text-sm text-slate-300">
+                    <li><span class="font-semibold text-white">Sat Nov 21.</span> Overnight flight from Toronto to London.</li>
+                    <li><span class="font-semibold text-white">Sun Nov 22.</span> Land at breakfast, Marylebone Farmers Market and Regent's Park, then an early night.</li>
+                    <li><span class="font-semibold text-white">Mon Nov 23.</span> Move to Stratford, Tower of London, Uber Boat to Westminster, Big Ben from the river.</li>
+                    <li><span class="font-semibold text-white">Tue Nov 24.</span> Madame Tussauds, afternoon tea at Royal Lancaster, Hyde Park Winter Wonderland.</li>
+                    <li><span class="font-semibold text-white">Wed Nov 25.</span> Changing the Guard, Natural History Museum, easy dinner in Stratford.</li>
+                    <li><span class="font-semibold text-white">Thu Nov 26.</span> Borough Market, Horizon 22, a river walk and the Southbank winter market, early dinner.</li>
+                    <li><span class="font-semibold text-white">Fri Nov 27.</span> Morning train to Edinburgh, settle in, Princes Street Christmas Market.</li>
+                    <li><span class="font-semibold text-white">Sat Nov 28.</span> National Museum of Scotland, the base of Arthur's Seat or Calton Hill, Christmas at the Botanics in the evening.</li>
+                    <li><span class="font-semibold text-white">Sun Nov 29.</span> Palace of Holyroodhouse, a Sunday roast, pack for Finland.</li>
+                    <li><span class="font-semibold text-white">Mon Nov 30.</span> Evening flight to Helsinki, walk to the airport hotel.</li>
+                    <li><span class="font-semibold text-white">Tue Dec 1.</span> Children's Town and the Senate Square Christmas market, pack the Lapland bags.</li>
+                    <li><span class="font-semibold text-white">Wed Dec 2.</span> Fly to Rovaniemi, drive to Levi after dark, a night in a glass igloo.</li>
+                    <li><span class="font-semibold text-white">Thu Dec 3.</span> Levi gondola and the spa play area, then into the village apartment.</li>
+                    <li><span class="font-semibold text-white">Fri Dec 4.</span> Husky safari and Samiland.</li>
+                    <li><span class="font-semibold text-white">Sat Dec 5.</span> Family snowmobile safari by day, aurora tour in the evening.</li>
+                    <li><span class="font-semibold text-white">Sun Dec 6.</span> Drive to Rovaniemi, SantaPark and Santa Claus Village.</li>
+                    <li><span class="font-semibold text-white">Mon Dec 7.</span> Fly back to Helsinki, a light city walk or a rest, hotel sauna.</li>
+                    <li><span class="font-semibold text-white">Tue Dec 8.</span> Morning flight to Dublin, city lights or a quieter alternative, TwinkleTown market.</li>
+                    <li><span class="font-semibold text-white">Wed Dec 9.</span> US Preclearance at Dublin, fly home via Chicago.</li>
+                </ol>
+            </details>
+        </section>
+    </main>
 </body>
 </html>
