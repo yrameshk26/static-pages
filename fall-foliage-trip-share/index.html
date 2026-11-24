@@ -1,23 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <title>Fall Foliage Road Trip: Ajax → New Hampshire</title>
-
-    <!-- Tailwind CSS -->
+    <title>Fall Foliage Road Trip: Ajax to New Hampshire</title>
+    <meta name="description" content="A family guide to our fall foliage road trip from Ajax, Ontario to New Hampshire, Oct 9 to 12 2026. The route, the hotels, and the scenic stops.">
+    <meta name="theme-color" content="#14100b">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍁</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
@@ -27,838 +22,164 @@
                             leaf: '#84cc16', pine: '#22c55e',
                             bg: '#14100b', surface: '#1d1710'
                         }
-                    },
-                    boxShadow: {
-                        'card': '0 25px 60px -15px rgba(0,0,0,.55)',
-                        'card-hover': '0 35px 80px -15px rgba(0,0,0,.7)'
-                    },
-                    animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
                     }
                 }
             }
         }
     </script>
-
     <style>
-        html, body { height: 100%; }
-        body {
-            background-color: #14100b;
-            color: #faf7f2;
-            overscroll-behavior-y: none;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-        }
-
-        /* overflow-x is clamped because the reveal animation rotates cards on X, which
-           inflates their box and would otherwise let the page slide sideways on phones. */
-        #feed { -webkit-overflow-scrolling: touch; touch-action: pan-y;
-                overflow-x: hidden; overscroll-behavior-y: contain; }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .glass {
-            background: rgba(29, 23, 16, 0.72);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(250, 200, 120, 0.09);
-        }
-
-        /* Gradient text */
-        .grad-maple { background: linear-gradient(120deg, #f59e0b, #f97316, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
-        .grad-warm { background: linear-gradient(120deg, #fbbf24, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        @keyframes shine { to { background-position: 200% center; } }
-
-        /* Scroll-in reveals */
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1); }
-        .reveal.in { opacity: 1; transform: none; }
-        .reveal-3d {
-            opacity: 0;
-            transform: perspective(900px) rotateX(9deg) translateY(46px) scale(.97);
-            transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
-        }
-        .reveal-3d.in { opacity: 1; transform: none; }
-        @media (prefers-reduced-motion: reduce) {
-            .reveal, .reveal-3d { opacity: 1; transform: none; transition: none; }
-        }
-
-        /* Falling leaves */
-        #leaf-canvas { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
-
-        /* 3D tilt + hover shine */
-        .tilt-wrap { perspective: 1000px; }
-        .tilt-card { position: relative; }
-        .tilt-card::after {
-            content: ''; position: absolute; inset: 0; z-index: 20; pointer-events: none;
-            background: linear-gradient(105deg, transparent 40%, rgba(255,235,200,.06) 45%, rgba(255,235,200,.14) 50%, rgba(255,235,200,.06) 55%, transparent 60%);
-            transform: translateX(-130%);
-            transition: transform .9s ease;
-        }
-        .group:hover .tilt-card::after { transform: translateX(130%); }
-
-        .card-img { transform: scale(1.15); will-change: transform; }
-
-        /* Scroll progress bar */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 70;
-            background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444, #b45309);
-            box-shadow: 0 0 12px rgba(249, 115, 22, .6);
-        }
-
-        /* Ember glow behind foliage-highlight cards */
-        .ember-card { position: relative; }
-        .ember-card::before {
-            content: ''; position: absolute; inset: -3px; border-radius: 1.7rem; z-index: 0;
-            background: linear-gradient(120deg, #f59e0b, #ef4444, #f97316, #f59e0b);
-            background-size: 300% 300%; animation: emberShift 9s ease infinite;
-            filter: blur(16px); opacity: .28;
-        }
-        .ember-card > div { position: relative; z-index: 1; }
-        @keyframes emberShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @media (prefers-reduced-motion: reduce) { .ember-card::before { animation: none; } }
-        /* --- Stay calendar --- */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
-        .cal-month + .cal-month { margin-top: 18px; }
-        .cal-mtitle { font-size: 10px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; margin: 0 0 8px; opacity: .8; }
-        .cal-dow { text-align: center; font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; opacity: .45; padding-bottom: 3px; }
-        .cal-drow { margin-bottom: 2px; }
-        .cal-day { text-align: center; font-size: 11px; font-weight: 700; line-height: 1.55; border-radius: 6px; }
-        .cal-day.out { opacity: .18; }
-        .cal-day.trip { background: rgba(249, 115, 22, .15); }
-        .cal-bars { margin-bottom: 7px; min-height: 16px; align-content: start; }
-        .cal-bar { display: flex; align-items: center; height: 16px; padding: 0 4px; border-radius: 2px;
-                   font-size: 7.5px; font-weight: 900; color: #0b1020; overflow: hidden; }
-        .cal-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .cal-bar.s { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
-        .cal-bar.e { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
-        .cal-bar.tv { color: #f1f5f9; background-image: repeating-linear-gradient(115deg, rgba(255,255,255,.16) 0 5px, transparent 5px 10px); }
-        .cal-key { display: flex; align-items: flex-start; gap: 8px; }
-        .cal-chip { width: 11px; height: 11px; border-radius: 4px; flex: none; margin-top: 3px; }
-        @media (min-width: 768px) {
-            .cal-day { font-size: 13px; }
-            .cal-bars { min-height: 20px; }
-            .cal-bar { height: 20px; font-size: 9.5px; }
-        }
-        /* Calendar days and bars are jump targets */
-        .cal-day.hit, .cal-bar.hit { cursor: pointer; }
-        .cal-day.hit { transition: background .15s ease, transform .15s ease; }
-        .cal-day.hit:hover { background: rgba(249, 115, 22, .34); transform: translateY(-1px); }
-        .cal-bar.hit:hover { filter: brightness(1.14); }
-        .cal-day.hit:focus-visible, .cal-bar.hit:focus-visible { outline: 2px solid #f59e0b; outline-offset: 2px; }
-        .cal-flash { animation: calFlash 2s ease; }
-        @keyframes calFlash {
-            0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-            10%  { box-shadow: 0 0 0 4px rgba(245, 158, 11, .6); }
-            60%  { box-shadow: 0 0 0 4px rgba(245, 158, 11, .38); }
-            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-        }
-        @media (prefers-reduced-motion: reduce) { .cal-flash { animation-duration: .01s; } }
+        body { background-color: #14100b; color: #faf7f2; }
+        .glass { background: rgba(29, 23, 16, 0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(250, 200, 120, 0.09); }
+        .grad { background: linear-gradient(120deg, #f59e0b, #f97316, #ef4444); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details > summary .chev { transition: transform .2s ease; }
+        details[open] > summary .chev { transform: rotate(180deg); }
+        .route-line { position: relative; }
+        .route-line::before { content: ""; position: absolute; left: 15px; top: 28px; bottom: 12px; width: 2px; background: linear-gradient(to bottom, #f59e0b, #f97316, #84cc16); opacity: .5; }
+        a { color: #fbbf24; }
+        a:hover { color: #fdba74; }
     </style>
 </head>
-<body class="overflow-hidden flex flex-col">
-
-    <!-- Falling leaves -->
-    <canvas id="leaf-canvas"></canvas>
-
-    <!-- Scroll progress -->
-    <div id="scroll-progress"></div>
-
-    <!-- Top bar -->
-    <header class="flex-none w-full z-50 glass p-4 flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 flex-none rounded-full bg-gradient-to-br from-amber-500 to-red-600 p-[2px]">
-                <div class="w-full h-full bg-fall-bg rounded-full flex items-center justify-center text-lg">🍁</div>
-            </div>
-            <div class="min-w-0">
-                <h1 class="text-sm md:text-base font-bold grad-maple truncate">Fall Foliage Road Trip</h1>
-                <p class="text-[10px] text-amber-100/50 font-semibold uppercase tracking-wider truncate">Ajax → New Hampshire · Oct 9 to 12, 2026</p>
-            </div>
+<body class="font-sans antialiased pb-16">
+    <header class="relative overflow-hidden border-b border-amber-200/10">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="" class="w-full h-full object-cover brightness-[.5]">
         </div>
-        <span class="text-[10px] font-black uppercase tracking-widest bg-emerald-500/15 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/30 whitespace-nowrap flex-none ml-2"><i class="fa-solid fa-check"></i> <span class="hidden sm:inline">Hotels </span>Booked</span>
+        <div class="relative max-w-2xl mx-auto px-5 pt-14 pb-12">
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-fall-gold">October long weekend · Fri to Mon</p>
+            <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold leading-tight">Fall Foliage Road Trip</h1>
+            <p class="mt-1 text-xl sm:text-2xl font-semibold grad">Ajax to New Hampshire</p>
+            <p class="mt-4 text-sm sm:text-base text-amber-50/90 leading-relaxed max-w-xl">A four-day drive from the Toronto area into the White Mountains, with two young kids. The route we drove, the hotels we used, and the stops worth building a day around.</p>
+        </div>
     </header>
-
-    <!-- Itinerary: fills the window, no map column -->
-    <div id="feed" class="flex-1 min-h-0 w-full z-10 overflow-y-auto no-scrollbar">
-        <div class="w-full max-w-5xl mx-auto px-4 md:px-8 pt-5 md:pt-8 pb-24 space-y-6 md:space-y-8">
-
-                <!-- Hero -->
-                <div class="reveal-3d tilt-wrap group">
-                    <div class="tilt-card rounded-[2rem] overflow-hidden shadow-card border border-amber-100/10 relative">
-                        <div class="relative h-56 md:h-72 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Autumn road" loading="eager" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.75]">
-                            <div class="absolute inset-0 bg-gradient-to-t from-fall-bg via-fall-bg/30 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8">
-                                <p class="text-amber-200/90 text-[10px] font-black uppercase tracking-[0.25em] mb-2">October Long Weekend · Fri to Mon</p>
-                                <h2 class="text-3xl md:text-4xl font-black text-white drop-shadow-lg leading-tight">🍁 Fall Foliage<br>Road Trip</h2>
-                                <p class="text-amber-100/80 text-sm font-semibold italic mt-2">Ajax → New Hampshire, Oct 9 to 12, 2026</p>
-                            </div>
-                        </div>
-                        <div class="glass p-5 flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/30 to-red-600/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0 animate-float">
-                                <i class="fa-solid fa-car-side text-fall-maple text-lg"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] uppercase tracking-wider font-bold text-amber-100/50">Wheels roll, Fri Oct 9 after 6:00 PM</p>
-                                <p id="countdown" class="text-xl md:text-2xl font-black text-white tabular-nums">&middot;&middot;&middot;</p>
-                            </div>
-                        </div>
-                    </div>
+    <main class="max-w-2xl mx-auto px-5">
+<section class="mt-10" id="route">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-fall-gold mb-4">The route at a glance</h2>
+            <div class="route-line space-y-3">
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-amber-400 ring-4 ring-fall-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50">Fri Oct 9 · about 3 hours · 1 night</p>
+                    <p class="font-semibold">Ajax to Watertown, NY</p>
+                    <p class="text-sm text-amber-50/75 mt-1">Leave after 6 PM, cross at the Thousand Islands Bridge, and take a late hotel just over the border so Saturday is not a monster drive.</p>
                 </div>
-
-                <!-- Trip stats -->
-                <div class="reveal grid grid-cols-4 gap-2 md:gap-3">
-                    <div class="glass rounded-2xl p-3 text-center">
-                        <p class="text-xl md:text-2xl font-black grad-warm">4</p>
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Days</p>
-                    </div>
-                    <div class="glass rounded-2xl p-3 text-center">
-                        <p class="text-xl md:text-2xl font-black text-emerald-400">3</p>
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Hotels ✓</p>
-                    </div>
-                    <div class="glass rounded-2xl p-3 text-center">
-                        <p class="text-xl md:text-2xl font-black text-fall-maple">~19h</p>
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Driving</p>
-                    </div>
-                    <div class="glass rounded-2xl p-3 text-center">
-                        <p class="text-xl md:text-2xl font-black text-fall-crimson">5</p>
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-amber-100/50">Key Stops</p>
-                    </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-lime-400 ring-4 ring-fall-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50">Sat Oct 10 · about 5.5 hours · 1 night</p>
+                    <p class="font-semibold">Watertown to Gilford, NH</p>
+                    <p class="text-sm text-amber-50/75 mt-1">Through the Adirondacks and the Lake Placid area, into New Hampshire on I-93, with Flume Gorge as the afternoon stop, then the Lakes Region for the night.</p>
                 </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-orange-400 ring-4 ring-fall-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50">Sun Oct 11 · about 3 hours of driving, plus stops · 1 night</p>
+                    <p class="font-semibold">Gilford to North Conway, via Franconia Notch and the Kancamagus</p>
+                    <p class="text-sm text-amber-50/75 mt-1">The foliage day: Artist's Bluff if you start early, the Kancamagus waterfalls, a short scenic train in North Conway, then Cathedral Ledge and, if the kids still have energy, Diana's Baths.</p>
+                </div>
+                <div class="glass rounded-2xl p-4 pl-12 relative">
+                    <span class="absolute left-3 top-4 w-4 h-4 rounded-full bg-stone-400 ring-4 ring-fall-bg"></span>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50">Mon Oct 12 · 8 to 9 hours · home</p>
+                    <p class="font-semibold">North Conway back to Ajax</p>
+                    <p class="text-sm text-amber-50/75 mt-1">West on I-87, with a stretch or lunch near Lake George or Saratoga Springs, then the Thousand Islands Bridge home. No hotel at the end of this day.</p>
+                </div>
+            </div>
+        </section>
 
-                <!-- The loop, stop by stop -->
-                <div class="reveal glass rounded-2xl p-4">
-                    <p class="text-[9px] uppercase tracking-[0.2em] font-black text-fall-gold mb-3"><i class="fa-solid fa-route"></i> The Loop</p>
-                    <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Ajax, ON <span class="opacity-60 font-medium">start</span></span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">Watertown, NY <span class="opacity-60 font-medium">night 1</span></span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lake Placid, NY</span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Flume Gorge, NH</span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">Gilford, NH <span class="opacity-60 font-medium">night 2</span></span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Artist's Bluff, NH</span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lincoln, NH <span class="opacity-60 font-medium">Kancamagus</span></span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-fall-gold/15 border-fall-gold/30 text-fall-gold whitespace-nowrap">North Conway, NH <span class="opacity-60 font-medium">night 3</span></span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Lake George, NY</span>
-                        <i class="fa-solid fa-chevron-right text-[7px] text-amber-100/25"></i>
-                        <span class="px-2 py-1 rounded-lg border bg-stone-800/60 border-amber-100/10 text-amber-100/80 whitespace-nowrap">Ajax, ON <span class="opacity-60 font-medium">home</span></span>
+        <section class="mt-12" id="stays">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-fall-gold mb-4">Where we stayed</h2>
+            <div class="space-y-3">
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <h3 class="font-bold">Nest Inn</h3>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50 shrink-0">1 night</span>
                     </div>
-                    <p class="text-[10px] text-amber-100/50 mt-3 leading-relaxed">Gold marks the three nights. Everything between them is a drive, with the stretch and photo stops on the day cards below.</p>
-                </div>
-
-                <!-- Stay calendar -->
-                <div class="reveal glass rounded-2xl p-5">
-                    <h3 class="text-sm font-black uppercase tracking-wider mb-1 flex items-center gap-2 text-white">
-                        <i class="fa-solid fa-calendar-days text-fall-gold"></i> Where we sleep, night by night
-                    </h3>
-                    <p class="text-[10px] text-amber-100/60 mb-4">
-                        Every bar runs from check-in to check-out. Three single night stops on the way up and across,
-                        then Monday Oct 12 is the long drive back to Ajax with no hotel at the end of it.
-                        Tap any highlighted day to jump straight to that part of the plan.
-                    </p>
-                    <div id="stay-calendar" class="text-amber-50"></div>
-                    <div id="stay-legend" class="mt-4 pt-4 border-t border-amber-100/10 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 text-amber-50"></div>
-                </div>
-
-                <!-- Day cards -->
-                <div id="itinerary-feed" class="space-y-6 md:space-y-10"></div>
-
-                <!-- Family & Stroller Guide -->
-                <div class="reveal snap-start">
-                    <div class="bg-gradient-to-br from-sky-900/40 to-indigo-900/30 border border-sky-500/25 rounded-[2rem] p-6 md:p-8 shadow-card relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-6 opacity-10"><i class="fa-solid fa-baby-carriage text-8xl text-white"></i></div>
-                        <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2 mb-6">
-                            <span>👶</span> Family &amp; Stroller Guide
-                        </h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                            <div class="glass rounded-2xl p-5">
-                                <h3 class="text-sm font-black text-rose-300 mb-3">🚫 Where to leave the stroller</h3>
-                                <ul class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
-                                    <li><b>Flume Gorge:</b> Absolutely requires a baby carrier/backpack. 2 miles of stairs, steep inclines, and boardwalks.</li>
-                                    <li><b>Scenic Trains:</b> Aisles are too narrow. Strollers must be folded tight or left safely at the station platform (very common).</li>
-                                    <li><b>Artist's Bluff:</b> Steep rock steps and roots. Carrier only.</li>
-                                    <li><b>Lower Falls (Kancamagus):</b> Slippery granite ledges. Walk it, holding hands.</li>
-                                    <li><b>Diana's Baths:</b> Reports conflict and it is rougher near the falls. The carrier is the safer call.</li>
-                                </ul>
-                            </div>
-                            <div class="glass rounded-2xl p-5">
-                                <h3 class="text-sm font-black text-emerald-300 mb-3">✅ Where strollers work great</h3>
-                                <ul class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
-                                    <li><b>North Conway Village:</b> Great sidewalks for strolling, shopping, and grabbing coffee.</li>
-                                    <li><b>Scenic Pull-offs:</b> The parking areas on the Kancamagus Highway are paved and offer great views right from the car.</li>
-                                    <li><b>Sabbaday Falls and Rocky Gorge:</b> The two easiest falls on the Kancamagus. Rocky Gorge is paved. Sabbaday is wide and gradual but not smooth, so keep the carrier handy.</li>
-                                    <li><b>Lake Placid (Mirror Lake):</b> Paved path around the lake if you stop to stretch your legs on Day 2.</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <p class="text-sm text-fall-gold mt-0.5">Watertown, NY</p>
+                    <p class="text-sm text-amber-50/80 mt-2 leading-relaxed">A late-arrival stop just over the border, not a destination. Call ahead and tell them you will be in around 9:30 to 10:00 PM. We used a deluxe single with a king bed.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <h3 class="font-bold">TownePlace Suites Laconia Gilford</h3>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50 shrink-0">1 night</span>
                     </div>
-                </div>
-
-                <!-- Critical Advance Booking Checklist -->
-                <div class="reveal snap-start">
-                    <div class="bg-gradient-to-br from-red-950/60 to-fall-surface border border-red-500/25 rounded-[2rem] p-6 md:p-8 shadow-card">
-                        <h2 class="text-xl font-black text-white flex items-center justify-between gap-2 mb-1">
-                            <span class="flex items-center gap-2">⏰ Critical Advance Bookings</span>
-                            <span class="relative w-11 h-11 flex-shrink-0" title="Booking progress">
-                                <svg viewBox="0 0 36 36" class="w-11 h-11 -rotate-90">
-                                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="3.5"></circle>
-                                    <circle id="ring-fg" cx="18" cy="18" r="15.5" fill="none" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" pathLength="100" stroke-dasharray="0, 100" style="transition: stroke-dasharray .6s ease"></circle>
-                                </svg>
-                                <span id="ring-label" class="absolute inset-0 flex items-center justify-center text-[9px] font-black tabular-nums">0/0</span>
-                            </span>
-                        </h2>
-                        <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Accommodations: all hotels are booked and confirmed!</p>
-                        <p class="text-xs text-emerald-300 font-bold mb-1.5">🎉 Flume Gorge: booked &amp; confirmed. Sat Oct 10, 2:00 PM entry window, 2 adults (print-at-home tickets).</p>
-                        <p class="text-xs text-emerald-300 font-bold mb-5">🎉 Scenic Train: booked &amp; confirmed. Valley Train Observation Dome, Sun Oct 11, 2:30 to 3:25 PM (2 adults, 1 child, 1 toddler). Arrive at the North Conway Depot by 2:00 PM, village traffic backs up during foliage season.</p>
-                        <div class="space-y-3">
-                            <label class="flex items-start gap-3 cursor-pointer group/c">
-                                <input type="checkbox" data-key="dinner" class="book-check mt-1 w-4 h-4 rounded bg-stone-900 border-stone-600 text-fall-maple focus:ring-fall-maple cursor-pointer">
-                                <span class="text-xs text-red-100/90 leading-relaxed"><b>Dinner Reservations:</b> Highly recommend booking a table for dinner in North Conway or Lincoln, NH, as wait times can exceed 2 hours for walk-ins.</span>
-                            </label>
-                        </div>
-                        <p class="mt-4 pt-3 border-t border-red-500/20 text-[10px] text-red-200/50 italic">Checkboxes save automatically on this device.</p>
+                    <p class="text-sm text-fall-gold mt-0.5">Gilford, NH, Lakes Region</p>
+                    <p class="text-sm text-amber-50/80 mt-2 leading-relaxed">A good mid-trip base: free breakfast, and you are in position for an early Sunday run up I-93 into Franconia Notch. This is the hotel that makes the Kancamagus day possible without a pre-dawn start from New York State.</p>
+                </article>
+                <article class="glass rounded-2xl p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <h3 class="font-bold">Eastern Inn &amp; Suites</h3>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-100/50 shrink-0">1 night</span>
                     </div>
-                </div>
+                    <p class="text-sm text-fall-gold mt-0.5">North Conway, NH</p>
+                    <p class="text-sm text-amber-50/80 mt-2 leading-relaxed">Right on White Mountain Highway, close to the village, the depot and the last two stops of the day. A standard king room was enough for one night. Book a dinner table in the village, because foliage-weekend walk-in waits can run past two hours.</p>
+                </article>
+            </div>
+        </section>
 
-                <!-- Scenic Train Options -->
-                <div class="reveal snap-start space-y-4">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl drop-shadow">🚂</span>
-                        <div>
-                            <h2 class="text-lg md:text-xl font-black grad-warm leading-tight">Scenic Train Options</h2>
-                            <p class="text-[9px] uppercase tracking-[0.2em] font-bold text-amber-100/50">New Hampshire · Book Early</p>
-                        </div>
-                        <div class="flex-1 h-px bg-gradient-to-r from-amber-500/50 to-transparent"></div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                            <h3 class="font-black text-white mb-1 flex items-center justify-between gap-2">Conway Scenic Railroad <span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap"><i class="fa-solid fa-check"></i> Booked</span></h3>
-                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> North Conway, NH</p>
-                            <p class="text-xs text-amber-100/70 leading-relaxed">Departs from a beautiful 1874 Victorian station. The <em>Mountaineer</em> route is a 4-5 hour journey traversing the stunning Crawford Notch. It's widely considered the most classic "fall foliage" train.</p>
-                        </div>
-                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                            <h3 class="font-black text-white mb-1">Mount Washington Cog Railway</h3>
-                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> Bretton Woods, NH</p>
-                            <p class="text-xs text-amber-100/70 leading-relaxed">A thrilling, historic bio-diesel or steam train that climbs straight up the side of Mount Washington (the highest peak in the Northeast). Spectacular, sweeping views above the tree line.</p>
-                        </div>
-                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                            <h3 class="font-black text-white mb-1">Granite State Railway <span class="font-bold text-amber-100/60">(Fall Foliage Train)</span></h3>
-                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> Lincoln, NH / Meredith, NH</p>
-                            <p class="text-xs text-amber-100/70 leading-relaxed">A very relaxing, family-friendly ride that hugs the banks of the Pemigewasset River or Lake Winnipesaukee, getting you right up close to the vibrant changing leaves.</p>
-                        </div>
-                        <div class="glass rounded-2xl p-5 hover:-translate-y-1 hover:shadow-xl transition-all">
-                            <h3 class="font-black text-white mb-1">Cafe Lafayette Dinner Train</h3>
-                            <p class="text-[10px] uppercase tracking-wider font-bold text-fall-gold mb-2"><i class="fa-solid fa-location-dot"></i> North Woodstock, NH</p>
-                            <p class="text-xs text-amber-100/70 leading-relaxed">If you want to combine an activity with dinner, this 1950s restored vintage rail car (with a dome!) serves an elegant 5-course meal while rolling 20 miles through the river valley at sunset.</p>
-                        </div>
-                    </div>
-                </div>
+        <section class="mt-12" id="highlights">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-fall-gold mb-4">Highlights and what we would recommend</h2>
+            <ul class="space-y-3">
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Flume Gorge, Franconia Notch</p>
+                    <p class="text-sm text-amber-50/80 mt-1.5 leading-relaxed">The Saturday afternoon stop, and worth booking a timed entry. We aimed at the 2:00 PM window. Leave the stroller behind: this one needs a baby carrier. It is about 2 miles of stairs, steep inclines and boardwalks.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">The Kancamagus Highway, eastbound</p>
+                    <p class="text-sm text-amber-50/80 mt-1.5 leading-relaxed">The heart of the Sunday drive, 34.5 miles with no gas and no food, and the phone signal drops out in stretches. Fill the tank and pack lunch in Lincoln. Hancock Overlook and Sugar Hill Overlook are quick roadside pull-offs. The developed falls lots charge a day-use fee, so have cash or a federal pass ready.</p>
+                    <p class="text-sm text-amber-50/80 mt-2 leading-relaxed">Sabbaday Falls is the easiest waterfall, a wide, gradual path, about half an hour, though a stroller is only so-so, so keep a carrier handy. Rocky Gorge has a paved walk to the footbridge and is easy with a stroller. Do not jump or swim in the gorge. Lower Falls is wide granite ledges, not for a stroller, and slippery, so hold hands. No restrooms there, and the site closes for the season in mid-October. The Albany Covered Bridge is a quick extra if everyone is still game. Leave Lower Falls by about 1:15 if you have a 2:00 PM train to catch.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Valley Train from North Conway Depot</p>
+                    <p class="text-sm text-amber-50/80 mt-1.5 leading-relaxed">We took the Observation Dome class, 2:30 to 3:25 PM, and would arrive by 2:00 because village traffic backs up in foliage season. Fold the stroller or leave it on the platform, the aisles are tight. The depot is the 1874 Victorian station at 38 Norcross Circle.</p>
+                    <p class="text-sm text-amber-50/80 mt-2 leading-relaxed">If you have more time than we did, other trains to look at: the Conway Scenic Mountaineer, 4 to 5 hours through Crawford Notch, is the classic long foliage ride. The Granite State Railway, from Lincoln or Meredith, is a gentler, family-friendly run along the river or Lake Winnipesaukee. The Cafe Lafayette Dinner Train out of North Woodstock is a restored 1950s car with a dome and a five-course meal. Book any of these early.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">Artist's Bluff, Cathedral Ledge and Diana's Baths</p>
+                    <p class="text-sm text-amber-50/80 mt-1.5 leading-relaxed">Artist's Bluff is a 1.5 mile loop, steep at the start, carrier only, about an hour and a half with a young child. Skip it if you are not at the trailhead by about 9:30, because the Kancamagus and the train matter more. Park in the dirt lot across Route 18 from the Cannon base, not at Echo Lake. As of last autumn the state was running it as a one-way loop, counterclockwise.</p>
+                    <p class="text-sm text-amber-50/80 mt-2 leading-relaxed">Cathedral Ledge has a road to the top, so it works with little ones, and the view over North Conway is the point. Check the gate time at the bottom, one listing has it closing at 6 PM. No facilities at the summit, about half an hour. Diana's Baths is 0.6 miles each way to granite cascades. The first stretch is packed gravel, then it gets rougher, so use the carrier. Skip it if the kids are done and go to dinner.</p>
+                </li>
+                <li class="glass rounded-2xl p-4">
+                    <p class="font-semibold">A stroller-friendly stretch in Lake Placid</p>
+                    <p class="text-sm text-amber-50/80 mt-1.5 leading-relaxed">On the Saturday drive through the Adirondacks, Mirror Lake has a paved path if you want to get out and walk. North Conway village is also easy with a stroller, good sidewalks for a wander and a coffee after the train.</p>
+                </li>
+            </ul>
+            <p class="text-sm text-amber-50/70 mt-4 leading-relaxed">Sunday as one mapped route, Gilford to the depot to the hotel:
+            <a href="https://www.google.com/maps/dir/14+Sawmill+Rd,+Gilford,+NH/Artist+Bluff+Trail,+Franconia,+NH/Lincoln,+NH/Sabbaday+Falls,+Albany,+NH/Rocky+Gorge+Scenic+Area,+Albany,+NH/Lower+Falls+Scenic+Area,+Albany,+NH/North+Conway+Scenic+Railroad,+38+Norcross+Circle,+North+Conway,+NH/Cathedral+Ledge+State+Park,+North+Conway,+NH/Dianas+Baths,+Bartlett,+NH/2955+White+Mountain+Hwy,+North+Conway,+NH" target="_blank" rel="noopener">open it in Google Maps</a>. Check the pins land where you expect before you set off.</p>
+        </section>
 
-                <!-- End marker -->
-                <div class="text-center py-12 opacity-60 reveal">
-                    <span class="text-2xl">🏡</span>
-                    <p class="text-xs font-bold uppercase tracking-widest mt-2 text-amber-100/70">Home Sweet Home</p>
-                </div>
+        <section class="mt-12" id="food">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-fall-gold mb-4">Food picks</h2>
+            <ul class="glass rounded-2xl divide-y divide-amber-200/10 text-sm text-amber-50/80">
+                <li class="p-4"><span class="font-semibold text-white">Pack lunch for the Kancamagus.</span> There is nowhere to buy food along that stretch. Pick it up in Lincoln with the fuel stop.</li>
+                <li class="p-4"><span class="font-semibold text-white">Book dinner in North Conway or Lincoln.</span> On a foliage weekend, walk-in waits can exceed two hours. We ate in North Conway village after the last lookout.</li>
+                <li class="p-4"><span class="font-semibold text-white">Tanger Outlets in Tilton, optional.</span> About 20 minutes south of Gilford, open until 8 on a Saturday. New Hampshire has no sales tax. Doing it on Saturday keeps Sunday free for the leaves.</li>
+                <li class="p-4"><span class="font-semibold text-white">Monday lunch.</span> A stretch stop near Lake George or Saratoga Springs, NY, breaks up the long drive home.</li>
+            </ul>
+        </section>
 
-        </div>
-    </div>
+        <section class="mt-12" id="tips">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-fall-gold mb-4">Practical tips</h2>
+            <ul class="space-y-3 text-sm text-amber-50/80 leading-relaxed">
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">Bring a carrier, not just a stroller.</span> The stroller is great in North Conway, at the Kancamagus pull-offs, and at Rocky Gorge. Leave it behind for Flume Gorge, Artist's Bluff, Lower Falls, Diana's Baths, and the train.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">Book early.</span> Flume Gorge timed entry, the scenic train, and the three hotels all go in October. Dinner reservations in North Conway or Lincoln are almost as important.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">Timing on Sunday is tight.</span> The bluff only works if you leave Gilford around 7:30 AM. If you are late, skip it. The falls and a 2:00 PM depot arrival are the day.</li>
+                <li class="glass rounded-2xl p-4"><span class="font-semibold text-white">The border on the way home.</span> After more than 48 hours out of Canada, each traveller has a CAD $800 personal exemption, children included. The goods have to belong to the person claiming them, and they have to be in the car. Keep the receipts together and declare everything.</li>
+            </ul>
+        </section>
 
-    <script>
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        // --- Trip data (every detail from the original itinerary) ---
-        const days = [
-            {
-                id: 'day1', day: 'Day 1', date: 'Friday, Oct 9', from: '2026-10-09', to: '2026-10-09',
-                route: 'Ajax → Watertown, NY', drive: '~3 hr drive',
-                lat: 43.9748, lng: -75.9108, zoom: 9, routeIdx: 1,
-                image: 'https://images.unsplash.com/photo-1465447142348-e9952c393450?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-                color: '#f59e0b', colorName: 'amber',
-                activities: [
-                    { text: 'Depart Ajax after 6:00 PM.' },
-                    { text: 'Late evening border crossing at Thousand Islands Bridge.' },
-                    { text: 'Grab a quick bite on the road.' }
-                ],
-                hotel: {
-                    name: 'Nest Inn', confirmed: true,
-                    address: '23442 NY-37, Watertown, NY',
-                    room: 'Deluxe Single Room, 1 King Bed',
-                    note: 'Call ahead to let them know you will be arriving late (around 9:30 to 10:00 PM).'
-                }
-            },
-            {
-                id: 'day2', day: 'Day 2', date: 'Saturday, Oct 10', from: '2026-10-10', to: '2026-10-10',
-                route: 'Watertown → Gilford, NH', drive: '~5.5 hr drive total',
-                lat: 43.5476, lng: -71.4067, zoom: 8, routeIdx: 4,
-                image: 'https://images.unsplash.com/photo-1508923567004-3a6b8004f3d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-                color: '#f97316', colorName: 'maple', ember: true,
-                activities: [
-                    { text: 'Morning: Drive through the Adirondacks (Lake Placid area).' },
-                    { text: 'Afternoon: Head into New Hampshire via I-93 South.' },
-                    { text: 'Stop at Flume Gorge (Franconia Notch) on the way down, booked for the 2:00 PM entry window.', badge: 'Carrier Needed', badgeType: 'carrier' },
-                    { text: 'Optional: Tanger Outlets Tilton is 20 minutes south of Gilford on Laconia Road and stays open until 8 on a Saturday. New Hampshire has no sales tax, so the shelf price is the price you pay, and doing it here keeps Sunday free for the foliage.' },
-                    { text: 'Evening: Settle into the beautiful Lakes Region.' }
-                ],
-                hotel: {
-                    name: 'TownePlace Suites Laconia Gilford', confirmed: true,
-                    address: '14 Sawmill Rd, Gilford, NH',
-                    room: 'Free Breakfast included'
-                }
-            },
-            {
-                id: 'day3', day: 'Day 3', date: 'Sunday, Oct 11', from: '2026-10-11', to: '2026-10-11',
-                route: 'Gilford → Franconia Notch → North Conway', drive: '~3 hr of driving, plus the stops',
-                lat: 44.0537, lng: -71.1284, zoom: 9, routeIdx: 6,
-                image: 'https://images.unsplash.com/photo-1445964047600-cdbdb873673d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-                color: '#ef4444', colorName: 'crimson', ember: true,
-                activities: [
-                    { text: 'The whole day as one route, Gilford to the depot to the Eastern Inn: <a href="https://www.google.com/maps/dir/14+Sawmill+Rd,+Gilford,+NH/Artist+Bluff+Trail,+Franconia,+NH/Lincoln,+NH/Sabbaday+Falls,+Albany,+NH/Rocky+Gorge+Scenic+Area,+Albany,+NH/Lower+Falls+Scenic+Area,+Albany,+NH/North+Conway+Scenic+Railroad,+38+Norcross+Circle,+North+Conway,+NH/Cathedral+Ledge+State+Park,+North+Conway,+NH/Dianas+Baths,+Bartlett,+NH/2955+White+Mountain+Hwy,+North+Conway,+NH" target="_blank" rel="noopener" class="underline decoration-dotted text-fall-gold font-bold">open it in Google Maps</a>. The pins are matched by name, so check each one lands where you expect before you set off.' },
-                    { text: '7:30 AM: Leave Gilford and take I-93 north, through Lincoln and on into Franconia Notch. This is the longest drive of the day, so it goes first.' },
-                    { text: '9:00 AM: Artist\'s Bluff. A 1.5 mile loop with about 436 ft of climbing, steep at the start on rock steps and roots, so it is a carrier hike, not a stroller one. As of last autumn the state runs it as a one way loop, counterclockwise, and has closed the old short trail, so plan on the full loop and read the sign at the bottom. Park in the big dirt lot across Route 18 from the Cannon base area, not in the Echo Lake lot. Allow about an hour and a half with a 4 year old.', badge: 'Carrier Needed', badgeType: 'carrier' },
-                    { text: 'Skip Artist\'s Bluff if you are not at the trailhead by about 9:30. The Kancamagus stops below need the whole window to reach the depot by 2:00 PM, and a late start there costs more than the bluff is worth.' },
-                    { text: '10:45 AM: Back through Lincoln. Fill the tank and pick up lunch to carry. There is no gas or food along the 34.5 miles of the Kancamagus and the phone signal drops out in stretches.' },
-                    { text: 'Kancamagus Highway eastbound. Hancock Overlook and Sugar Hill Overlook are roadside pull-offs worth a minute or two each. The developed falls lots charge a day use fee, so have cash or a federal pass handy and check the sign for the amount.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
-                    { text: '11:30 AM: Sabbaday Falls, the easiest waterfall on the road. Guides put the walk anywhere from 0.3 to 0.7 miles and describe a wide path with a gradual climb. One calls it only semi accessible for strollers, so have the carrier ready as a backup. Half an hour.' },
-                    { text: '12:15 PM: Rocky Gorge. A paved approach to the footbridge over the Swift River, easy with the stroller. A flat 1 mile loop around Falls Pond starts nearby if anyone has energy left. No jumping or swimming in the gorge.', badge: 'Stroller friendly stops', badgeType: 'stroller' },
-                    { text: '12:50 PM: Lower Falls, wide granite ledges on the river. Not for the stroller. The rock is slippery and the Forest Service warns about high water, so hold hands near the edge. No restrooms here, and the site closes for the season in mid October. The Albany Covered Bridge sits near the east end of the road, a quick stop if everyone is still game.' },
-                    { text: 'Leave Lower Falls by 1:15 PM at the latest. Allow about 25 minutes to the depot, and you need to be there by 2:00 PM.' },
-                    { text: '2:30 PM: Valley Train Observation Dome Class from North Conway Depot, 38 Norcross Circle (booked, arrive by 2:00 PM as foliage-season traffic backs up into the village). Back on the platform at 3:25 PM.', badge: 'Fold Stroller', badgeType: 'carrier' },
-                    { text: '3:45 PM: Cathedral Ledge. A road runs to the top, so it works with little ones, and the view over North Conway and the valley is the reason to come. One older listing has the road open until late October and one state park listing has the gate closing at 6 PM, so look for a sign at the bottom. There are no facilities at the summit. About half an hour.' },
-                    { text: '4:30 PM: Diana\'s Baths, a short walk to a run of granite cascades, 0.6 miles each way. Stroller reports conflict. The first stretch is wide packed gravel and it gets rougher near the falls, so use the carrier. It is muddy after rain. Park off West Side Road in Bartlett. If the kids are done by now, skip it and head for dinner.', badge: 'Carrier Needed', badgeType: 'carrier' },
-                    { text: '6:00 PM: Dinner in North Conway village, then back to the Eastern Inn.' }
-                ],
-                hotel: {
-                    name: 'Eastern Inn & Suites', confirmed: true,
-                    address: '2955 White Mountain Hwy, North Conway, NH',
-                    room: 'Standard Room, 1 King Bed'
-                }
-            },
-            {
-                id: 'day4', day: 'Day 4', date: 'Monday, Oct 12', from: '2026-10-12', to: '2026-10-12',
-                route: 'North Conway → Ajax', drive: '~8 to 9 hr drive',
-                lat: 43.4262, lng: -73.7123, zoom: 7, routeIdx: 8,
-                image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-                color: '#b45309', colorName: 'bronze',
-                activities: [
-                    { text: 'Check out and grab a quick breakfast.' },
-                    { text: 'Begin the long drive west.' },
-                    { text: 'Lunch or stretch legs near Lake George or Saratoga Springs, NY.' },
-                    { text: 'Return via I-87 and Thousand Islands Bridge to Ajax.' },
-                    { text: 'At the border: you will have been out of Canada well past 48 hours, so each traveller has a CAD $800 personal exemption, children included. The goods do have to belong to the person claiming them, and they have to be with you in the car. Keep the receipts together and declare everything.' }
-                ],
-                hotel: null // Heading Home
-            }
-        ];
-
-        // --- Render day cards ---
-        function renderFeed() {
-            const container = document.getElementById('itinerary-feed');
-            container.innerHTML = '';
-            const badgeCls = {
-                carrier: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-                stroller: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-            };
-            days.forEach(d => {
-                let acts = d.activities.map(a => `
-                    <div class="relative">
-                        <span class="absolute -left-[30px] top-1.5 w-2.5 h-2.5 rounded-full" style="background:${d.color};box-shadow:0 0 0 4px ${d.color}26"></span>
-                        <p class="text-xs text-amber-50/85 leading-relaxed font-medium">${a.text}
-                            ${a.badge ? `<span class="inline-block align-middle ml-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${badgeCls[a.badgeType]}">${a.badge}</span>` : ''}
-                        </p>
-                    </div>`).join('');
-
-                let hotelHtml;
-                if (d.hotel) {
-                    hotelHtml = `
-                    <div class="mt-5 flex items-start gap-3.5 bg-gradient-to-r from-stone-800/80 to-stone-800/30 rounded-2xl p-4 border border-amber-100/10">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border" style="background:${d.color}1a;border-color:${d.color}4d">
-                            <i class="fa-solid fa-bed text-sm" style="color:${d.color}"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between gap-2">
-                                <p class="text-xs font-bold text-white">${d.hotel.name}</p>
-                                ${d.hotel.confirmed ? `<span class="text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 whitespace-nowrap flex-shrink-0"><i class="fa-solid fa-check"></i> Confirmed</span>` : ''}
-                            </div>
-                            <p class="text-[10px] text-amber-100/60">${d.hotel.address}</p>
-                            <p class="text-[10px] text-amber-100/60">${d.hotel.room}</p>
-                            ${d.hotel.note ? `<p class="text-[10px] text-amber-200/60 italic mt-1.5"><i class="fa-solid fa-phone text-[8px]"></i> ${d.hotel.note}</p>` : ''}
-                        </div>
-                    </div>`;
-                } else {
-                    hotelHtml = `
-                    <div class="mt-5 flex items-center gap-3 bg-stone-800/40 rounded-2xl p-4 border border-amber-100/10 justify-center">
-                        <span class="text-lg">🏡</span>
-                        <p class="text-xs font-bold text-amber-100/70 italic">Heading Home, no hotel tonight</p>
-                    </div>`;
-                }
-
-                container.innerHTML += `
-                    <div data-from="${d.from}" data-to="${d.to}" class="snap-start scroll-mt-4 group cursor-pointer itinerary-card reveal-3d tilt-wrap ${d.ember ? 'ember-card' : ''}">
-                        <div class="tilt-card bg-fall-surface rounded-[2rem] overflow-hidden shadow-card group-hover:shadow-card-hover transition-all duration-500 border border-amber-100/10">
-                            <div class="relative w-full h-48 md:h-56 overflow-hidden">
-                                <img src="${d.image}" alt="${d.route}" loading="lazy" class="card-img absolute inset-0 w-full h-full object-cover brightness-[.8] group-hover:brightness-95 transition-[filter] duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-fall-surface via-transparent to-black/30"></div>
-                                <div class="absolute top-4 left-4">
-                                    <span class="bg-white/15 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1.5 rounded-full border border-white/25">${d.day}</span>
-                                </div>
-                                <div data-weather="${d.id}" class="hidden absolute top-4 right-4 z-10 text-[11px] font-bold text-white bg-black/40 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/20"></div>
-                                <div class="absolute bottom-0 left-0 w-full p-5">
-                                    <p class="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-1">${d.date} · <span style="color:${d.color}">${d.drive}</span></p>
-                                    <h3 class="text-2xl font-black text-white drop-shadow-lg leading-tight">${d.route}</h3>
-                                </div>
-                            </div>
-                            <div class="p-5 md:p-6">
-                                <div class="relative ml-1 pl-6 border-l border-dashed border-stone-600 space-y-3.5">${acts}</div>
-                                ${hotelHtml}
-                            </div>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        // --- Falling maple leaves ---
-        function startLeaves() {
-            const canvas = document.getElementById('leaf-canvas');
-            if (!canvas || reduceMotion) { if (canvas) canvas.remove(); return; }
-            const ctx = canvas.getContext('2d');
-            let W, H;
-            const GLYPHS = ['🍁', '🍂', '🍁'];
-            const N = 26;
-            const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
-            resize();
-            addEventListener('resize', resize);
-            const spawn = () => ({
-                x: Math.random() * W, y: -30,
-                size: 12 + Math.random() * 14,
-                vy: 0.5 + Math.random() * 0.9,
-                drift: 0.4 + Math.random() * 0.8,
-                rot: Math.random() * Math.PI * 2,
-                vr: (Math.random() - 0.5) * 0.02,
-                glyph: GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
-                phase: Math.random() * Math.PI * 2
-            });
-            const leaves = Array.from({ length: N }, () => ({ ...spawn(), y: Math.random() * H }));
-            let t = 0;
-            const frame = () => {
-                requestAnimationFrame(frame);
-                if (document.hidden) return;
-                t += 0.008;
-                ctx.clearRect(0, 0, W, H);
-                leaves.forEach(l => {
-                    l.y += l.vy;
-                    l.x += Math.sin(t + l.phase) * l.drift;
-                    l.rot += l.vr;
-                    if (l.y > H + 30) Object.assign(l, spawn());
-                    ctx.save();
-                    ctx.translate(l.x, l.y);
-                    ctx.rotate(l.rot);
-                    ctx.globalAlpha = 0.75;
-                    ctx.font = `${l.size}px serif`;
-                    ctx.fillText(l.glyph, -l.size / 2, l.size / 2);
-                    ctx.restore();
-                });
-            };
-            frame();
-        }
-
-        // --- Countdown to departure ---
-        function startCountdown() {
-            const target = new Date('2026-10-09T18:00:00-04:00').getTime();
-            const el = document.getElementById('countdown');
-            const pad = n => String(n).padStart(2, '0');
-            const tick = () => {
-                const diff = target - Date.now();
-                if (diff <= 0) { el.textContent = 'On the road! 🍁'; return; }
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor(diff / 3600000) % 24;
-                const m = Math.floor(diff / 60000) % 60;
-                const s = Math.floor(diff / 1000) % 60;
-                el.textContent = `${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
-            };
-            tick();
-            setInterval(tick, 1000);
-        }
-
-        // --- Booking checklist persistence + ring ---
-        function updateRing() {
-            const boxes = [...document.querySelectorAll('.book-check')];
-            const fg = document.getElementById('ring-fg'), label = document.getElementById('ring-label');
-            if (!fg || !label || !boxes.length) return;
-            const done = boxes.filter(b => b.checked).length;
-            fg.setAttribute('stroke-dasharray', `${(done / boxes.length) * 100}, 100`);
-            label.textContent = `${done}/${boxes.length}`;
-        }
-        function setupBookingChecklist() {
-            document.querySelectorAll('.book-check').forEach(cb => {
-                const key = 'nefall-book-' + cb.dataset.key;
-                try {
-                    cb.checked = localStorage.getItem(key) === '1';
-                    cb.addEventListener('change', () => {
-                        try { localStorage.setItem(key, cb.checked ? '1' : '0'); } catch (e) {}
-                        updateRing();
-                    });
-                } catch (e) { cb.addEventListener('change', updateRing); }
-            });
-            updateRing();
-        }
-
-        // --- Live weather chips (Open-Meteo; silent offline) ---
-        async function loadWeather() {
-            try {
-                const coords = { day1: [43.9748, -75.9108], day2: [43.5476, -71.4067], day3: [44.0537, -71.1284], day4: [43.8509, -79.0204] };
-                const ids = Object.keys(coords);
-                const lats = ids.map(i => coords[i][0]).join(',');
-                const lngs = ids.map(i => coords[i][1]).join(',');
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lngs}&current=temperature_2m,weather_code`);
-                if (!res.ok) return;
-                const json = await res.json();
-                const results = Array.isArray(json) ? json : [json];
-                const icon = c => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️' : c <= 67 ? '🌧️' : c <= 77 ? '❄️' : c <= 82 ? '🌧️' : '⛈️';
-                ids.forEach((id, i) => {
-                    const cur = results[i] && results[i].current;
-                    const el = document.querySelector(`[data-weather="${id}"]`);
-                    if (cur && el) {
-                        el.textContent = `${icon(cur.weather_code)} ${Math.round(cur.temperature_2m)}°C now`;
-                        el.classList.remove('hidden');
-                    }
-                });
-            } catch (e) {}
-        }
-
-        // --- Stay calendar: a month grid where every night is a bar from check-in to check-out ---
-        function renderStayCalendar(cfg) {
-            const grid = document.getElementById(cfg.mount);
-            const key = document.getElementById(cfg.legend);
-            if (!grid) return;
-
-            const MS = 86400000;
-            const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
-                            'July', 'August', 'September', 'October', 'November', 'December'];
-            const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const toUTC = s => { const p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
-            const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-            const fmt = ms => { const d = new Date(ms); return MONTHS[d.getUTCMonth()].slice(0, 3) + ' ' + d.getUTCDate(); };
-
-            const stays = cfg.stays.map(s => Object.assign({}, s, { f: toUTC(s.from), t: toUTC(s.to) }));
-            const tripFrom = Math.min.apply(null, stays.map(s => s.f));
-            const tripTo = Math.max.apply(null, stays.map(s => s.t));
-            const ws = cfg.weekStart;
-
-            let html = '';
-            cfg.months.forEach(m => {
-                const y = m[0], mo = m[1];
-                const first = Date.UTC(y, mo - 1, 1);
-                const dim = new Date(Date.UTC(y, mo, 0)).getUTCDate();
-                const lead = (new Date(first).getUTCDay() - ws + 7) % 7;
-                const start = first - lead * MS;
-                const weeks = Math.ceil((lead + dim) / 7);
-
-                html += '<div class="cal-month">';
-                html += '<div class="cal-mtitle">' + MONTHS[mo - 1] + ' ' + y + '</div>';
-                html += '<div class="cal-grid">';
-                for (let i = 0; i < 7; i++) html += '<div class="cal-dow">' + DOW[(ws + i) % 7] + '</div>';
-                html += '</div>';
-
-                const moFrom = first, moTo = Date.UTC(y, mo, 1);
-                for (let w = 0; w < weeks; w++) {
-                    const wk = start + w * 7 * MS;
-
-                    html += '<div class="cal-grid cal-drow">';
-                    for (let i = 0; i < 7; i++) {
-                        const at = wk + i * MS;
-                        const d = new Date(at);
-                        const out = d.getUTCMonth() !== mo - 1;
-                        const on = !out && at >= tripFrom && at < tripTo;
-                        const iso = d.toISOString().slice(0, 10);
-                        html += '<div class="cal-day' + (out ? ' out' : '') + (on ? ' trip hit' : '') + '"' +
-                            (on ? ' data-date="' + iso + '" role="button" tabindex="0" title="Jump to this day"' : '') +
-                            '>' + d.getUTCDate() + '</div>';
-                    }
-                    html += '</div>';
-
-                    const segs = [];
-                    stays.forEach(s => {
-                        const a = Math.max(s.f, wk, moFrom), b = Math.min(s.t, wk + 7 * MS, moTo);
-                        if (b <= a) return;
-                        segs.push({
-                            s: s,
-                            col: Math.round((a - wk) / MS) + 1,
-                            span: Math.round((b - a) / MS),
-                            head: a === s.f, tail: b === s.t,
-                            iso: new Date(a).toISOString().slice(0, 10)
-                        });
-                    });
-                    segs.sort((a, b) => a.col - b.col);
-                    const lanes = [];
-                    segs.forEach(g => {
-                        let l = 0;
-                        while (lanes[l] !== undefined && lanes[l] > g.col) l++;
-                        lanes[l] = g.col + g.span;
-                        g.lane = l + 1;
-                    });
-
-                    html += '<div class="cal-grid cal-bars" style="grid-template-rows:repeat(' + Math.max(lanes.length, 1) + ',auto)">';
-                    segs.forEach(g => {
-                        html += '<div class="cal-bar hit' + (g.head ? ' s' : '') + (g.tail ? ' e' : '') + (g.s.travel ? ' tv' : '') +
-                            '" style="grid-column:' + g.col + '/span ' + g.span + ';grid-row:' + g.lane +
-                            ';background:' + g.s.color + '" data-date="' + g.iso + '" role="button" tabindex="0"' +
-                            ' title="' + esc(g.s.name) + ', jump to this day"><span>' + esc(g.s.short) + '</span></div>';
-                    });
-                    html += '</div>';
-                }
-                html += '</div>';
-            });
-            grid.innerHTML = html;
-
-            if (key) {
-                key.innerHTML = stays.map(s => {
-                    const n = Math.round((s.t - s.f) / MS);
-                    return '<div class="cal-key">' +
-                        '<span class="cal-chip" style="background:' + s.color + '"></span>' +
-                        '<div class="min-w-0">' +
-                        '<p class="text-[11px] font-black leading-tight">' + esc(s.name) + '</p>' +
-                        '<p class="text-[9px] opacity-60 leading-tight mt-0.5">' + (s.when ? esc(s.when) : fmt(s.f) + ' to ' + fmt(s.t) + ' &middot; ' + n + (n === 1 ? ' night' : ' nights')) + '</p>' +
-                        (s.area ? '<p class="text-[9px] opacity-50 leading-tight">' + esc(s.area) + '</p>' : '') +
-                        '</div></div>';
-                }).join('');
-            }
-        }
-
-        const STAY_CALENDAR = {
-            mount: 'stay-calendar', legend: 'stay-legend', weekStart: 0,
-            months: [[2026, 10]],
-            stays: [
-                { short: 'Nest Inn', name: 'Nest Inn', area: 'Watertown, NY. Deluxe single, 1 king bed', from: '2026-10-09', to: '2026-10-10', color: '#f59e0b' },
-                { short: 'Towne', name: 'TownePlace Suites Laconia Gilford', area: 'Gilford, NH. Free breakfast', from: '2026-10-10', to: '2026-10-11', color: '#84cc16' },
-                { short: 'Eastern', name: 'Eastern Inn & Suites', area: 'North Conway, NH. Standard, 1 king bed', from: '2026-10-11', to: '2026-10-12', color: '#f97316' },
-                { short: 'Drive', name: 'Drive home to Ajax', area: 'Roughly 8 to 9 hours on the road, sleep in your own bed', when: 'Mon Oct 12, no hotel', from: '2026-10-12', to: '2026-10-13', color: '#57534e', travel: true }
-            ]
-        };
-
-        // --- Tapping a calendar day scrolls the feed to the card that covers it ---
-        function setupCalendarJump() {
-            const grid = document.getElementById('stay-calendar');
-            const cards = document.getElementById('itinerary-feed');
-            if (!grid || !cards) return;
-
-            const jump = iso => {
-                if (!iso) return;
-                // ISO dates compare correctly as plain strings
-                const card = [...cards.querySelectorAll('[data-from]')]
-                    .find(c => iso >= c.dataset.from && iso <= c.dataset.to);
-                if (!card) return;
-                const feed = document.getElementById('feed');
-                // The reveal animation rotates and shifts the card, and scrollIntoView measures
-                // that transformed box, which overshoots by a couple of hundred pixels. Reveal it
-                // with the transition suppressed so one reflow gives the true layout position,
-                // then scroll to that instead.
-                const t = card.style.transition;
-                card.style.transition = 'none';
-                card.classList.add('in');
-                void card.offsetWidth;
-                const top = feed.scrollTop + card.getBoundingClientRect().top - feed.getBoundingClientRect().top - 12;
-                card.style.transition = t;
-                feed.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' });
-                const flash = card.querySelector('.tilt-card') || card;
-                flash.classList.remove('cal-flash');
-                void flash.offsetWidth;
-                flash.classList.add('cal-flash');
-                setTimeout(() => flash.classList.remove('cal-flash'), 2100);
-            };
-
-            grid.addEventListener('click', e => {
-                const t = e.target.closest('[data-date]');
-                if (t) jump(t.getAttribute('data-date'));
-            });
-            grid.addEventListener('keydown', e => {
-                if (e.key !== 'Enter' && e.key !== ' ') return;
-                const t = e.target.closest('[data-date]');
-                if (!t) return;
-                e.preventDefault();
-                jump(t.getAttribute('data-date'));
-            });
-        }
-
-        // --- Reveals, tilt, parallax, progress bar ---
-        function setupReveal() {
-            const els = document.querySelectorAll('.reveal, .reveal-3d');
-            if (reduceMotion) { els.forEach(el => el.classList.add('in')); return; }
-            const io = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-            }, { root: document.getElementById('feed'), threshold: 0.12 });
-            els.forEach(el => io.observe(el));
-        }
-
-        function setupTilt() {
-            if (reduceMotion || !window.matchMedia('(pointer: fine)').matches) return;
-            document.querySelectorAll('.tilt-wrap').forEach(wrap => {
-                const card = wrap.querySelector('.tilt-card');
-                if (!card) return;
-                wrap.addEventListener('pointermove', e => {
-                    const r = wrap.getBoundingClientRect();
-                    const x = (e.clientX - r.left) / r.width - 0.5;
-                    const y = (e.clientY - r.top) / r.height - 0.5;
-                    card.style.transform = `rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg) scale(1.01)`;
-                });
-                wrap.addEventListener('pointerleave', () => { card.style.transform = ''; });
-            });
-        }
-
-        function setupFeedScrollFx() {
-            const feed = document.getElementById('feed');
-            const bar = document.getElementById('scroll-progress');
-            let ticking = false;
-            const update = () => {
-                ticking = false;
-                if (bar) {
-                    const max = feed.scrollHeight - feed.clientHeight;
-                    bar.style.width = max > 0 ? `${(feed.scrollTop / max) * 100}%` : '0%';
-                }
-                if (!reduceMotion) {
-                    const vh = feed.clientHeight;
-                    document.querySelectorAll('.card-img').forEach(img => {
-                        const r = img.parentElement.getBoundingClientRect();
-                        if (r.bottom < -100 || r.top > vh + 100) return;
-                        const p = (r.top + r.height / 2 - vh / 2) / vh;
-                        img.style.transform = `translateY(${(-p * 26).toFixed(1)}px) scale(1.15)`;
-                    });
-                }
-            };
-            feed.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-            update();
-        }
-
-        // --- Init ---
-        window.onload = () => {
-            renderFeed();
-            renderStayCalendar(STAY_CALENDAR);
-            setupCalendarJump();
-            setupBookingChecklist();
-            setupReveal();
-            setupTilt();
-            setupFeedScrollFx();
-            startCountdown();
-            startLeaves();
-            loadWeather();
-        };
-    </script>
+        <section class="mt-12 mb-8" id="days">
+            <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-fall-gold mb-4">Day by day</h2>
+            <details class="glass rounded-2xl">
+                <summary class="p-4 flex items-center justify-between gap-3">
+                    <span class="font-semibold">One line per day, Oct 9 to 12</span>
+                    <i class="fa-solid fa-chevron-down chev text-amber-100/50 text-sm"></i>
+                </summary>
+                <ol class="px-4 pb-4 space-y-2.5 text-sm text-amber-50/80">
+                    <li><span class="font-semibold text-white">Fri Oct 9.</span> Evening drive from Ajax, Thousand Islands border, late night in Watertown.</li>
+                    <li><span class="font-semibold text-white">Sat Oct 10.</span> Through the Adirondacks, Flume Gorge in the afternoon, night in Gilford.</li>
+                    <li><span class="font-semibold text-white">Sun Oct 11.</span> Artist's Bluff if you are early, the Kancamagus waterfalls, Valley Train, Cathedral Ledge, and Diana's Baths only if the kids still have energy.</li>
+                    <li><span class="font-semibold text-white">Mon Oct 12.</span> Long drive home via I-87 and the Thousand Islands Bridge.</li>
+                </ol>
+            </details>
+        </section>
+    </main>
 </body>
 </html>
