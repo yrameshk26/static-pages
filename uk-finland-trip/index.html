@@ -503,6 +503,10 @@
                                         <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Palace of Holyroodhouse</b>, Sat Nov 28, about 11:30 AM. Unbooked: buy online or at the door, about £22 per adult, under-5s free. <a href="https://www.rct.uk/event/christmas-at-the-palace-of-holyroodhouse-11-2026" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">rct.uk</a></span>
                                     </label>
                                     <label class="flex items-start gap-3 cursor-pointer group">
+                                        <input type="checkbox" data-key="a-edinburgh-castle" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
+                                        <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Edinburgh Castle</b>, Sun Nov 29, 9:30 AM slot. Pre-book at <a href="https://www.edinburghcastle.scot/" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">edinburghcastle.scot</a>: £23.50 per adult online, £26 walk-up. Kids under 7 go free but still need a booked ticket. Slots can sell out, with no tickets at the gate. Steep cobbles, no stroller storage, use a carrier for Aradhya. High winds can close it, so check that morning.</span>
+                                    </label>
+                                    <label class="flex items-start gap-3 cursor-pointer group">
                                         <input type="checkbox" data-key="a-court-roast" class="book-check mt-1 w-4 h-4 rounded bg-slate-900 border-slate-600 text-brand-royal focus:ring-brand-royal cursor-pointer">
                                         <span class="text-xs dark:text-slate-300 text-slate-700 leading-tight"><b>Sunday roast at The Court</b>, the Caledonian, Sun Nov 29, 12:30 PM. Sundays 12:30 to 4:30 PM. 3 courses £35 per adult, kids under 12 free, plus 12.5% service. Book via <a href="https://www.opentable.com/r/the-court-edinburgh" class="underline decoration-dotted underline-offset-2 hover:text-brand-gold" target="_blank" rel="noopener">OpenTable</a> or +44 131 222 8832. FHR US$100 credit applies.</span>
                                     </label>
@@ -739,7 +743,7 @@
                 lat: 55.9533, lng: -3.1883, zoom: 13, routeIdx: 2,
                 image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 title: "Volcanic Vistas via Rail",
-                desc: "High-speed rail up to Scotland. Highland cows at Swanston, Holyroodhouse, Arthur's Seat and Calton Hill, then a Sunday roast at the hotel.",
+                desc: "High-speed rail up to Scotland. Highland cows at Swanston, Holyroodhouse, Arthur's Seat and Calton Hill, then Edinburgh Castle, a Sunday roast at the hotel, and golden-hour photo spots.",
                 icon: "fa-train", color: "brand-royal",
                 hotels: [
                     { name: "The Caledonian", area: "Princes Street, Edinburgh", dates: "Nov 27-30 · 3 nights", booked: true }
@@ -768,19 +772,21 @@
                             { time: "03:00 PM", text: "Walk 13 minutes to Calton Hill via Calton Road and Regent Road. The ramped path from Regent Road is stroller friendly." },
                             { time: "03:15 PM", text: "Calton Hill for sunset, around 3:40 PM, until 4:00 PM." },
                             { time: "04:15 PM", text: "Walk about 10 minutes back to the Caledonian. Dinner at the hotel." },
-                            { time: "Tip", text: "Bring snacks and water for the hills. Check live bus times in the Lothian Buses app." }
+                            { time: "Tip", text: "Bring snacks and water for the hills. Check live bus times in the Lothian Buses app." },
+                            { time: "Rain backup", text: "The Met Office (Friday evening) forecast rain from about noon, with gusts of about 25 mph. If it is wet or windy, swap Salisbury Crags and Arthur's Seat for covered Royal Mile photo spots near Holyroodhouse: the Writers' Museum on Lady Stair's Close (free, open Saturday 10:00 AM to 5:00 PM), Cockburn Street and The Milkman cafe at 7 Cockburn Street (Saturday 8:00 AM to 5:00 PM), Advocates Close, and the Old College quad at the University of Edinburgh." }
                         ]
                     },
                     {
                         dayName: "Sunday, Nov 29 (Day 9)",
                         items: [
-                            { time: "08:00 AM", text: "Breakfast at the Caledonian, until 9:00 AM." },
-                            { time: "09:15 AM", text: "Dean Village and the Water of Leith walkway, a 10-minute walk from the hotel, then on to St Bernard's Well and Stockbridge. Until 10:30 AM." },
-                            { time: "10:30 AM", text: "Stockbridge Sunday market (10:00 AM to 5:00 PM) and coffee, until 11:30 AM." },
-                            { time: "11:30 AM", text: "Walk back via Circus Lane and the New Town, about 20 minutes. Back by 12:15 PM." },
-                            { time: "12:30 PM", text: "Sunday roast at The Court, the Caledonian, until 2:15 PM. Sundays 12:30 to 4:30 PM. 3 courses £35 per adult, kids under 12 free, plus 12.5% service. Book via OpenTable or +44 131 222 8832. FHR US$100 credit applies." },
-                            { time: "02:30 PM", text: "West Princes Street Gardens and the Ross Fountain, then Ramsay Garden and the Castle Esplanade for sunset around 3:40 PM. Until 3:45 PM." },
-                            { time: "03:45 PM", text: "Victoria Street and the Grassmarket lit up after dark, then a stroll back to the hotel, until 5:00 PM." }
+                            { time: "08:00 AM", text: "Breakfast at the Caledonian, until 8:40 AM." },
+                            { time: "08:45 AM", text: "Victoria Street and The Vennel while the streets are empty, until 9:15 AM. Shoot Victoria Street from Victoria Terrace, above the curved shopfronts. At The Vennel, stand at the top of the steps looking up at the Castle. The steps mean a carrier, not a stroller." },
+                            { time: "09:30 AM", text: "Edinburgh Castle, until 11:30 AM. Pre-book the 9:30 AM slot at edinburghcastle.scot: £23.50 per adult online, £26 walk-up. Kids under 7 go free but still need a booked ticket. Slots can sell out, with no tickets at the gate. Photo spots: the Esplanade and gatehouse, Argyle Battery, and Crown Square. Steep cobbles, no stroller storage, use a carrier for Aradhya. High winds can close it, so check that morning." },
+                            { time: "11:30 AM", text: "Walk down toward the hotel, until 12:20 PM: The Witchery facade on Castlehill, Ramsay Garden, the New College twin towers from Mound Place, then down the Mound to the Ross Fountain. Stand on the south side of the fountain so the Castle is behind it, then on to the hotel." },
+                            { time: "12:30 PM", text: "Sunday roast at The Court, the Caledonian, until 2:00 PM. Sundays 12:30 to 4:30 PM. 3 courses £35 per adult, kids under 12 free, plus 12.5% service. Book via OpenTable or +44 131 222 8832. FHR US$100 credit applies." },
+                            { time: "02:05 PM", text: "Dean Village in golden hour, a 12-minute walk, until 3:00 PM. Shoot from Bell's Brae Bridge looking at the Well Court clock tower." },
+                            { time: "03:10 PM", text: "Circus Lane, about a 10-minute walk, until 3:30 PM. Shoot from the bend with St Stephen's spire behind." },
+                            { time: "03:45 PM", text: "Walk back via Princes Street. Scott Monument at blue hour from East Princes Street Gardens (no climb: under-5s are not allowed up the monument). Then back to the hotel by 4:30 PM. Sunset is about 3:45 PM." }
                         ]
                     }
                 ]
@@ -1349,13 +1355,16 @@
             { city: 'Edinburgh', name: 'Princes Street Christmas Market', where: 'East Princes Street Gardens', when: 'Fri Nov 27, 4:30 PM', status: 'free', note: 'Entry free, rides pay as you go' },
             { city: 'Edinburgh', name: 'Swanston Farm Highland cows', where: 'Swanston, Pentland Hills', when: 'Sat Nov 28, 9:35 AM', status: 'free', note: 'No booking. Flat stroller friendly 5-minute path from Swanston Brasserie to the viewing gate. Stay 10 metres back, no feeding' },
             { city: 'Edinburgh', name: 'Palace of Holyroodhouse', where: 'Canongate, EH8', when: 'Sat Nov 28, 11:30 AM', status: 'book', note: 'Buy online or at the door, about £22 per adult, under-5s free' },
-            { city: 'Edinburgh', name: "Salisbury Crags and Arthur's Seat", where: 'Holyrood Park, EH8', when: 'Sat Nov 28, 1:00 PM', status: 'free', note: 'Loop from the palace. Not stroller friendly: use carriers. If behind at 2:15 PM, skip the summit' },
+            { city: 'Edinburgh', name: "Salisbury Crags and Arthur's Seat", where: 'Holyrood Park, EH8', when: 'Sat Nov 28, 1:00 PM', status: 'free', note: 'Loop from the palace. Not stroller friendly: use carriers. If behind at 2:15 PM, skip the summit. If wet or windy, swap for the Royal Mile rain backup' },
             { city: 'Edinburgh', name: 'Calton Hill sunset', where: 'Calton Hill, EH7', when: 'Sat Nov 28, 3:15 PM', status: 'free', note: 'Sunset around 3:40 PM. Ramped path from Regent Road is stroller friendly' },
-            { city: 'Edinburgh', name: 'Dean Village and the Water of Leith', where: 'Dean Village, EH4', when: 'Sun Nov 29, 9:15 AM', status: 'free', note: "10-minute walk from the hotel, then on to St Bernard's Well and Stockbridge" },
-            { city: 'Edinburgh', name: 'Stockbridge Sunday market', where: 'Stockbridge, EH3', when: 'Sun Nov 29, 10:30 AM', status: 'free', note: 'Market 10:00 AM to 5:00 PM. Coffee nearby' },
-            { city: 'Edinburgh', name: 'Sunday roast at The Court', where: 'The Caledonian, Princes Street', when: 'Sun Nov 29, 12:30 PM', status: 'book', note: 'Sundays 12:30 to 4:30 PM. 3 courses £35 per adult, kids under 12 free, plus 12.5% service. Book via OpenTable or +44 131 222 8832. FHR US$100 credit applies' },
-            { city: 'Edinburgh', name: 'West Princes Street Gardens and Castle Esplanade', where: 'Princes Street Gardens / Castle Esplanade', when: 'Sun Nov 29, 2:30 PM', status: 'free', note: 'Ross Fountain, then Ramsay Garden and the Castle Esplanade for sunset around 3:40 PM' },
-            { city: 'Edinburgh', name: 'Victoria Street and the Grassmarket', where: 'Old Town, EH1', when: 'Sun Nov 29, 3:45 PM', status: 'free', note: 'Lit up after dark, then stroll back to the hotel' },
+            { city: 'Edinburgh', name: 'Royal Mile photo spots, rain backup', where: "Writers' Museum, Cockburn Street, Advocates Close, Old College", when: 'Sat Nov 28, if wet or windy', status: 'free', note: "Swap for the hills. Writers' Museum on Lady Stair's Close is free, Saturday 10:00 AM to 5:00 PM. The Milkman at 7 Cockburn Street, Saturday 8:00 AM to 5:00 PM" },
+            { city: 'Edinburgh', name: 'Victoria Street and The Vennel', where: 'Victoria Terrace and The Vennel steps, Old Town', when: 'Sun Nov 29, 8:45 AM', status: 'free', note: 'Shoot from Victoria Terrace above the curved shopfronts, then from the top of The Vennel steps looking up at the Castle. Stairs, use a carrier' },
+            { city: 'Edinburgh', name: 'Edinburgh Castle', where: 'Castlehill, EH1', when: 'Sun Nov 29, 9:30 AM', status: 'book', note: 'Pre-book the 9:30 AM slot at edinburghcastle.scot. £23.50 per adult online, £26 walk-up. Kids under 7 free but need a booked ticket. Slots can sell out, no gate tickets. Photo spots: Esplanade and gatehouse, Argyle Battery, Crown Square. Steep cobbles, no stroller storage, use a carrier for Aradhya. Check for wind closures that morning' },
+            { city: 'Edinburgh', name: 'Witchery, Ramsay Garden and Ross Fountain', where: 'Castlehill, Mound Place and West Princes Street Gardens', when: 'Sun Nov 29, 11:30 AM', status: 'free', note: 'Witchery facade, Ramsay Garden, New College twin towers from Mound Place, then the Ross Fountain from its south side with the Castle behind it' },
+            { city: 'Edinburgh', name: 'Sunday roast at The Court', where: 'The Caledonian, Princes Street', when: 'Sun Nov 29, 12:30 PM', status: 'book', note: 'Until 2:00 PM. Sundays 12:30 to 4:30 PM. 3 courses £35 per adult, kids under 12 free, plus 12.5% service. Book via OpenTable or +44 131 222 8832. FHR US$100 credit applies' },
+            { city: 'Edinburgh', name: 'Dean Village, Bell\'s Brae Bridge', where: 'Dean Village, EH4', when: 'Sun Nov 29, 2:05 PM', status: 'free', note: "Golden hour, a 12-minute walk from the hotel. Shoot from Bell's Brae Bridge looking at the Well Court clock tower" },
+            { city: 'Edinburgh', name: 'Circus Lane', where: 'Stockbridge, EH3', when: 'Sun Nov 29, 3:10 PM', status: 'free', note: "About a 10-minute walk. Shoot from the bend with St Stephen's spire behind" },
+            { city: 'Edinburgh', name: 'Scott Monument at blue hour', where: 'East Princes Street Gardens', when: 'Sun Nov 29, 3:45 PM', status: 'free', note: 'From the gardens, not a climb: under-5s are not allowed up the monument. Sunset is about 3:45 PM. Back at the hotel by 4:30 PM' },
 
             { city: 'Helsinki', name: "Children's Town", where: 'Helsinki City Museum, Senate Square', when: 'Tue Dec 1, 1:00 PM', status: 'free' },
             { city: 'Helsinki', name: 'Senate Square Christmas Market', where: 'Senate Square', when: 'Tue Dec 1, 3:30 PM', status: 'free', note: 'Vintage wooden carousel' },
